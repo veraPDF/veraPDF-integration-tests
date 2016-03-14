@@ -13,6 +13,44 @@
  <name>veraPDF Quality Assurance</name>
  <description>Test and QA utilities for the veraPDF Library.</description>
 
+ <scm>
+  <url>https://github.com/veraPDF/veraPDF-integration-tests/</url>
+  <connection>scm:git:https://github.com/veraPDF/veraPDF-integration-tests.git</connection>
+  <developerConnection>scm:git:git@github.com:veraPDF/veraPDF-integration-tests.git</developerConnection>
+ </scm>
+ <ciManagement>
+  <system>OPF Jenkins</system>
+  <url>http://jenkins.openpreservation.org</url>
+ </ciManagement>
+ <distributionManagement>
+  <repository>
+   <id>OPF Artefactory</id>
+   <name>OPF Artefactory-releases</name>
+   <url>http://artifactory.openpreservation.org/artifactory/vera-dev-local</url>
+  </repository>
+ </distributionManagement>
+
+ <repositories>
+  <repository>
+   <snapshots>
+    <enabled>true</enabled>
+   </snapshots>
+   <id>vera-dev</id>
+   <name>Vera development</name>
+   <url>http://artifactory.openpreservation.org/artifactory/vera-dev</url>
+  </repository>
+ </repositories>
+ <pluginRepositories>
+  <pluginRepository>
+   <snapshots>
+    <enabled>false</enabled>
+   </snapshots>
+   <id>vera-dev</id>
+   <name>Vera development</name>
+   <url>http://artifactory.openpreservation.org/artifactory/vera-dev</url>
+  </pluginRepository>
+ </pluginRepositories>
+
  <properties>
   <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>

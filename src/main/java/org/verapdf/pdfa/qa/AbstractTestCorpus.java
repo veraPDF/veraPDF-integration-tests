@@ -10,14 +10,22 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.XmlRootElement;
+
 import org.verapdf.pdfa.flavours.PDFAFlavour;
 
 /**
  * @author <a href="mailto:carl@openpreservation.org">Carl Wilson</a>
  *
  */
+@XmlRootElement(namespace = "http://www.verapdf.org/ValidationProfile", name = "profile")
 abstract class AbstractTestCorpus<L> implements TestCorpus {
+    @XmlElement(name = "details")
     private final CorpusDetails details;
+    @XmlElementWrapper
+    @XmlElement(name = "item")
     private final Map<String, L> itemMap;
 
     protected AbstractTestCorpus(final CorpusDetails details,
@@ -79,8 +87,12 @@ abstract class AbstractTestCorpus<L> implements TestCorpus {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((this.details == null) ? 0 : this.details.hashCode());
-        result = prime * result + ((this.getItemNames() == null) ? 0 : this.getItemNames().hashCode());
+        result = prime * result
+                + ((this.details == null) ? 0 : this.details.hashCode());
+        result = prime
+                * result
+                + ((this.getItemNames() == null) ? 0 : this.getItemNames()
+                        .hashCode());
         return result;
     }
 
@@ -108,6 +120,5 @@ abstract class AbstractTestCorpus<L> implements TestCorpus {
             return false;
         return true;
     }
-    
-    
+
 }

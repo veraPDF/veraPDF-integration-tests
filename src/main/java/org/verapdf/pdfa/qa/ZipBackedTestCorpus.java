@@ -67,7 +67,7 @@ public class ZipBackedTestCorpus extends AbstractTestCorpus<ZipEntry> {
                     "Parameter description can not be null");
         String hexSha1 = "";
         try (InputStream is = new FileInputStream(zipFile)) {
-            hexSha1 = DigestUtils.sha1Hex(is); 
+            hexSha1 = DigestUtils.sha1Hex(is);
         }
 
         return new ZipBackedTestCorpus(CorpusDetailsImpl.fromValues(name,

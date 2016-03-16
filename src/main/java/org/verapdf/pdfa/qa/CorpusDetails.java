@@ -7,6 +7,7 @@ package org.verapdf.pdfa.qa;
  * @author <a href="mailto:carl@openpreservation.org">Carl Wilson</a>
  *
  */
+@XmlJavaTypeAdapter(CorpusDetailsImpl.Adapter.class)
 public interface CorpusDetails {
     /**
      * @return the name of the TestCorpus

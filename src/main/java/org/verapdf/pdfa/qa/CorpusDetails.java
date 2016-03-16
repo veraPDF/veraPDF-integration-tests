@@ -3,6 +3,8 @@
  */
 package org.verapdf.pdfa.qa;
 
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+
 /**
  * @author <a href="mailto:carl@openpreservation.org">Carl Wilson</a>
  *

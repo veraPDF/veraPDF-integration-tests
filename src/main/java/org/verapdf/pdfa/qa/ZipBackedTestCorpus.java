@@ -4,6 +4,7 @@
 package org.verapdf.pdfa.qa;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Enumeration;
@@ -13,6 +14,8 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipException;
 import java.util.zip.ZipFile;
 
+import org.apache.commons.codec.digest.DigestUtils;
+
 /**
  * @author <a href="mailto:carl@openpreservation.org">Carl Wilson</a>
  *
@@ -20,13 +23,23 @@ import java.util.zip.ZipFile;
 public class ZipBackedTestCorpus extends AbstractTestCorpus<ZipEntry> {
     private final static String PDF_SUFFIX = ".pdf";
     private final ZipFile zipSource;
+    private final String hexSha1;
 
     private ZipBackedTestCorpus(final CorpusDetails details,
             final File zipSource) throws ZipException, IOException {
         super(details, itemsMapFromZipSource(zipSource));
+        try (InputStream is = new FileInputStream(zipSource)) {
+            this.hexSha1 = DigestUtils.sha1Hex(is); 
+        }
         this.zipSource = new ZipFile(zipSource);
     }
 
+    /**
+     * @return the hex SHA1 digest of the zip file used as a source
+     */
+    public String getHexSha1() {
+    	return this.hexSha1;
+    }
     /**
      * { @inheritDoc }
      * 

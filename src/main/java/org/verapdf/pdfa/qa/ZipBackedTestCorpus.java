@@ -23,23 +23,13 @@ import org.apache.commons.codec.digest.DigestUtils;
 public class ZipBackedTestCorpus extends AbstractTestCorpus<ZipEntry> {
     private final static String PDF_SUFFIX = ".pdf";
     private final ZipFile zipSource;
-    private final String hexSha1;
 
     private ZipBackedTestCorpus(final CorpusDetails details,
             final File zipSource) throws ZipException, IOException {
         super(details, itemsMapFromZipSource(zipSource));
-        try (InputStream is = new FileInputStream(zipSource)) {
-            this.hexSha1 = DigestUtils.sha1Hex(is); 
-        }
         this.zipSource = new ZipFile(zipSource);
     }
 
-    /**
-     * @return the hex SHA1 digest of the zip file used as a source
-     */
-    public String getHexSha1() {
-    	return this.hexSha1;
-    }
     /**
      * { @inheritDoc }
      * 
@@ -75,8 +65,13 @@ public class ZipBackedTestCorpus extends AbstractTestCorpus<ZipEntry> {
         if (description == null)
             throw new NullPointerException(
                     "Parameter description can not be null");
+        String hexSha1 = "";
+        try (InputStream is = new FileInputStream(zipFile)) {
+            hexSha1 = DigestUtils.sha1Hex(is); 
+        }
+
         return new ZipBackedTestCorpus(CorpusDetailsImpl.fromValues(name,
-                description), zipFile);
+                description, hexSha1), zipFile);
     }
 
     private static final Map<String, ZipEntry> itemsMapFromZipSource(

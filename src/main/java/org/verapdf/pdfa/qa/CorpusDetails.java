@@ -17,4 +17,9 @@ public interface CorpusDetails {
      * @return a textual description of the TestCorpus
      */
     public String getDescription();
+    
+    /**
+     * @return a unique SHA1 identifier for the corpus
+     */
+    public String getHexSha1();
 }

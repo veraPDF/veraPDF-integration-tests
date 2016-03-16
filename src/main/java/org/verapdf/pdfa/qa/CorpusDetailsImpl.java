@@ -10,10 +10,12 @@ package org.verapdf.pdfa.qa;
 public class CorpusDetailsImpl implements CorpusDetails {
     final String name;
     final String description;
+    final String hexSha1;
 
-    private CorpusDetailsImpl(final String name, final String description) {
+    private CorpusDetailsImpl(final String name, final String description, final String hexSha1) {
         this.name = name;
         this.description = description;
+        this.hexSha1 = hexSha1;
     }
 
     /**
@@ -32,6 +34,13 @@ public class CorpusDetailsImpl implements CorpusDetails {
         return this.description;
     }
 
+    /**
+     * { @inheritDoc }
+     */
+	@Override
+	public String getHexSha1() {
+		return this.hexSha1;
+	}
     
     /**
      * { @inheritDoc }
@@ -90,7 +99,7 @@ public class CorpusDetailsImpl implements CorpusDetails {
      *         values
      */
     static CorpusDetails fromValues(final String name,
-            final String description) {
+            final String description, final String hexSha1) {
         if (name == null)
             throw new NullPointerException("Parameter name can not be null");
         if (name.isEmpty())
@@ -98,6 +107,6 @@ public class CorpusDetailsImpl implements CorpusDetails {
         if (description == null)
             throw new NullPointerException(
                     "Parameter description can not be null");
-        return new CorpusDetailsImpl(name, description);
+        return new CorpusDetailsImpl(name, description, hexSha1);
     }
 }

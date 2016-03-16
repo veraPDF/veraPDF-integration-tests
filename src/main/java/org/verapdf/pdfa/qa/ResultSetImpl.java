@@ -3,11 +3,9 @@
  */
 package org.verapdf.pdfa.qa;
 
-import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.verapdf.core.ValidationException;
 import org.verapdf.model.ModelParser;
 import org.verapdf.pdfa.PDFAValidator;
 import org.verapdf.pdfa.results.ValidationResult;

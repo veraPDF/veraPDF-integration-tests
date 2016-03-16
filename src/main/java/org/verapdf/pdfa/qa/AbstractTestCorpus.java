@@ -20,7 +20,7 @@ import org.verapdf.pdfa.flavours.PDFAFlavour;
  * @author <a href="mailto:carl@openpreservation.org">Carl Wilson</a>
  *
  */
-@XmlRootElement(namespace = "http://www.verapdf.org/ValidationProfile", name = "profile")
+@XmlRootElement(namespace = "http://www.verapdf.org/corpus", name = "corpus")
 abstract class AbstractTestCorpus<L> implements TestCorpus {
     @XmlElement(name = "details")
     private final CorpusDetails details;

@@ -8,6 +8,9 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.adapters.XmlAdapter;
+
 import org.apache.commons.codec.digest.DigestUtils;
 
 /**
@@ -15,8 +18,9 @@ import org.apache.commons.codec.digest.DigestUtils;
  *
  */
 public class CorpusItemImpl implements CorpusItem {
-
+    @XmlElement(name = "path")
     private final String path;
+    @XmlElement(name = "sha1")
     private final String sha1;
 
     private CorpusItemImpl(final String path) {
@@ -142,6 +146,18 @@ public class CorpusItemImpl implements CorpusItem {
             return CorpusItemImpl.fromValues(path, DigestUtils.sha1Hex(corpusStream));
         } catch (IOException e) {
             return CorpusItemImpl.fromValues(path);
+        }
+    }
+
+    static class Adapter extends XmlAdapter<CorpusItemImpl, CorpusItem> {
+        @Override
+        public CorpusItem unmarshal(CorpusItemImpl results) {
+            return results;
+        }
+
+        @Override
+        public CorpusItemImpl marshal(CorpusItem results) {
+            return (CorpusItemImpl) results;
         }
     }
 }

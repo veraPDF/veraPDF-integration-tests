@@ -6,6 +6,10 @@ package org.verapdf.pdfa.qa;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.adapters.XmlAdapter;
+
 import org.verapdf.model.ModelParser;
 import org.verapdf.pdfa.PDFAValidator;
 import org.verapdf.pdfa.results.ValidationResult;
@@ -16,11 +20,18 @@ import org.verapdf.pdfa.validation.ValidationProfile;
  *
  */
 public class ResultSetImpl implements ResultSet {
+    @XmlElement(name = "resultDetails")
     private final ResultSetDetails details = ResultSetDetailsImpl
             .getNewInstance();
+    @XmlElement(name = "corpusDetails")
     private final CorpusDetails corpusDetails;
+    @XmlElement(name = "profile")
     private final ValidationProfile profile;
+    @XmlElementWrapper
+    @XmlElement(name = "result")
     private final Set<Result> results;
+    @XmlElementWrapper
+    @XmlElement(name = "exceptions")
     private final Set<Incomplete> exceptions;
 
     private ResultSetImpl(final CorpusDetails corpusDetails,
@@ -165,5 +176,18 @@ public class ResultSetImpl implements ResultSet {
         }
         return new ResultSetImpl(corpus.getDetails(), validator.getProfile(),
                 results, exceptions);
+    }
+
+
+    static class Adapter extends XmlAdapter<ResultSetImpl, ResultSet> {
+        @Override
+        public ResultSet unmarshal(ResultSetImpl results) {
+            return results;
+        }
+
+        @Override
+        public ResultSetImpl marshal(ResultSet results) {
+            return (ResultSetImpl) results;
+        }
     }
 }

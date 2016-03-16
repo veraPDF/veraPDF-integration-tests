@@ -5,6 +5,8 @@ package org.verapdf.pdfa.qa;
 
 import java.util.Set;
 
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+
 import org.verapdf.pdfa.results.ValidationResult;
 import org.verapdf.pdfa.validation.ValidationProfile;
 
@@ -12,6 +14,7 @@ import org.verapdf.pdfa.validation.ValidationProfile;
  * @author <a href="mailto:carl@openpreservation.org">Carl Wilson</a>
  *
  */
+@XmlJavaTypeAdapter(ResultSetImpl.Adapter.class)
 public interface ResultSet {
     /**
      * @return the {@link ResultSetDetails} for the instance

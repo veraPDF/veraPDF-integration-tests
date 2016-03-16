@@ -5,6 +5,9 @@ package org.verapdf.pdfa.qa;
 
 import java.util.Date;
 
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.adapters.XmlAdapter;
+
 import org.verapdf.ReleaseDetails;
 
 /**
@@ -12,18 +15,25 @@ import org.verapdf.ReleaseDetails;
  *
  */
 public class ResultSetDetailsImpl implements ResultSetDetails {
+    @XmlElement(name = "created")
     private final Date created;
+    @XmlElement(name = "libVersion")
     private final String libVersion;
+    @XmlElement(name = "libBuild")
     private final Date libBuild;
 
     private ResultSetDetailsImpl() {
-        this(new Date(), ReleaseDetails.getInstance().getVersion(), ReleaseDetails.getInstance().getBuildDate());
+        this(new Date(), ReleaseDetails.getInstance().getVersion(),
+                ReleaseDetails.getInstance().getBuildDate());
     }
-    private ResultSetDetailsImpl(final Date created, final String libVersion, final Date libBuild) {
+
+    private ResultSetDetailsImpl(final Date created, final String libVersion,
+            final Date libBuild) {
         this.created = new Date(created.getTime());
         this.libVersion = libVersion;
         this.libBuild = new Date(libBuild.getTime());
     }
+
     /**
      * { @inheritDoc }
      */
@@ -47,6 +57,7 @@ public class ResultSetDetailsImpl implements ResultSetDetails {
     public Date getLibraryBuildDate() {
         return this.libBuild;
     }
+
     /**
      * { @inheritDoc }
      */
@@ -54,13 +65,15 @@ public class ResultSetDetailsImpl implements ResultSetDetails {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((this.created == null) ? 0 : this.created.hashCode());
+        result = prime * result
+                + ((this.created == null) ? 0 : this.created.hashCode());
         result = prime * result
                 + ((this.libBuild == null) ? 0 : this.libBuild.hashCode());
         result = prime * result
                 + ((this.libVersion == null) ? 0 : this.libVersion.hashCode());
         return result;
     }
+
     /**
      * { @inheritDoc }
      */
@@ -90,6 +103,7 @@ public class ResultSetDetailsImpl implements ResultSetDetails {
             return false;
         return true;
     }
+
     /**
      * { @inheritDoc }
      */
@@ -104,5 +118,17 @@ public class ResultSetDetailsImpl implements ResultSetDetails {
      */
     public static ResultSetDetails getNewInstance() {
         return new ResultSetDetailsImpl();
+    }
+
+    static class Adapter extends XmlAdapter<ResultSetDetailsImpl, ResultSetDetails> {
+        @Override
+        public ResultSetDetails unmarshal(ResultSetDetailsImpl results) {
+            return results;
+        }
+
+        @Override
+        public ResultSetDetailsImpl marshal(ResultSetDetails results) {
+            return (ResultSetDetailsImpl) results;
+        }
     }
 }

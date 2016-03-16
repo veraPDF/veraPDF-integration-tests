@@ -5,10 +5,13 @@ package org.verapdf.pdfa.qa;
 
 import java.util.Date;
 
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+
 /**
  * @author <a href="mailto:carl@openpreservation.org">Carl Wilson</a>
  *
  */
+@XmlJavaTypeAdapter(ResultSetDetailsImpl.Adapter.class)
 public interface ResultSetDetails {
     /**
      * @return the date that the result set was created

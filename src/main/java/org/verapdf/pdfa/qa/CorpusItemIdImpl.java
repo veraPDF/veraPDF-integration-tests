@@ -3,6 +3,8 @@
  */
 package org.verapdf.pdfa.qa;
 
+import javax.xml.bind.annotation.XmlElement;
+
 import org.verapdf.pdfa.flavours.PDFAFlavour.Specification;
 import org.verapdf.pdfa.validation.Profiles;
 import org.verapdf.pdfa.validation.RuleId;
@@ -18,8 +20,11 @@ public class CorpusItemIdImpl implements CorpusItemId {
     private static final String FAIL = "fail";
     private static final String TEST_PREFIX = "t";
     private static final String TEST_FILE_EXT = ".pdf";
+    @XmlElement(name = "ruleId")
     private final RuleId ruleId;
+    @XmlElement(name = "testCode")
     private final String testCode;
+    @XmlElement(name = "result")
     private final boolean result;
 
     private CorpusItemIdImpl() {

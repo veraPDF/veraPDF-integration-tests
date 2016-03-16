@@ -120,13 +120,13 @@ public class CorpusDetailsImpl implements CorpusDetails {
 
     static class Adapter extends XmlAdapter<CorpusDetailsImpl, CorpusDetails> {
         @Override
-        public CorpusDetails unmarshal(CorpusDetailsImpl profileImpl) {
-            return profileImpl;
+        public CorpusDetails unmarshal(CorpusDetailsImpl details) {
+            return details;
         }
 
         @Override
-        public CorpusDetailsImpl marshal(CorpusDetails profile) {
-            return (CorpusDetailsImpl) profile;
+        public CorpusDetailsImpl marshal(CorpusDetails details) {
+            return (CorpusDetailsImpl) details;
         }
     }
 

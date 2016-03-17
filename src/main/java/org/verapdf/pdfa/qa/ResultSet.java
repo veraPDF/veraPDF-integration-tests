@@ -46,19 +46,19 @@ public interface ResultSet {
      *
      */
     public static final class Result {
-        private final CorpusItem corpusItem;
+        private final CorpusItemId corpusItemId;
         private final ValidationResult result;
 
-        Result(final CorpusItem corpusItem, final ValidationResult result) {
-            this.corpusItem = corpusItem;
+        Result(final CorpusItemId corpusItemId, final ValidationResult result) {
+            this.corpusItemId = corpusItemId;
             this.result = result;
         }
 
         /**
          * @return the corpusItem
          */
-        public CorpusItem getCorpusItem() {
-            return this.corpusItem;
+        public CorpusItemId getCorpusItemId() {
+            return this.corpusItemId;
         }
 
         /**
@@ -77,7 +77,7 @@ public interface ResultSet {
             int hashResult = 1;
             hashResult = prime
                     * hashResult
-                    + ((this.corpusItem == null) ? 0 : this.corpusItem
+                    + ((this.corpusItemId == null) ? 0 : this.corpusItemId
                             .hashCode());
             hashResult = prime * hashResult
                     + ((this.result == null) ? 0 : this.result.hashCode());
@@ -96,10 +96,10 @@ public interface ResultSet {
             if (getClass() != obj.getClass())
                 return false;
             Result other = (Result) obj;
-            if (this.corpusItem == null) {
-                if (other.corpusItem != null)
+            if (this.corpusItemId == null) {
+                if (other.corpusItemId != null)
                     return false;
-            } else if (!this.corpusItem.equals(other.corpusItem))
+            } else if (!this.corpusItemId.equals(other.corpusItemId))
                 return false;
             if (this.result == null) {
                 if (other.result != null)
@@ -114,7 +114,7 @@ public interface ResultSet {
          */
         @Override
         public String toString() {
-            return "Result [corpusItem=" + this.corpusItem + ", result="
+            return "Result [corpusItemid=" + this.corpusItemId + ", result="
                     + this.result + "]";
         }
 
@@ -125,23 +125,23 @@ public interface ResultSet {
      *
      */
     public static class Incomplete {
-        private final CorpusItem corpusItem;
+        private final CorpusItemId corpusItemId;
         private final String cause;
         
         /**
          * @param corpusItem
          * @param cause
          */
-        public Incomplete(final CorpusItem corpusItem, final Exception cause) {
-            this.corpusItem = corpusItem;
+        public Incomplete(final CorpusItemId corpusItemId, final Exception cause) {
+            this.corpusItemId = corpusItemId;
             this.cause = cause.getMessage();
         }
 
         /**
          * @return the corpusItem
          */
-        public CorpusItem getCorpusItem() {
-            return this.corpusItem;
+        public CorpusItemId getCorpusItemId() {
+            return this.corpusItemId;
         }
 
         /**
@@ -160,7 +160,7 @@ public interface ResultSet {
             int result = 1;
             result = prime * result + ((this.cause == null) ? 0 : this.cause.hashCode());
             result = prime * result
-                    + ((this.corpusItem == null) ? 0 : this.corpusItem.hashCode());
+                    + ((this.corpusItemId == null) ? 0 : this.corpusItemId.hashCode());
             return result;
         }
 
@@ -181,10 +181,10 @@ public interface ResultSet {
                     return false;
             } else if (!this.cause.equals(other.cause))
                 return false;
-            if (this.corpusItem == null) {
-                if (other.corpusItem != null)
+            if (this.corpusItemId == null) {
+                if (other.corpusItemId != null)
                     return false;
-            } else if (!this.corpusItem.equals(other.corpusItem))
+            } else if (!this.corpusItemId.equals(other.corpusItemId))
                 return false;
             return true;
         }
@@ -194,7 +194,7 @@ public interface ResultSet {
          */
         @Override
         public String toString() {
-            return "Incomplete [corpusItem=" + this.corpusItem + ", cause=" + this.cause
+            return "Incomplete [corpusItemId=" + this.corpusItemId + ", cause=" + this.cause
                     + "]";
         }
         

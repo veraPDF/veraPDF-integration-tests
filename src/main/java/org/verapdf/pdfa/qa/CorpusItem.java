@@ -14,6 +14,11 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 @XmlJavaTypeAdapter(CorpusItemImpl.Adapter.class)
 public interface CorpusItem {
     /**
+     * @return
+     */
+    public CorpusItemId getId();
+
+    /**
      * @return the {@code String} path of the item
      */
     public String getPath();

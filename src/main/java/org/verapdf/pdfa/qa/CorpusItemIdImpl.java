@@ -4,6 +4,7 @@
 package org.verapdf.pdfa.qa;
 
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.adapters.XmlAdapter;
 
 import org.verapdf.pdfa.flavours.PDFAFlavour.Specification;
 import org.verapdf.pdfa.validation.Profiles;
@@ -22,13 +23,15 @@ public class CorpusItemIdImpl implements CorpusItemId {
     private static final String TEST_FILE_EXT = ".pdf";
     @XmlElement(name = "ruleId")
     private final RuleId ruleId;
+    @XmlElement(name = "sha1")
+    private final String hexSha1;
     @XmlElement(name = "testCode")
     private final String testCode;
     @XmlElement(name = "result")
     private final boolean result;
 
     private CorpusItemIdImpl() {
-        this(Profiles.defaultRuleId(), "testCode", false);
+        this(Profiles.defaultRuleId(), "sha1", "testCode", false);
     }
 
     /**
@@ -36,10 +39,11 @@ public class CorpusItemIdImpl implements CorpusItemId {
      * @param testCode
      * @param status
      */
-    private CorpusItemIdImpl(final RuleId ruleId, final String testCode,
-            final boolean result) {
+    private CorpusItemIdImpl(final RuleId ruleId, final String hexSha1,
+            final String testCode, final boolean result) {
         super();
         this.ruleId = ruleId;
+        this.hexSha1 = hexSha1;
         this.testCode = testCode;
         this.result = result;
     }
@@ -48,8 +52,28 @@ public class CorpusItemIdImpl implements CorpusItemId {
      * { @inheritDoc }
      */
     @Override
+    public String getName() {
+        return this.ruleId.getClause().substring(
+                this.ruleId.getClause().indexOf(".") + 1)
+                + "-t"
+                + this.ruleId.getTestNumber()
+                + (this.result ? "-pass-" : "-fail-") + this.testCode;
+    }
+
+    /**
+     * { @inheritDoc }
+     */
+    @Override
     public RuleId getRuleId() {
         return this.ruleId;
+    }
+
+    /**
+     * { @inheritDoc }
+     */
+    @Override
+    public String getHexSha1() {
+        return this.hexSha1;
     }
 
     /**
@@ -144,8 +168,8 @@ public class CorpusItemIdImpl implements CorpusItemId {
      *         values
      */
     public static CorpusItemId fromValues(final RuleId ruleId,
-            final String testCode, final boolean result) {
-        return new CorpusItemIdImpl(ruleId, testCode, result);
+            final String testCode, final boolean result, final String hexSha1) {
+        return new CorpusItemIdImpl(ruleId, hexSha1, testCode, result);
     }
 
     /**
@@ -162,17 +186,17 @@ public class CorpusItemIdImpl implements CorpusItemId {
      *         parameters
      */
     public static CorpusItemId fromFileName(final Specification specification,
-            final String fileName) {
-        for (String part : fileName.split(" ")) {
+            final String fileName, final String sha1) {
+        for (String part : fileName.split("/")) {
             if (part.endsWith(TEST_FILE_EXT)) {
-                return fromCode(specification, part);
+                return fromCode(specification, part, sha1);
             }
         }
         return DEFAULT;
     }
 
     private static CorpusItemId fromCode(final Specification specification,
-            final String code) {
+            final String code, final String sha1) {
         StringBuilder builder = new StringBuilder();
         String separator = "";
         boolean status = false;
@@ -193,7 +217,7 @@ public class CorpusItemIdImpl implements CorpusItemId {
         }
         RuleId ruleId = Profiles.ruleIdFromValues(specification,
                 builder.toString(), testNumber);
-        return CorpusItemIdImpl.fromValues(ruleId, testCode, status);
+        return CorpusItemIdImpl.fromValues(ruleId, testCode, status, sha1);
     }
 
     private static boolean isTestResult(final String code) {
@@ -202,5 +226,17 @@ public class CorpusItemIdImpl implements CorpusItemId {
 
     private static boolean testPassFail(final String code) {
         return code.equalsIgnoreCase(PASS);
+    }
+
+    static class Adapter extends XmlAdapter<CorpusItemIdImpl, CorpusItemId> {
+        @Override
+        public CorpusItemId unmarshal(CorpusItemIdImpl corpusItem) {
+            return corpusItem;
+        }
+
+        @Override
+        public CorpusItemIdImpl marshal(CorpusItemId corpusItem) {
+            return (CorpusItemIdImpl) corpusItem;
+        }
     }
 }

@@ -93,7 +93,11 @@
       <artifactId>bcprov-jdk15on</artifactId>
       <version>1.54</version>
     </dependency>
-
+    <dependency>
+      <groupId>com.github.spullara.mustache.java</groupId>
+      <artifactId>compiler</artifactId>
+      <version>0.8.18</version>
+    </dependency>
 
   </dependencies>
 

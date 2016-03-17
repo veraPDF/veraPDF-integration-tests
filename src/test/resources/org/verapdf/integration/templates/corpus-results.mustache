@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="veraPDF test results.">
+  <meta name="author" content="veraPDF Consortium">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+  <title>veraPDF dest data</title>
+  <link href="http://verapdf.org/wp-content/themes/verapdf/includes/img/favicon.ico" rel="icon" type="image/x-icon" />
+
+  <!--[if lt IE 9]>
+  <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+  <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+  <![endif]-->
+
+</head>
+<body>
+  <h1>veraPDF Test Results</h1>
+  {{#corpusDetails}}
+  <div id="corpus">
+    <h2>{{name}} Corpus</h2>
+    {{description}}
+  </div>
+  {{/corpusDetails}}
+  {{#details}}
+  <div id="release">
+    <h2>Software details</h2>
+    Version:{{libraryVersion}} 
+  </div>
+  {{/details}}
+  {{#validationProfile}}
+  <div id="profile">
+    <h2>Validation Profile</h2>
+    {{#details}}
+    {{name}} 
+    {{/details}}
+  </div>
+  {{/validationProfile}}
+  <div id="results">
+  <table>
+  {{#results}}
+    <tr>
+      {{#corpusItemId}}
+      <td>{{name}}</td>
+      <td{{#expectedResult}} class="pass">Pass{{/expectedResult}}{{^expectedResult}} class="fail">Fail{{/expectedResult}}</td>
+      {{/corpusItemId}}
+      {{#result}}
+      <td{{#compliant}} class="pass">Pass{{/compliant}}{{^compliant}} class="fail">Fail{{/compliant}}</td>
+      {{/result}}
+    </tr>
+  {{/results}}
+  </table>
+  </div>
+</body>
+</html>

@@ -4,6 +4,7 @@
 package org.verapdf.pdfa.qa;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Enumeration;
@@ -12,6 +13,8 @@ import java.util.Map;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipException;
 import java.util.zip.ZipFile;
+
+import org.apache.commons.codec.digest.DigestUtils;
 
 /**
  * @author <a href="mailto:carl@openpreservation.org">Carl Wilson</a>
@@ -62,8 +65,13 @@ public class ZipBackedTestCorpus extends AbstractTestCorpus<ZipEntry> {
         if (description == null)
             throw new NullPointerException(
                     "Parameter description can not be null");
+        String hexSha1 = "";
+        try (InputStream is = new FileInputStream(zipFile)) {
+            hexSha1 = DigestUtils.sha1Hex(is);
+        }
+
         return new ZipBackedTestCorpus(CorpusDetailsImpl.fromValues(name,
-                description), zipFile);
+                description, hexSha1), zipFile);
     }
 
     private static final Map<String, ZipEntry> itemsMapFromZipSource(

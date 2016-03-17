@@ -8,6 +8,9 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.adapters.XmlAdapter;
+
 import org.apache.commons.codec.digest.DigestUtils;
 
 /**
@@ -15,26 +18,30 @@ import org.apache.commons.codec.digest.DigestUtils;
  *
  */
 public class CorpusItemImpl implements CorpusItem {
-
+    @XmlElement(name = "id")
+    private final CorpusItemId id;
+    @XmlElement(name = "path")
     private final String path;
+    @XmlElement(name = "sha1")
     private final String sha1;
 
     private CorpusItemImpl(final String path) {
-        this(path, "");
+        this(CorpusItemIdImpl.defaultInstance(), "", path);
     }
 
-    private CorpusItemImpl(final String path,
-            final String sha1) {
-        this.path = path;
+    private CorpusItemImpl(final CorpusItemId id, final String sha1,
+            final String path) {
+        this.id = id;
         this.sha1 = sha1;
+        this.path = path;
     }
 
     /**
      * { @inheritDoc }
      */
     @Override
-    public String getPath() {
-        return this.path;
+    public CorpusItemId getId() {
+        return this.id;
     }
 
     /**
@@ -49,11 +56,21 @@ public class CorpusItemImpl implements CorpusItem {
      * { @inheritDoc }
      */
     @Override
+    public String getPath() {
+        return this.path;
+    }
+
+    /**
+     * { @inheritDoc }
+     */
+    @Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((this.path == null) ? 0 : this.path.hashCode());
-        result = prime * result + ((this.sha1 == null) ? 0 : this.sha1.hashCode());
+        result = prime * result
+                + ((this.path == null) ? 0 : this.path.hashCode());
+        result = prime * result
+                + ((this.sha1 == null) ? 0 : this.sha1.hashCode());
         return result;
     }
 
@@ -87,8 +104,7 @@ public class CorpusItemImpl implements CorpusItem {
      */
     @Override
     public String toString() {
-        return "CorpusItem [path=" + this.path + ", sha1=" + this.sha1
-                + "]";
+        return "CorpusItem [path=" + this.path + ", sha1=" + this.sha1 + "]";
     }
 
     /**
@@ -104,15 +120,16 @@ public class CorpusItemImpl implements CorpusItem {
      * @param sha1
      * @return
      */
-    public static CorpusItem fromValues(final String path,
-            final String sha1) {
+    public static CorpusItem fromValues(final String path, final String sha1) {
         if (path == null)
             throw new NullPointerException("path can not be null.");
         if (path.isEmpty())
             throw new IllegalArgumentException("path can not be empty.");
         if (sha1 == null)
             throw new NullPointerException("sha1 can not be null.");
-        return new CorpusItemImpl(path, sha1);
+        File file = new File(path);
+        return new CorpusItemImpl(CorpusItemIdImpl.defaultInstance(), sha1,
+                path);
     }
 
     /**
@@ -132,16 +149,31 @@ public class CorpusItemImpl implements CorpusItem {
         }
     }
 
-    static CorpusItem fromInputStream(final InputStream corpusStream, final String path) {
-        if (corpusStream == null) throw new NullPointerException("corpusStream can not be null.");
+    static CorpusItem fromInputStream(final InputStream corpusStream,
+            final String path) {
+        if (corpusStream == null)
+            throw new NullPointerException("corpusStream can not be null.");
         if (path == null)
             throw new NullPointerException("path can not be null.");
         if (path.isEmpty())
             throw new IllegalArgumentException("path can not be empty.");
         try {
-            return CorpusItemImpl.fromValues(path, DigestUtils.sha1Hex(corpusStream));
+            return CorpusItemImpl.fromValues(path,
+                    DigestUtils.sha1Hex(corpusStream));
         } catch (IOException e) {
             return CorpusItemImpl.fromValues(path);
+        }
+    }
+
+    static class Adapter extends XmlAdapter<CorpusItemImpl, CorpusItem> {
+        @Override
+        public CorpusItem unmarshal(CorpusItemImpl results) {
+            return results;
+        }
+
+        @Override
+        public CorpusItemImpl marshal(CorpusItem results) {
+            return (CorpusItemImpl) results;
         }
     }
 }

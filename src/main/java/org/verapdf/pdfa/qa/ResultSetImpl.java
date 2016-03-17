@@ -3,11 +3,13 @@
  */
 package org.verapdf.pdfa.qa;
 
-import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.verapdf.core.ValidationException;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.adapters.XmlAdapter;
+
 import org.verapdf.model.ModelParser;
 import org.verapdf.pdfa.PDFAValidator;
 import org.verapdf.pdfa.results.ValidationResult;
@@ -18,15 +20,23 @@ import org.verapdf.pdfa.validation.ValidationProfile;
  *
  */
 public class ResultSetImpl implements ResultSet {
+    @XmlElement(name = "resultDetails")
     private final ResultSetDetails details = ResultSetDetailsImpl
             .getNewInstance();
+    @XmlElement(name = "corpusDetails")
     private final CorpusDetails corpusDetails;
+    @XmlElement(name = "profile")
     private final ValidationProfile profile;
+    @XmlElementWrapper
+    @XmlElement(name = "result")
     private final Set<Result> results;
+    @XmlElementWrapper
+    @XmlElement(name = "exceptions")
     private final Set<Incomplete> exceptions;
 
     private ResultSetImpl(final CorpusDetails corpusDetails,
-            final ValidationProfile profile, final Set<Result> results, final Set<Incomplete> exceptions) {
+            final ValidationProfile profile, final Set<Result> results,
+            final Set<Incomplete> exceptions) {
         this.corpusDetails = corpusDetails;
         this.profile = profile;
         this.results = new HashSet<>(results);
@@ -64,7 +74,6 @@ public class ResultSetImpl implements ResultSet {
     public Set<Result> getResults() {
         return this.results;
     }
-
 
     /**
      * { @inheritDoc }
@@ -144,7 +153,8 @@ public class ResultSetImpl implements ResultSet {
     public String toString() {
         return "ResultSet [details=" + this.details + ", corpusDetails="
                 + this.corpusDetails + ", profile=" + this.profile
-                + ", results=" + this.results + ", exceptions=" + this.exceptions + "]";
+                + ", results=" + this.results + ", exceptions="
+                + this.exceptions + "]";
     }
 
     /**
@@ -157,15 +167,37 @@ public class ResultSetImpl implements ResultSet {
         Set<Result> results = new HashSet<>();
         Set<Incomplete> exceptions = new HashSet<>();
         for (String itemName : corpus.getItemNames()) {
-            try (ModelParser loader = new ModelParser(
-                    corpus.getItemStream(itemName))) {
-                ValidationResult result = validator.validate(loader);
-                results.add(new Result(CorpusItemImpl.fromValues(itemName), result));
-            } catch (Exception e) {
-                exceptions.add(new Incomplete(CorpusItemImpl.fromValues(itemName), e));
+            CorpusItemId id = null;
+            try {
+                id = CorpusItemIdImpl.fromFileName(validator.getProfile()
+                        .getPDFAFlavour().getPart(), itemName, "");
+            } catch (IllegalArgumentException excep) {
+                // Do nothing
+            }
+            if (id != null) {
+                try (ModelParser loader = new ModelParser(
+                        corpus.getItemStream(itemName), validator.getProfile()
+                                .getPDFAFlavour())) {
+                    ValidationResult result = validator.validate(loader);
+                    results.add(new Result(id, result));
+                } catch (Exception e) {
+                    exceptions.add(new Incomplete(id, e));
+                }
             }
         }
         return new ResultSetImpl(corpus.getDetails(), validator.getProfile(),
                 results, exceptions);
+    }
+
+    static class Adapter extends XmlAdapter<ResultSetImpl, ResultSet> {
+        @Override
+        public ResultSet unmarshal(ResultSetImpl results) {
+            return results;
+        }
+
+        @Override
+        public ResultSetImpl marshal(ResultSet results) {
+            return (ResultSetImpl) results;
+        }
     }
 }

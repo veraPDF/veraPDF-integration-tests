@@ -1,534 +1,414 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
- xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
- <modelVersion>4.0.0</modelVersion>
- <parent>
-  <artifactId>oss-parent</artifactId>
-  <groupId>org.sonatype.oss</groupId>
-  <version>7</version>
- </parent>
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <artifactId>oss-parent</artifactId>
+    <groupId>org.sonatype.oss</groupId>
+    <version>7</version>
+  </parent>
 
- <groupId>org.verapdf</groupId>
- <artifactId>verapdf-integration-tests</artifactId>
- <version>0.11.100-SNAPSHOT</version>
- <name>veraPDF Quality Assurance</name>
- <description>Test and QA utilities for the veraPDF Library.</description>
+  <groupId>org.verapdf</groupId>
+  <artifactId>verapdf-integration-tests</artifactId>
+  <version>0.11.100-SNAPSHOT</version>
+  <name>veraPDF Quality Assurance</name>
+  <description>Test and QA utilities for the veraPDF Library.</description>
 
- <scm>
-  <url>https://github.com/veraPDF/veraPDF-integration-tests/</url>
-  <connection>scm:git:https://github.com/veraPDF/veraPDF-integration-tests.git</connection>
-  <developerConnection>scm:git:git@github.com:veraPDF/veraPDF-integration-tests.git</developerConnection>
- </scm>
- <ciManagement>
-  <system>OPF Jenkins</system>
-  <url>http://jenkins.openpreservation.org</url>
- </ciManagement>
- <distributionManagement>
-  <repository>
-   <id>OPF Artefactory</id>
-   <name>OPF Artefactory-releases</name>
-   <url>http://artifactory.openpreservation.org/artifactory/vera-dev-local</url>
-  </repository>
- </distributionManagement>
+  <scm>
+    <url>https://github.com/veraPDF/veraPDF-integration-tests/</url>
+    <connection>scm:git:https://github.com/veraPDF/veraPDF-integration-tests.git</connection>
+    <developerConnection>scm:git:git@github.com:veraPDF/veraPDF-integration-tests.git</developerConnection>
+  </scm>
+  <ciManagement>
+    <system>OPF Jenkins</system>
+    <url>http://jenkins.openpreservation.org</url>
+  </ciManagement>
+  <distributionManagement>
+    <repository>
+      <id>OPF Artefactory</id>
+      <name>OPF Artefactory-releases</name>
+      <url>http://artifactory.openpreservation.org/artifactory/vera-dev-local</url>
+    </repository>
+  </distributionManagement>
 
- <repositories>
-  <repository>
-   <snapshots>
-    <enabled>true</enabled>
-   </snapshots>
-   <id>vera-dev</id>
-   <name>Vera development</name>
-   <url>http://artifactory.openpreservation.org/artifactory/vera-dev</url>
-  </repository>
- </repositories>
- <pluginRepositories>
-  <pluginRepository>
-   <snapshots>
-    <enabled>false</enabled>
-   </snapshots>
-   <id>vera-dev</id>
-   <name>Vera development</name>
-   <url>http://artifactory.openpreservation.org/artifactory/vera-dev</url>
-  </pluginRepository>
- </pluginRepositories>
+  <repositories>
+    <repository>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
+      <id>vera-dev</id>
+      <name>Vera development</name>
+      <url>http://artifactory.openpreservation.org/artifactory/vera-dev</url>
+    </repository>
+  </repositories>
+  <pluginRepositories>
+    <pluginRepository>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+      <id>vera-dev</id>
+      <name>Vera development</name>
+      <url>http://artifactory.openpreservation.org/artifactory/vera-dev</url>
+    </pluginRepository>
+  </pluginRepositories>
 
- <properties>
-  <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-  <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-  <java.version>1.7</java.version>
-  <sonar.jacoco.itReportPath>${project.basedir}/../target/jacoco-it.exec</sonar.jacoco.itReportPath>
-  <sonar.language>java</sonar.language>
-  <maven.failsafe.version>2.18.1</maven.failsafe.version>
-  <maven.surefire.version>2.18.1</maven.surefire.version>
-  <maven.exec.version>1.4.0</maven.exec.version>
-  <mvn.javadoc.version>2.10</mvn.javadoc.version>
-  <mvn.source.version>2.4</mvn.source.version>
-  <mvn.gpg.plugin.version>1.6</mvn.gpg.plugin.version>
-  <verapdf.library.version>[0.11.100,0.12.0)</verapdf.library.version>
-  <verapdf.model.version>[0.11.100,0.12.0)</verapdf.model.version>
- </properties>
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+    <java.version>1.7</java.version>
+    <sonar.jacoco.itReportPath>${project.basedir}/../target/jacoco-it.exec</sonar.jacoco.itReportPath>
+    <sonar.language>java</sonar.language>
+    <maven.failsafe.version>2.18.1</maven.failsafe.version>
+    <maven.surefire.version>2.18.1</maven.surefire.version>
+    <maven.exec.version>1.4.0</maven.exec.version>
+    <mvn.javadoc.version>2.10</mvn.javadoc.version>
+    <mvn.source.version>2.4</mvn.source.version>
+    <mvn.gpg.plugin.version>1.6</mvn.gpg.plugin.version>
+    <verapdf.library.version>[0.11.100,0.12.0)</verapdf.library.version>
+    <verapdf.model.version>[0.11.100,0.12.0)</verapdf.model.version>
+  </properties>
 
- <dependencies>
-  <dependency>
-   <groupId>org.verapdf</groupId>
-   <artifactId>core</artifactId>
-   <version>${verapdf.library.version}</version>
-  </dependency>
-  <dependency>
-   <groupId>org.verapdf</groupId>
-   <artifactId>pdfbox-validation-model</artifactId>
-   <version>${verapdf.model.version}</version>
-  </dependency>
-  <dependency>
-   <groupId>junit</groupId>
-   <artifactId>junit</artifactId>
-   <version>4.12</version>
-  </dependency>
-  <dependency>
-   <groupId>commons-codec</groupId>
-   <artifactId>commons-codec</artifactId>
-   <version>1.10</version>
-  </dependency>
-   <dependency>
-    <groupId>org.bouncycastle</groupId>
-    <artifactId>bcprov-jdk15on</artifactId>
-    <version>1.54</version>
-   </dependency>
-
-
- </dependencies>
-
- <build>
-  <pluginManagement>
-   <plugins>
-
-    <plugin>
-     <groupId>org.apache.maven.plugins</groupId>
-     <artifactId>maven-assembly-plugin</artifactId>
-     <version>2.5.5</version>
-    </plugin>
-
-    <plugin>
-     <groupId>org.apache.maven.plugins</groupId>
-     <artifactId>maven-compiler-plugin</artifactId>
-     <version>3.3</version>
-    </plugin>
-
-    <plugin>
-     <groupId>org.apache.maven.plugins</groupId>
-     <artifactId>maven-deploy-plugin</artifactId>
-     <version>2.8.2</version>
-    </plugin>
-
-    <plugin>
-     <groupId>org.apache.maven.plugins</groupId>
-     <artifactId>maven-resources-plugin</artifactId>
-     <version>2.7</version>
-    </plugin>
-
-    <plugin>
-     <groupId>org.apache.maven.plugins</groupId>
-     <artifactId>maven-gpg-plugin</artifactId>
-     <version>${mvn.gpg.plugin.version}</version>
-    </plugin>
-
-    <plugin>
-     <groupId>org.apache.maven.plugins</groupId>
-     <artifactId>maven-release-plugin</artifactId>
-    </plugin>
-
-    <plugin>
-     <groupId>org.apache.maven.plugins</groupId>
-     <artifactId>maven-site-plugin</artifactId>
-     <version>3.4</version>
-    </plugin>
-
-    <plugin>
-     <groupId>org.apache.maven.plugins</groupId>
-     <artifactId>maven-surefire-plugin</artifactId>
-     <version>${maven.surefire.version}</version>
-    </plugin>
-
-    <plugin>
-     <groupId>org.codehaus.mojo</groupId>
-     <artifactId>versions-maven-plugin</artifactId>
-     <version>2.2</version>
-    </plugin>
-
-    <plugin>
-     <groupId>org.apache.maven.plugins</groupId>
-     <artifactId>maven-source-plugin</artifactId>
-     <version>${mvn.source.version}</version>
-    </plugin>
-
-    <plugin>
-     <groupId>org.apache.maven.plugins</groupId>
-     <artifactId>maven-javadoc-plugin</artifactId>
-     <version>${mvn.javadoc.version}</version>
-    </plugin>
-
-   </plugins>
-  </pluginManagement>
-
-  <plugins>
-
-   <plugin>
-    <groupId>org.apache.maven.plugins</groupId>
-    <artifactId>maven-compiler-plugin</artifactId>
-    <configuration>
-     <source>${java.version}</source>
-     <target>${java.version}</target>
-     <encoding>${project.build.sourceEncoding}</encoding>
-    </configuration>
-   </plugin>
-
-   <plugin>
-    <groupId>org.apache.maven.plugins</groupId>
-    <artifactId>maven-release-plugin</artifactId>
-    <configuration>
-     <preparationGoals>clean install</preparationGoals>
-     <goals>deploy</goals>
-     <autoVersionSubmodules>true</autoVersionSubmodules>
-    </configuration>
-   </plugin>
-
-   <plugin>
-    <groupId>org.apache.maven.plugins</groupId>
-    <artifactId>maven-surefire-plugin</artifactId>
-    <configuration>
-     <excludes>
-      <exclude>**/*IT.java</exclude>
-     </excludes>
-    </configuration>
-   </plugin>
-
-   <plugin>
-    <groupId>org.apache.maven.plugins</groupId>
-    <artifactId>maven-source-plugin</artifactId>
-   </plugin>
-
-   <plugin>
-    <groupId>org.apache.maven.plugins</groupId>
-    <artifactId>maven-javadoc-plugin</artifactId>
-   </plugin>
-
-   <plugin>
-    <groupId>org.apache.maven.plugins</groupId>
-    <artifactId>maven-site-plugin</artifactId>
-    <configuration>
-     <attach>true</attach>
-    </configuration>
-   </plugin>
-
-   <plugin>
-    <groupId>org.apache.maven.plugins</groupId>
-    <artifactId>maven-failsafe-plugin</artifactId>
-    <version>${maven.failsafe.version}</version>
-    <executions>
-     <execution>
-      <id>integration-test</id>
-      <goals>
-       <goal>integration-test</goal>
-      </goals>
-     </execution>
-     <execution>
-      <id>verify</id>
-      <goals>
-       <goal>verify</goal>
-      </goals>
-     </execution>
-    </executions>
-   </plugin>
-   <plugin>
-    <groupId>org.jacoco</groupId>
-    <artifactId>jacoco-maven-plugin</artifactId>
-    <version>0.7.5.201505241946</version>
-    <configuration>
-     <!-- The destination file for the code coverage report has to be set to the 
-      same value in the parent pom and in each module pom. Then JaCoCo will add up information 
-      in the same report, so that, it will give the cross-module code coverage. -->
-     <destFile>${project.basedir}/../target/jacoco-it.exec</destFile>
-    </configuration>
-   </plugin>
-
-  </plugins>
- </build>
-
- <reporting>
-  <plugins>
-   <plugin>
-    <groupId>org.apache.maven.plugins</groupId>
-    <artifactId>maven-project-info-reports-plugin</artifactId>
-    <version>2.4</version>
-    <configuration>
-     <dependencyDetailsEnabled>false</dependencyDetailsEnabled>
-     <dependencyLocationsEnabled>false</dependencyLocationsEnabled>
-    </configuration>
-    <reportSets>
-     <reportSet>
-      <reports>
-       <report>index</report>
-       <report>dependencies</report>
-       <report>project-team</report>
-       <report>mailing-list</report>
-       <report>cim</report>
-       <report>issue-tracking</report>
-       <report>license</report>
-       <report>scm</report>
-      </reports>
-     </reportSet>
-    </reportSets>
-   </plugin>
-   <plugin>
-    <groupId>org.apache.maven.plugins</groupId>
-    <artifactId>maven-javadoc-plugin</artifactId>
-    <version>2.10.3</version>
-    <configuration>
-     <show>public</show>
-    </configuration>
-   </plugin>
-  </plugins>
- </reporting>
-
-
- <profiles>
-  <profile>
-   <id>clone-test-resources</id>
-   <modules>
-    <module>verapdf-qa</module>
-   </modules>
-   <build>
-    <pluginManagement>
-     <plugins>
-
-      <plugin>
-       <groupId>org.codehaus.mojo</groupId>
-       <artifactId>exec-maven-plugin</artifactId>
-       <version>${maven.exec.version}</version>
-       <executions>
-
-        <execution>
-         <id>download test files</id>
-         <phase>pre-integration-test</phase>
-         <goals>
-          <goal>exec</goal>
-         </goals>
-         <configuration>
-          <executable>git</executable>
-          <workingDirectory>target/test-classes/test-resources</workingDirectory>
-          <arguments>
-           <argument>clone</argument>
-           <argument>https://github.com/veraPDF/veraPDF-corpus-PDFA-1b</argument>
-          </arguments>
-         </configuration>
-        </execution>
-
-        <execution>
-         <id>download validation profiles</id>
-         <phase>pre-integration-test</phase>
-         <goals>
-          <goal>exec</goal>
-         </goals>
-         <configuration>
-          <executable>git</executable>
-          <workingDirectory>target/test-classes/test-resources</workingDirectory>
-          <arguments>
-           <argument>clone</argument>
-           <argument>-b</argument>
-           <argument>integration</argument>
-           <argument>https://github.com/veraPDF/veraPDF-validation-profiles</argument>
-          </arguments>
-         </configuration>
-        </execution>
-
-       </executions>
-      </plugin>
-
-      <plugin>
-       <groupId>com.googlecode.maven-download-plugin</groupId>
-       <artifactId>download-maven-plugin</artifactId>
-       <version>1.2.1</version>
-
-       <executions>
-        <execution>
-         <id>download isartor test suite</id>
-         <phase>pre-integration-test</phase>
-         <goals>
-          <goal>wget</goal>
-         </goals>
-         <configuration>
-          <url>
-           http://www.pdfa.org/wp-content/uploads/2011/08/isartor-pdfa-2008-08-13.zip
-          </url>
-          <unpack>true</unpack>
-          <outputDirectory>target/test-classes/test-resources</outputDirectory>
-          <md5>9f129c834bc6f9f8dabad4491c4c10ec</md5>
-         </configuration>
-        </execution>
-
-        <execution>
-         <id>download bavaria test suite</id>
-         <phase>pre-integration-test</phase>
-         <goals>
-          <goal>wget</goal>
-         </goals>
-         <configuration>
-          <url>
-           http://www.pdflib.com/fileadmin/pdflib/Bavaria/2009-04-03-Bavaria-pdfa.zip
-          </url>
-          <unpack>true</unpack>
-          <outputDirectory>target/test-classes/test-resources</outputDirectory>
-          <md5>d8fccb2fea540ab49bef237f3579546b</md5>
-         </configuration>
-        </execution>
-       </executions>
-      </plugin>
-
-     </plugins>
-    </pluginManagement>
-   </build>
-  </profile>
-
-  <profile>
-   <id>update-test-resources</id>
-   <build>
-    <pluginManagement>
-     <plugins>
-
-      <plugin>
-       <groupId>org.codehaus.mojo</groupId>
-       <artifactId>exec-maven-plugin</artifactId>
-       <version>${maven.exec.version}</version>
-       <executions>
-
-        <execution>
-         <id>update test files</id>
-         <phase>pre-integration-test</phase>
-         <goals>
-          <goal>exec</goal>
-         </goals>
-         <configuration>
-          <executable>git</executable>
-          <workingDirectory>
-           target/test-classes/test-resources/veraPDF-corpus-PDFA-1b
-          </workingDirectory>
-          <arguments>
-           <argument>pull</argument>
-          </arguments>
-         </configuration>
-        </execution>
-
-        <execution>
-         <id>update validation profiles</id>
-         <phase>pre-integration-test</phase>
-         <goals>
-          <goal>exec</goal>
-         </goals>
-         <configuration>
-          <executable>git</executable>
-          <workingDirectory>
-           target/test-classes/test-resources/veraPDF-validation-profiles
-          </workingDirectory>
-          <arguments>
-           <argument>pull</argument>
-          </arguments>
-         </configuration>
-        </execution>
-       </executions>
-      </plugin>
-     </plugins>
-    </pluginManagement>
-   </build>
-  </profile>
-
-  <profile>
-   <id>coverage-per-test</id>
-   <build>
-    <plugins>
-
-     <plugin>
-      <groupId>org.apache.maven.plugins</groupId>
-      <artifactId>maven-surefire-plugin</artifactId>
-      <configuration>
-
-       <properties>
-        <property>
-         <name>listener</name>
-         <value>org.sonar.java.jacoco.JUnitListener</value>
-        </property>
-       </properties>
-
-       <excludes>
-        <exclude>**/*IT.java</exclude>
-       </excludes>
-
-      </configuration>
-     </plugin>
-    </plugins>
-   </build>
-   <dependencies>
-
+  <dependencies>
     <dependency>
-     <groupId>org.codehaus.sonar-plugins.java</groupId>
-     <artifactId>sonar-jacoco-listeners</artifactId>
-     <version>1.2</version>
-     <scope>test</scope>
+      <groupId>org.verapdf</groupId>
+      <artifactId>core</artifactId>
+      <version>${verapdf.library.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.verapdf</groupId>
+      <artifactId>pdfbox-validation-model</artifactId>
+      <version>${verapdf.model.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.12</version>
+    </dependency>
+    <dependency>
+      <groupId>commons-codec</groupId>
+      <artifactId>commons-codec</artifactId>
+      <version>1.10</version>
+    </dependency>
+    <dependency>
+      <groupId>org.bouncycastle</groupId>
+      <artifactId>bcprov-jdk15on</artifactId>
+      <version>1.54</version>
+    </dependency>
+    <dependency>
+      <groupId>com.github.spullara.mustache.java</groupId>
+      <artifactId>compiler</artifactId>
+      <version>0.8.18</version>
     </dependency>
 
-   </dependencies>
-  </profile>
+  </dependencies>
 
-  <profile>
-   <id>release-sign-artifacts</id>
-   <activation>
-    <property>
-     <name>performRelease</name>
-     <value>true</value>
-    </property>
-   </activation>
+  <build>
+    <pluginManagement>
+      <plugins>
 
-   <build>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-assembly-plugin</artifactId>
+          <version>2.5.5</version>
+        </plugin>
+
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-compiler-plugin</artifactId>
+          <version>3.3</version>
+        </plugin>
+
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-deploy-plugin</artifactId>
+          <version>2.8.2</version>
+        </plugin>
+
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-resources-plugin</artifactId>
+          <version>2.7</version>
+        </plugin>
+
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-gpg-plugin</artifactId>
+          <version>${mvn.gpg.plugin.version}</version>
+        </plugin>
+
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-release-plugin</artifactId>
+        </plugin>
+
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-site-plugin</artifactId>
+          <version>3.4</version>
+        </plugin>
+
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-surefire-plugin</artifactId>
+          <version>${maven.surefire.version}</version>
+        </plugin>
+
+        <plugin>
+          <groupId>org.codehaus.mojo</groupId>
+          <artifactId>versions-maven-plugin</artifactId>
+          <version>2.2</version>
+        </plugin>
+
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-source-plugin</artifactId>
+          <version>${mvn.source.version}</version>
+        </plugin>
+
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-javadoc-plugin</artifactId>
+          <version>${mvn.javadoc.version}</version>
+        </plugin>
+
+        <plugin>
+          <groupId>org.eclipse.m2e</groupId>
+          <artifactId>lifecycle-mapping</artifactId>
+          <version>1.0.0</version>
+          <configuration>
+            <lifecycleMappingMetadata>
+              <pluginExecutions>
+                <pluginExecution>
+                  <pluginExecutionFilter>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-enforcer-plugin</artifactId>
+                    <versionRange>[1.0.0,)</versionRange>
+                    <goals>
+                      <goal>enforce</goal>
+                    </goals>
+                  </pluginExecutionFilter>
+                  <action>
+                    <ignore />
+                  </action>
+                </pluginExecution>
+              </pluginExecutions>
+            </lifecycleMappingMetadata>
+          </configuration>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+
     <plugins>
 
-     <plugin>
-      <groupId>org.apache.maven.plugins</groupId>
-      <artifactId>maven-gpg-plugin</artifactId>
-      <executions>
-       <execution>
-        <id>sign-artifacts</id>
-        <phase>verify</phase>
-        <goals>
-         <goal>sign</goal>
-        </goals>
-       </execution>
-      </executions>
-     </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <configuration>
+          <source>${java.version}</source>
+          <target>${java.version}</target>
+          <encoding>${project.build.sourceEncoding}</encoding>
+        </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-release-plugin</artifactId>
+        <configuration>
+          <preparationGoals>clean install</preparationGoals>
+          <goals>deploy</goals>
+          <autoVersionSubmodules>true</autoVersionSubmodules>
+        </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <configuration>
+          <excludes>
+            <exclude>**/*IT.java</exclude>
+          </excludes>
+        </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-source-plugin</artifactId>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-javadoc-plugin</artifactId>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-site-plugin</artifactId>
+        <configuration>
+          <attach>true</attach>
+        </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-failsafe-plugin</artifactId>
+        <version>${maven.failsafe.version}</version>
+        <executions>
+          <execution>
+            <id>integration-test</id>
+            <goals>
+              <goal>integration-test</goal>
+            </goals>
+          </execution>
+          <execution>
+            <id>verify</id>
+            <goals>
+              <goal>verify</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.jacoco</groupId>
+        <artifactId>jacoco-maven-plugin</artifactId>
+        <version>0.7.5.201505241946</version>
+        <configuration>
+          <!-- The destination file for the code coverage report has to be set to 
+            the same value in the parent pom and in each module pom. Then JaCoCo will add up 
+            information in the same report, so that, it will give the cross-module code coverage. -->
+          <destFile>${project.basedir}/../target/jacoco-it.exec</destFile>
+        </configuration>
+      </plugin>
 
     </plugins>
-   </build>
-  </profile>
+  </build>
 
-  <profile>
-   <id>jenkins-site</id>
-   <distributionManagement>
-    <site>
-     <id>jenkins.local.site</id>
-     <name>veraPDF Site</name>
-     <url>file:///var/www/projects.verapdf.org/verapdf-apps</url>
-    </site>
-   </distributionManagement>
-  </profile>
+  <reporting>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-project-info-reports-plugin</artifactId>
+        <version>2.4</version>
+        <configuration>
+          <dependencyDetailsEnabled>false</dependencyDetailsEnabled>
+          <dependencyLocationsEnabled>false</dependencyLocationsEnabled>
+        </configuration>
+        <reportSets>
+          <reportSet>
+            <reports>
+              <report>index</report>
+              <report>dependencies</report>
+              <report>project-team</report>
+              <report>mailing-list</report>
+              <report>cim</report>
+              <report>issue-tracking</report>
+              <report>license</report>
+              <report>scm</report>
+            </reports>
+          </reportSet>
+        </reportSets>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-javadoc-plugin</artifactId>
+        <version>2.10.3</version>
+        <configuration>
+          <show>public</show>
+        </configuration>
+      </plugin>
+    </plugins>
+  </reporting>
 
-  <profile>
-   <id>sonar</id>
-   <activation>
-    <activeByDefault>true</activeByDefault>
-   </activation>
-   <properties>
-    <sonar.host.url>
-     http://sonar.openpreservation.org
-    </sonar.host.url>
-   </properties>
-  </profile>
 
- </profiles>
+  <profiles>
+
+    <profile>
+      <id>coverage-per-test</id>
+      <build>
+        <plugins>
+
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-surefire-plugin</artifactId>
+            <configuration>
+
+              <properties>
+                <property>
+                  <name>listener</name>
+                  <value>org.sonar.java.jacoco.JUnitListener</value>
+                </property>
+              </properties>
+
+              <excludes>
+                <exclude>**/*IT.java</exclude>
+              </excludes>
+
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+      <dependencies>
+
+        <dependency>
+          <groupId>org.codehaus.sonar-plugins.java</groupId>
+          <artifactId>sonar-jacoco-listeners</artifactId>
+          <version>1.2</version>
+          <scope>test</scope>
+        </dependency>
+
+      </dependencies>
+    </profile>
+
+    <profile>
+      <id>release-sign-artifacts</id>
+      <activation>
+        <property>
+          <name>performRelease</name>
+          <value>true</value>
+        </property>
+      </activation>
+
+      <build>
+        <plugins>
+
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-gpg-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>sign-artifacts</id>
+                <phase>verify</phase>
+                <goals>
+                  <goal>sign</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+
+        </plugins>
+      </build>
+    </profile>
+
+    <profile>
+      <id>jenkins-site</id>
+      <distributionManagement>
+        <site>
+          <id>jenkins.local.site</id>
+          <name>veraPDF Site</name>
+          <url>file:///var/www/projects.verapdf.org/verapdf-apps</url>
+        </site>
+      </distributionManagement>
+    </profile>
+
+    <profile>
+      <id>sonar</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+      <properties>
+        <sonar.host.url>
+          http://sonar.openpreservation.org
+        </sonar.host.url>
+      </properties>
+    </profile>
+
+  </profiles>
 </project>

@@ -3,17 +3,26 @@
  */
 package org.verapdf.pdfa.qa;
 
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.adapters.XmlAdapter;
+
 /**
  * @author <a href="mailto:carl@openpreservation.org">Carl Wilson</a>
  *
  */
 public class CorpusDetailsImpl implements CorpusDetails {
+    @XmlElement(name = "name")
     final String name;
+    @XmlElement(name = "description")
     final String description;
+    @XmlElement(name = "hexSha1")
+    final String hexSha1;
 
-    private CorpusDetailsImpl(final String name, final String description) {
+    private CorpusDetailsImpl(final String name, final String description,
+            final String hexSha1) {
         this.name = name;
         this.description = description;
+        this.hexSha1 = hexSha1;
     }
 
     /**
@@ -32,7 +41,14 @@ public class CorpusDetailsImpl implements CorpusDetails {
         return this.description;
     }
 
-    
+    /**
+     * { @inheritDoc }
+     */
+    @Override
+    public String getHexSha1() {
+        return this.hexSha1;
+    }
+
     /**
      * { @inheritDoc }
      */
@@ -40,9 +56,11 @@ public class CorpusDetailsImpl implements CorpusDetails {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result
+        result = prime
+                * result
                 + ((this.description == null) ? 0 : this.description.hashCode());
-        result = prime * result + ((this.name == null) ? 0 : this.name.hashCode());
+        result = prime * result
+                + ((this.name == null) ? 0 : this.name.hashCode());
         return result;
     }
 
@@ -71,7 +89,6 @@ public class CorpusDetailsImpl implements CorpusDetails {
         return true;
     }
 
-    
     /**
      * { @inheritDoc }
      */
@@ -90,7 +107,7 @@ public class CorpusDetailsImpl implements CorpusDetails {
      *         values
      */
     static CorpusDetails fromValues(final String name,
-            final String description) {
+            final String description, final String hexSha1) {
         if (name == null)
             throw new NullPointerException("Parameter name can not be null");
         if (name.isEmpty())
@@ -98,6 +115,19 @@ public class CorpusDetailsImpl implements CorpusDetails {
         if (description == null)
             throw new NullPointerException(
                     "Parameter description can not be null");
-        return new CorpusDetailsImpl(name, description);
+        return new CorpusDetailsImpl(name, description, hexSha1);
     }
+
+    static class Adapter extends XmlAdapter<CorpusDetailsImpl, CorpusDetails> {
+        @Override
+        public CorpusDetails unmarshal(CorpusDetailsImpl details) {
+            return details;
+        }
+
+        @Override
+        public CorpusDetailsImpl marshal(CorpusDetails details) {
+            return (CorpusDetailsImpl) details;
+        }
+    }
+
 }

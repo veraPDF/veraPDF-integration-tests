@@ -33,7 +33,7 @@ public final class CorpusManager {
             URL corpusURL = new URL(
                     "https://github.com/veraPDF/veraPDF-corpus/archive/staging.zip");
             VERA_CORPUS_ZIP_FILE = createTempFileFromUrl(corpusURL, "veraCorpus");
-            VERA_CORPUS = ZipBackedTestCorpus.fromZipSource("veraPDF Test Corpus", "Synthetic test files for PDF/A validation.", VERA_CORPUS_ZIP_FILE);
+            VERA_CORPUS = ZipBackedTestCorpus.fromZipSource("veraPDF-corpus", "Synthetic test files for PDF/A validation.", VERA_CORPUS_ZIP_FILE);
         }
         return VERA_CORPUS;
     }
@@ -47,7 +47,7 @@ public final class CorpusManager {
             URL corpusURL = new URL(
                     "http://www.pdfa.org/wp-content/uploads/2011/08/isartor-pdfa-2008-08-13.zip");
             ISARTOR_CORPUS_ZIP_FILE = createTempFileFromUrl(corpusURL, "isartorCorpus");
-            ISARTOR_CORPUS = ZipBackedTestCorpus.fromZipSource("Isartor", "Synthetic test files for PDF/A validation.", ISARTOR_CORPUS_ZIP_FILE);
+            ISARTOR_CORPUS = ZipBackedTestCorpus.fromZipSource("Isartor-corpus", "Synthetic test files for PDF/A validation.", ISARTOR_CORPUS_ZIP_FILE);
         }
         return ISARTOR_CORPUS;
     }

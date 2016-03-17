@@ -75,7 +75,7 @@ public class ValidatorTest {
                 // Validate a fresh model instance and add the result to the set
                 for (int index = 0; index < 2; index++) {
                     try (ModelParser parser = new ModelParser(
-                            veraCorpus.getItemStream(itemName))) {
+                            veraCorpus.getItemStream(itemName), profile.getPDFAFlavour())) {
                         ValidationResult result = validator.validate(parser);
                         results.add(result);
                     } catch (ValidationException e) {
@@ -108,7 +108,7 @@ public class ValidatorTest {
                 ValidationResult result = ValidationResults.defaultResult();
                 // Validate a fresh model instance and add the result to the set
                 try (ModelParser parser = new ModelParser(
-                        veraCorpus.getItemStream(itemName))) {
+                        veraCorpus.getItemStream(itemName), profile.getPDFAFlavour())) {
                     result = validator.validate(parser);
                 } catch (ValidationException e) {
                     checkValidationException(itemName, e);
@@ -122,7 +122,7 @@ public class ValidatorTest {
                     ValidationResult failFastResult = ValidationResults
                             .defaultResult();
                     try (ModelParser parser = new ModelParser(
-                            veraCorpus.getItemStream(itemName))) {
+                            veraCorpus.getItemStream(itemName), profile.getPDFAFlavour())) {
                         failFastResult = fastFailValidator.validate(parser);
                     } catch (ValidationException e) {
                         checkValidationException(itemName, e);
@@ -159,7 +159,7 @@ public class ValidatorTest {
      * @throws ValidationException
      * @throws JAXBException
      */
-    // @Test
+//    @Test
     public void testModelConsistency() throws IOException, ValidationException,
             JAXBException {
         // Grab a random sample of 10 corpus files
@@ -176,7 +176,7 @@ public class ValidatorTest {
                         profile, false);
                 // Create a new model parser instance
                 try (ModelParser parser = new ModelParser(
-                        veraCorpus.getItemStream(itemName))) {
+                        veraCorpus.getItemStream(itemName), profile.getPDFAFlavour())) {
                     // Validate model with fresh validator
                     ValidationResult firstResult = validator.validate(parser);
                     // Validate same model with second fresh validator instance

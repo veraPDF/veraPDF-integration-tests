@@ -13,12 +13,18 @@
   <style media="screen" type="text/css">
   .pass {
     background-color: green;
+    padding : 5px;
+    font-size: 1.2em;
+    font-weight: bold;
+    color: white;
   }
   .fail {
     background-color: red;
+    padding : 5px;
+    font-size: 1.2em;
+    font-weight: bold;
   }
   </style>
-
 
   <!--[if lt IE 9]>
   <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
@@ -52,13 +58,9 @@
   <table>
   {{#results}}
     <tr>
-      {{#corpusItemId}}
-      <td>{{name}}</td>
-      <td{{#expectedResult}} class="pass">Pass{{/expectedResult}}{{^expectedResult}} class="fail">Fail{{/expectedResult}}</td>
-      {{/corpusItemId}}
-      {{#result}}
-      <td{{#compliant}} class="pass">Pass{{/compliant}}{{^compliant}} class="fail">Fail{{/compliant}}</td>
-      {{/result}}
+    {{#result}}
+      <td{{#expectedResult}} class="pass">{{/expectedResult}}{{^expectedResult}} class="fail">{{/expectedResult}}{{corpusItemName}}</td>
+    {{/result}}
     </tr>
   {{/results}}
   </table>

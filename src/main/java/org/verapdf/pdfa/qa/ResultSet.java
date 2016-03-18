@@ -73,6 +73,10 @@ public interface ResultSet {
         public boolean isExpectedResult() {
             return this.corpusItemId.getExpectedResult() == this.result.isCompliant();
         }
+        
+        public String getCorpusItemName() {
+            return this.corpusItemId.getName();
+        }
 
         /**
          * { @inheritDoc }

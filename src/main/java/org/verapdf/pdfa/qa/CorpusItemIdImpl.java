@@ -3,11 +3,14 @@
  */
 package org.verapdf.pdfa.qa;
 
+import java.util.Comparator;
+
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 
 import org.verapdf.pdfa.flavours.PDFAFlavour.Specification;
 import org.verapdf.pdfa.validation.Profiles;
+import org.verapdf.pdfa.validation.Profiles.RuleIdComparator;
 import org.verapdf.pdfa.validation.RuleId;
 
 /**
@@ -237,6 +240,17 @@ public class CorpusItemIdImpl implements CorpusItemId {
         @Override
         public CorpusItemIdImpl marshal(CorpusItemId corpusItem) {
             return (CorpusItemIdImpl) corpusItem;
+        }
+    }
+    
+    public static class CorpusItemIdComparator implements Comparator<CorpusItemId> {
+        @Override
+        public int compare(CorpusItemId firstId, CorpusItemId secondId) {
+            int ruleIdResult = new RuleIdComparator().compare(firstId.getRuleId(), secondId.getRuleId()); 
+            if (ruleIdResult != 0) {
+                return ruleIdResult;
+            }
+            return firstId.getTestCode().compareToIgnoreCase(secondId.getTestCode());
         }
     }
 }

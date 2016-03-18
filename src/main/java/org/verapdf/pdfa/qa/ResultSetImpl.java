@@ -5,6 +5,8 @@ package org.verapdf.pdfa.qa;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
@@ -29,7 +31,7 @@ public class ResultSetImpl implements ResultSet {
     private final ValidationProfile profile;
     @XmlElementWrapper
     @XmlElement(name = "result")
-    private final Set<Result> results;
+    private final SortedSet<Result> results;
     @XmlElementWrapper
     @XmlElement(name = "exceptions")
     private final Set<Incomplete> exceptions;
@@ -39,7 +41,8 @@ public class ResultSetImpl implements ResultSet {
             final Set<Incomplete> exceptions) {
         this.corpusDetails = corpusDetails;
         this.profile = profile;
-        this.results = new HashSet<>(results);
+        this.results = new TreeSet<Result>(new ResultComparator());
+        this.results.addAll(results);
         this.exceptions = new HashSet<>(exceptions);
     }
 

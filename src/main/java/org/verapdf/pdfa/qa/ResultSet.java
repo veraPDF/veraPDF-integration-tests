@@ -3,10 +3,12 @@
  */
 package org.verapdf.pdfa.qa;
 
+import java.util.Comparator;
 import java.util.Set;
 
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
+import org.verapdf.pdfa.qa.CorpusItemIdImpl.CorpusItemIdComparator;
 import org.verapdf.pdfa.results.ValidationResult;
 import org.verapdf.pdfa.validation.ValidationProfile;
 
@@ -35,7 +37,7 @@ public interface ResultSet {
      * @return the {@code Set} of {@link Result}s
      */
     public Set<Result> getResults();
-    
+
     /**
      * @return
      */
@@ -66,6 +68,14 @@ public interface ResultSet {
          */
         public ValidationResult getResult() {
             return this.result;
+        }
+        
+        public boolean isExpectedResult() {
+            return this.corpusItemId.getExpectedResult() == this.result.isCompliant();
+        }
+        
+        public String getCorpusItemName() {
+            return this.corpusItemId.getName();
         }
 
         /**
@@ -119,7 +129,7 @@ public interface ResultSet {
         }
 
     }
-    
+
     /**
      * @author <a href="mailto:carl@openpreservation.org">Carl Wilson</a>
      *
@@ -127,7 +137,7 @@ public interface ResultSet {
     public static class Incomplete {
         private final CorpusItemId corpusItemId;
         private final String cause;
-        
+
         /**
          * @param corpusItem
          * @param cause
@@ -158,9 +168,12 @@ public interface ResultSet {
         public int hashCode() {
             final int prime = 31;
             int result = 1;
-            result = prime * result + ((this.cause == null) ? 0 : this.cause.hashCode());
             result = prime * result
-                    + ((this.corpusItemId == null) ? 0 : this.corpusItemId.hashCode());
+                    + ((this.cause == null) ? 0 : this.cause.hashCode());
+            result = prime
+                    * result
+                    + ((this.corpusItemId == null) ? 0 : this.corpusItemId
+                            .hashCode());
             return result;
         }
 
@@ -194,10 +207,16 @@ public interface ResultSet {
          */
         @Override
         public String toString() {
-            return "Incomplete [corpusItemId=" + this.corpusItemId + ", cause=" + this.cause
-                    + "]";
+            return "Incomplete [corpusItemId=" + this.corpusItemId + ", cause="
+                    + this.cause + "]";
         }
-        
-        
     }
+    
+    public static class ResultComparator implements Comparator<Result> {
+        @Override
+        public int compare(Result firstResult, Result secondResult) {
+            return new CorpusItemIdComparator().compare(firstResult.corpusItemId, secondResult.corpusItemId);
+        }
+    }
+
 }

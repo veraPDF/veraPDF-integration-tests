@@ -1,15 +1,8 @@
 package org.verapdf.integration;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.zip.ZipException;
-
-import javax.xml.bind.JAXBException;
-
+import com.github.mustachejava.DefaultMustacheFactory;
+import com.github.mustachejava.Mustache;
+import com.github.mustachejava.MustacheFactory;
 import org.junit.AfterClass;
 import org.junit.Test;
 import org.verapdf.pdfa.PDFAValidator;
@@ -22,9 +15,14 @@ import org.verapdf.pdfa.validation.ProfileDirectory;
 import org.verapdf.pdfa.validation.ValidationProfile;
 import org.verapdf.pdfa.validators.Validators;
 
-import com.github.mustachejava.DefaultMustacheFactory;
-import com.github.mustachejava.Mustache;
-import com.github.mustachejava.MustacheFactory;
+import javax.xml.bind.JAXBException;
+import java.io.File;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.zip.ZipException;
 
 @SuppressWarnings({ "javadoc", "static-method" })
 public class ITVeraCorpusTests {
@@ -32,11 +30,13 @@ public class ITVeraCorpusTests {
     private static final ProfileDirectory PROFILES = GitHubBackedProfileDirectory.INTEGRATION;
     private static final Map<PDFAFlavour, ResultSet> VERA_RESULTS = new HashMap<>();
     private static final Map<PDFAFlavour, ResultSet> ISARTOR_RESULTS = new HashMap<>();
+    private static final Map<PDFAFlavour, ResultSet> BFO_RESULTS = new HashMap<>();
 
     @AfterClass
     public static void outputResults() throws JAXBException, IOException {
         outputCorpusResults(VERA_RESULTS.get(PDFAFlavour.PDFA_1_B));
         outputCorpusResults(ISARTOR_RESULTS.get(PDFAFlavour.PDFA_1_B));
+        outputCorpusResults(BFO_RESULTS.get(PDFAFlavour.PDFA_2_B));
     }
 
     /**
@@ -78,12 +78,12 @@ public class ITVeraCorpusTests {
      */
     public void testIsatorCorpus() throws ZipException, IOException,
             JAXBException {
-        TestCorpus veraPDFcorpus = CorpusManager.getIsartorCorpus();
+        TestCorpus isartorPDFcorpus = CorpusManager.get();
         for (ValidationProfile profile : PROFILES.getValidationProfiles()) {
             PDFAValidator validator = Validators
                     .createValidator(profile, false);
             ISARTOR_RESULTS.put(profile.getPDFAFlavour(),
-                    ResultSetImpl.validateCorpus(veraPDFcorpus, validator));
+                    ResultSetImpl.validateCorpus(isartorPDFcorpus, validator));
         }
 
         for (PDFAFlavour flavour : PDFAFlavour.values()) {
@@ -94,9 +94,41 @@ public class ITVeraCorpusTests {
         }
     }
 
+    /**
+     * Main test loop for a flavour TODO: This is still a little messy, corpus
+     * needs a class abstraction to drive the tests
+     *
+     * @param flavour
+     *            the flavour to be validated
+     * @param filters
+     *            a List of flavours used to select appropriate corpus files
+     * @throws ZipException
+     *             when there's a problem unpacking the corpus zip file
+     * @throws IOException
+     *             when there's a problem reading a particular zip entry
+     * @throws JAXBException
+     */
+    public void testBFOCorpus() throws ZipException, IOException,
+            JAXBException {
+        TestCorpus BFOcorpus = CorpusManager.getBFOCorpus();
+        for (ValidationProfile profile : PROFILES.getValidationProfiles()) {
+            PDFAValidator validator = Validators
+                    .createValidator(profile, false);
+            BFO_RESULTS.put(profile.getPDFAFlavour(),
+                    ResultSetImpl.validateCorpus(BFOcorpus, validator));
+        }
+
+        for (PDFAFlavour flavour : PDFAFlavour.values()) {
+            ResultSet results = BFO_RESULTS.get(flavour);
+            if (results != null) {
+                outputCorpusResults(results);
+            }
+        }
+    }
+
     @Test
     public void testIsartor1b() throws IOException, JAXBException {
-        TestCorpus isartorCorpus = CorpusManager.getIsartorCorpus();
+        TestCorpus isartorCorpus = CorpusManager.get();
         PDFAValidator validator = Validators.createValidator(PDFAFlavour.PDFA_1_B, false);
         ResultSet results = ResultSetImpl.validateCorpus(isartorCorpus, validator);
         ISARTOR_RESULTS.put(PDFAFlavour.PDFA_1_B, results);
@@ -108,6 +140,14 @@ public class ITVeraCorpusTests {
         PDFAValidator validator = Validators.createValidator(PDFAFlavour.PDFA_1_B, false);
         ResultSet results = ResultSetImpl.validateCorpus(isartorCorpus, validator);
         VERA_RESULTS.put(PDFAFlavour.PDFA_1_B, results);
+    }
+
+    @Test
+    public void testBFO2b() throws IOException, JAXBException {
+        TestCorpus BFOCorpus = CorpusManager.getBFOCorpus();
+        PDFAValidator validator = Validators.createValidator(PDFAFlavour.PDFA_2_B, false);
+        ResultSet results = ResultSetImpl.validateCorpus(BFOCorpus, validator);
+        BFO_RESULTS.put(PDFAFlavour.PDFA_2_B, results);
     }
 
     /**

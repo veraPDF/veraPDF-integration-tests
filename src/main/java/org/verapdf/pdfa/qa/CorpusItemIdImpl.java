@@ -3,15 +3,14 @@
  */
 package org.verapdf.pdfa.qa;
 
-import java.util.Comparator;
-
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.adapters.XmlAdapter;
-
 import org.verapdf.pdfa.flavours.PDFAFlavour.Specification;
 import org.verapdf.pdfa.validation.Profiles;
 import org.verapdf.pdfa.validation.Profiles.RuleIdComparator;
 import org.verapdf.pdfa.validation.RuleId;
+
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.adapters.XmlAdapter;
+import java.util.Comparator;
 
 /**
  * @author <a href="mailto:carl@openpreservation.org">Carl Wilson</a>
@@ -192,7 +191,11 @@ public class CorpusItemIdImpl implements CorpusItemId {
             final String fileName, final String sha1) {
         for (String part : fileName.split("/")) {
             if (part.endsWith(TEST_FILE_EXT)) {
-                return fromCode(specification, part, sha1);
+                if (part.contains("bfo")) {
+                    return fromBFOCode(specification, part, sha1);
+                } else {
+                    return fromCode(specification, part, sha1);
+                }
             }
         }
         return DEFAULT;
@@ -212,6 +215,35 @@ public class CorpusItemIdImpl implements CorpusItemId {
                 status = testPassFail(part);
             } else if (part.startsWith(TEST_PREFIX)) {
                 testNumber = Integer.parseInt(part.substring(1));
+            } else {
+                builder.append(separator);
+                builder.append(part);
+                separator = ".";
+            }
+        }
+        RuleId ruleId = Profiles.ruleIdFromValues(specification,
+                builder.toString(), testNumber);
+        return CorpusItemIdImpl.fromValues(ruleId, testCode, status, sha1);
+    }
+
+    private static CorpusItemId fromBFOCode(final Specification specification,
+            final String code, final String sha1) {
+        StringBuilder builder = new StringBuilder();
+        String separator = "";
+        boolean status = false;
+        String testCode = "";
+        int testNumber = 0;
+        for (String part : code.split(SEPARATOR)) {
+            if (part.endsWith(TEST_FILE_EXT)) {
+                testCode = part.substring(0, 1);
+            } else if (isTestResult(part)) {
+                status = testPassFail(part);
+            } else if (part.startsWith(TEST_PREFIX)) {
+                testNumber = Integer.parseInt(part.substring(1));
+            } else if (part.startsWith("pdf")) {
+                continue;
+            } else if (part.startsWith("bfo")) {
+                continue;
             } else {
                 builder.append(separator);
                 builder.append(part);
@@ -246,7 +278,12 @@ public class CorpusItemIdImpl implements CorpusItemId {
     public static class CorpusItemIdComparator implements Comparator<CorpusItemId> {
         @Override
         public int compare(CorpusItemId firstId, CorpusItemId secondId) {
-            int ruleIdResult = new RuleIdComparator().compare(firstId.getRuleId(), secondId.getRuleId()); 
+            int ruleIdResult = -100;
+            try {
+                ruleIdResult = new RuleIdComparator().compare(firstId.getRuleId(), secondId.getRuleId());
+            } catch (NumberFormatException e) {
+                e.printStackTrace();
+            }
             if (ruleIdResult != 0) {
                 return ruleIdResult;
             }

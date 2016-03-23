@@ -231,13 +231,11 @@ public class CorpusItemIdImpl implements CorpusItemId {
         StringBuilder builder = new StringBuilder();
         String separator = "";
         boolean status = false;
-        String testCode = "";
+        String testCode = "a";
         int testNumber = 0;
         for (String part : code.split(SEPARATOR)) {
-            if (part.endsWith(TEST_FILE_EXT)) {
-                testCode = part.substring(0, 1);
-            } else if (isTestResult(part)) {
-                status = testPassFail(part);
+            if (part.endsWith(TEST_FILE_EXT) && isTestResult(part.substring(0, 4))) {
+                status = testPassFail(part.substring(0, 4));
             } else if (part.startsWith(TEST_PREFIX)) {
                 testNumber = Integer.parseInt(part.substring(1));
             } else if (part.startsWith("pdf")) {

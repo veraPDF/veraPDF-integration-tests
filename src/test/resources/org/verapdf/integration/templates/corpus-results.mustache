@@ -11,18 +11,20 @@
   <link href="http://verapdf.org/wp-content/themes/verapdf/includes/img/favicon.ico" rel="icon" type="image/x-icon" />
 
   <style media="screen" type="text/css">
-  .pass {
-    background-color: green;
+  td {
     padding : 5px;
     font-size: 1.2em;
     font-weight: bold;
+  }
+  .pass {
+    background-color: green;
     color: white;
   }
   .fail {
     background-color: red;
-    padding : 5px;
-    font-size: 1.2em;
-    font-weight: bold;
+  }
+  .undefined {
+    background-color: orange;
   }
   </style>
 
@@ -59,7 +61,7 @@
   {{#results}}
     <tr>
     {{#result}}
-      <td{{#expectedResult}} class="pass">{{/expectedResult}}{{^expectedResult}} class="fail">{{/expectedResult}}{{corpusItemName}}</td>
+      <td class="{{testType}}">{{corpusItemName}}</td>
     {{/result}}
     </tr>
   {{/results}}

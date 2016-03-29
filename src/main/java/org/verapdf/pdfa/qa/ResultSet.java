@@ -8,6 +8,7 @@ import java.util.Set;
 
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
+import org.verapdf.pdfa.qa.CorpusItemId.TestType;
 import org.verapdf.pdfa.qa.CorpusItemIdImpl.CorpusItemIdComparator;
 import org.verapdf.pdfa.results.ValidationResult;
 import org.verapdf.pdfa.validation.ValidationProfile;
@@ -74,6 +75,13 @@ public interface ResultSet {
             return this.corpusItemId.getExpectedResult() == this.result.isCompliant();
         }
         
+        public String getTestType() {
+            if ((this.corpusItemId.getTestType() == TestType.PASS) || (this.corpusItemId.getTestType() == TestType.FAIL)) {
+                return this.isExpectedResult() ? "pass" : "fail";
+            }
+            return this.corpusItemId.getTestType().getId();
+        }
+
         public String getCorpusItemName() {
             return this.corpusItemId.getName();
         }

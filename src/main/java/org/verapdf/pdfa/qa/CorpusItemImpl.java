@@ -127,7 +127,6 @@ public class CorpusItemImpl implements CorpusItem {
             throw new IllegalArgumentException("path can not be empty.");
         if (sha1 == null)
             throw new NullPointerException("sha1 can not be null.");
-        File file = new File(path);
         return new CorpusItemImpl(CorpusItemIdImpl.defaultInstance(), sha1,
                 path);
     }

@@ -213,9 +213,8 @@ public class CorpusItemIdImpl implements CorpusItemId {
             if (part.endsWith(TEST_FILE_EXT)) {
                 if (part.contains("bfo")) {
                     return fromBFOCode(specification, part, sha1);
-                } else {
-                    return fromCode(specification, part, sha1);
                 }
+                return fromCode(specification, part, sha1);
             }
         }
         return DEFAULT;

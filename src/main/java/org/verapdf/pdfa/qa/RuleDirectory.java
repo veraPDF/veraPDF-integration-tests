@@ -108,7 +108,7 @@ public final class RuleDirectory implements Directory<RuleId, Rule> {
     }
 
     private Set<Rule> rulesFromDir(final File dir,
-                                   final PDFAFlavour flavour) throws FileNotFoundException,
+                                   final PDFAFlavour pdfaFlavour) throws FileNotFoundException,
             IOException, JAXBException {
         Set<Rule> rulesLocal = new HashSet<>();
         File[] files = dir.listFiles();
@@ -116,10 +116,10 @@ public final class RuleDirectory implements Directory<RuleId, Rule> {
             if (file.isHidden())
                 continue;
             if (file.isDirectory())
-            	rulesLocal.addAll(rulesFromDir(file, flavour));
+            	rulesLocal.addAll(rulesFromDir(file, pdfaFlavour));
             if (file.isFile() && file.canRead()) {
                 try (InputStream fis = new FileInputStream(file)) {
-                    Set<Rule> rule = getRuleFromProfile(fis, flavour);
+                    Set<Rule> rule = getRuleFromProfile(fis, pdfaFlavour);
                     rulesLocal.addAll(rule);
                 }
             }
@@ -128,7 +128,7 @@ public final class RuleDirectory implements Directory<RuleId, Rule> {
     }
 
     private Set<Rule> getRuleFromProfile(final InputStream toParse,
-                                         final PDFAFlavour flavour) throws JAXBException {
+                                         final PDFAFlavour pdfaFlavour) throws JAXBException {
         ValidationProfile profile = Profiles.profileFromXml(
                 toParse);
         checkAndAddAllVariables(this.variables, profile.getVariables());

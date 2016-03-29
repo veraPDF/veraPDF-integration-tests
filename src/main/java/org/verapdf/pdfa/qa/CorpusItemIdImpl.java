@@ -223,7 +223,6 @@ public class CorpusItemIdImpl implements CorpusItemId {
 
     private static CorpusItemId fromCode(final Specification specification,
             final String code, final String sha1) {
-        System.out.println("new part:" + code);
         StringBuilder builder = new StringBuilder();
         String separator = "";
         boolean status = false;
@@ -278,7 +277,6 @@ public class CorpusItemIdImpl implements CorpusItemId {
         }
         RuleId ruleId = Profiles.ruleIdFromValues(specification,
                 builder.toString(), testNumber);
-        System.out.println(ruleId);
         return CorpusItemIdImpl.fromValues(ruleId, testCode, status, sha1);
     }
 

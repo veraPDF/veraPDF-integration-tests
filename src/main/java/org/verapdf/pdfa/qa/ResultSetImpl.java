@@ -33,7 +33,7 @@ public class ResultSetImpl implements ResultSet {
     @XmlElement(name = "result")
     private final SortedSet<Result> results;
     @XmlElementWrapper
-    @XmlElement(name = "exceptions")
+    @XmlElement(name = "exception")
     private final Set<Incomplete> exceptions;
 
     private ResultSetImpl(final CorpusDetails corpusDetails,

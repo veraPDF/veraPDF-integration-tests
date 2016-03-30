@@ -43,9 +43,16 @@
   </div>
   {{/corpusDetails}}
   {{#details}}
-  <div id="release">
-    <h2>Software details</h2>
-    Version:{{libraryVersion}} 
+  <div id="dependencies">
+    <h3>Tested:{{dateCreated}}</h3>
+    <h3>Dependencies</h3>
+    {{#dependencies}}
+      <div id="{{id}}">
+        <p>Artifact: {{id}}</p>
+        <p>Version: {{version}}</p>
+        <p>Built: {{buildDate}}</p>
+      </div>
+    {{/dependencies}}
   </div>
   {{/details}}
   {{#validationProfile}}

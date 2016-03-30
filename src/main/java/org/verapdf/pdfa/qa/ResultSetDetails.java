@@ -4,8 +4,11 @@
 package org.verapdf.pdfa.qa;
 
 import java.util.Date;
+import java.util.Set;
 
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+
+import org.verapdf.ReleaseDetails;
 
 /**
  * @author <a href="mailto:carl@openpreservation.org">Carl Wilson</a>
@@ -18,13 +21,5 @@ public interface ResultSetDetails {
      */
     public Date getDateCreated();
 
-    /**
-     * @return the version number of the veraPDF-library used to create the result set
-     */
-    public String getLibraryVersion();
-    
-    /**
-     * @return the build date for the veraPDF-library used to create the result set
-     */
-    public Date getLibraryBuildDate();
+    public Set<ReleaseDetails> getDependencies();
 }

@@ -3,9 +3,13 @@
  */
 package org.verapdf.pdfa.qa;
 
+import java.util.Collections;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 
 import org.verapdf.ReleaseDetails;
@@ -15,23 +19,30 @@ import org.verapdf.ReleaseDetails;
  *
  */
 public class ResultSetDetailsImpl implements ResultSetDetails {
-    @XmlElement(name = "created")
-    private final Date created;
-    @XmlElement(name = "libVersion")
-    private final String libVersion;
-    @XmlElement(name = "libBuild")
-    private final Date libBuild;
-
-    private ResultSetDetailsImpl() {
-        this(new Date(), ReleaseDetails.getInstance().getVersion(),
-                ReleaseDetails.getInstance().getBuildDate());
+    static {
+        ReleaseDetails
+                .addDetailsFromResource(ReleaseDetails.APPLICATION_PROPERTIES_ROOT
+                        + "pdfbox-validation." + ReleaseDetails.PROPERTIES_EXT);
     }
 
-    private ResultSetDetailsImpl(final Date created, final String libVersion,
-            final Date libBuild) {
+    @XmlElement(name = "created")
+    private final Date created;
+    @XmlElementWrapper
+    @XmlElement(name = "dependency")
+    private final Set<ReleaseDetails> dependencies;
+
+    private ResultSetDetailsImpl() {
+        this(new Date(), Collections.<ReleaseDetails> emptySet());
+    }
+
+    private ResultSetDetailsImpl(Set<ReleaseDetails> dependencies) {
+        this(new Date(), dependencies);
+    }
+
+    private ResultSetDetailsImpl(final Date created,
+            Set<ReleaseDetails> dependencies) {
         this.created = new Date(created.getTime());
-        this.libVersion = libVersion;
-        this.libBuild = new Date(libBuild.getTime());
+        this.dependencies = new HashSet<>(dependencies);
     }
 
     /**
@@ -46,81 +57,64 @@ public class ResultSetDetailsImpl implements ResultSetDetails {
      * { @inheritDoc }
      */
     @Override
-    public String getLibraryVersion() {
-        return this.libVersion;
+    public Set<ReleaseDetails> getDependencies() {
+        return this.dependencies;
     }
 
-    /**
-     * { @inheritDoc }
-     */
     @Override
-    public Date getLibraryBuildDate() {
-        return this.libBuild;
+    public String toString() {
+        return "ResultSetDetailsImpl [created=" + this.created
+                + ", dependencies=" + this.dependencies + "]";
     }
 
-    /**
-     * { @inheritDoc }
-     */
     @Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;
         result = prime * result
                 + ((this.created == null) ? 0 : this.created.hashCode());
-        result = prime * result
-                + ((this.libBuild == null) ? 0 : this.libBuild.hashCode());
-        result = prime * result
-                + ((this.libVersion == null) ? 0 : this.libVersion.hashCode());
+        result = prime
+                * result
+                + ((this.dependencies == null) ? 0 : this.dependencies
+                        .hashCode());
         return result;
     }
 
-    /**
-     * { @inheritDoc }
-     */
     @Override
     public boolean equals(Object obj) {
         if (this == obj)
             return true;
         if (obj == null)
             return false;
-        if (!(obj instanceof ResultSetDetails))
+        if (getClass() != obj.getClass())
             return false;
-        ResultSetDetails other = (ResultSetDetails) obj;
+        ResultSetDetailsImpl other = (ResultSetDetailsImpl) obj;
         if (this.created == null) {
-            if (other.getDateCreated() != null)
+            if (other.created != null)
                 return false;
-        } else if (!this.created.equals(other.getDateCreated()))
+        } else if (!this.created.equals(other.created))
             return false;
-        if (this.libBuild == null) {
-            if (other.getLibraryBuildDate() != null)
+        if (this.dependencies == null) {
+            if (other.dependencies != null)
                 return false;
-        } else if (!this.libBuild.equals(other.getLibraryBuildDate()))
-            return false;
-        if (this.libVersion == null) {
-            if (other.getLibraryVersion() != null)
-                return false;
-        } else if (!this.libVersion.equals(other.getLibraryVersion()))
+        } else if (!this.dependencies.equals(other.dependencies))
             return false;
         return true;
-    }
-
-    /**
-     * { @inheritDoc }
-     */
-    @Override
-    public String toString() {
-        return "ResultSetDetails [created=" + this.created + ", libVersion="
-                + this.libVersion + ", libBuild=" + this.libBuild + "]";
     }
 
     /**
      * @return a new ResultSetDetails instance
      */
     public static ResultSetDetails getNewInstance() {
-        return new ResultSetDetailsImpl();
+        Set<ReleaseDetails> dependencies = new HashSet<>();
+        for (String id : ReleaseDetails.getIds()) {
+            dependencies.add(ReleaseDetails.byId(id));
+        }
+        return new ResultSetDetailsImpl(dependencies);
     }
 
-    static class Adapter extends XmlAdapter<ResultSetDetailsImpl, ResultSetDetails> {
+    static class Adapter extends
+            XmlAdapter<ResultSetDetailsImpl, ResultSetDetails> {
         @Override
         public ResultSetDetails unmarshal(ResultSetDetailsImpl results) {
             return results;

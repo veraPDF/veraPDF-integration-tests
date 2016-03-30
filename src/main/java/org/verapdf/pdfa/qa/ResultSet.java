@@ -70,13 +70,15 @@ public interface ResultSet {
         public ValidationResult getResult() {
             return this.result;
         }
-        
+
         public boolean isExpectedResult() {
-            return this.corpusItemId.getExpectedResult() == this.result.isCompliant();
+            return this.corpusItemId.getExpectedResult() == this.result
+                    .isCompliant();
         }
-        
+
         public String getTestType() {
-            if ((this.corpusItemId.getTestType() == TestType.PASS) || (this.corpusItemId.getTestType() == TestType.FAIL)) {
+            if ((this.corpusItemId.getTestType() == TestType.PASS)
+                    || (this.corpusItemId.getTestType() == TestType.FAIL)) {
                 return this.isExpectedResult() ? "pass" : "fail";
             }
             return this.corpusItemId.getTestType().getId();
@@ -219,11 +221,13 @@ public interface ResultSet {
                     + this.cause + "]";
         }
     }
-    
+
     public static class ResultComparator implements Comparator<Result> {
         @Override
         public int compare(Result firstResult, Result secondResult) {
-            return new CorpusItemIdComparator().compare(firstResult.corpusItemId, secondResult.corpusItemId);
+            return new CorpusItemIdComparator().compare(
+                    firstResult.getCorpusItemId(),
+                    secondResult.getCorpusItemId());
         }
     }
 

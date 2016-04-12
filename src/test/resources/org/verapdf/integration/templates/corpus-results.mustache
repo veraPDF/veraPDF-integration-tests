@@ -9,30 +9,7 @@
 
   <title>veraPDF dest data</title>
   <link href="http://verapdf.org/wp-content/themes/verapdf/includes/img/favicon.ico" rel="icon" type="image/x-icon" />
-
-  <style media="screen" type="text/css">
-  td {
-    padding : 5px;
-    font-size: 1.2em;
-    font-weight: bold;
-  }
-  .pass {
-    background-color: green;
-    color: white;
-  }
-  .fail {
-    background-color: red;
-  }
-  .undefined {
-    background-color: orange;
-  }
-  </style>
-
-  <!--[if lt IE 9]>
-  <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-  <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-  <![endif]-->
-
+  <link href="http://software.openpreservation.org/css/vera.integration.css" rel="external" type="text/css" media="screen" />
 </head>
 <body>
   <h1>veraPDF Test Results</h1>
@@ -59,7 +36,7 @@
   <div id="profile">
     <h2>Validation Profile</h2>
     {{#details}}
-    {{name}} 
+    {{name}}
     {{/details}}
   </div>
   {{/validationProfile}}

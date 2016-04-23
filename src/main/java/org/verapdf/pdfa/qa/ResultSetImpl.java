@@ -3,19 +3,18 @@
  */
 package org.verapdf.pdfa.qa;
 
-import java.util.HashSet;
-import java.util.Set;
-import java.util.SortedSet;
-import java.util.TreeSet;
-
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElementWrapper;
-import javax.xml.bind.annotation.adapters.XmlAdapter;
-
 import org.verapdf.model.ModelParser;
 import org.verapdf.pdfa.PDFAValidator;
 import org.verapdf.pdfa.results.ValidationResult;
 import org.verapdf.pdfa.validation.ValidationProfile;
+
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.adapters.XmlAdapter;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 /**
  * @author <a href="mailto:carl@openpreservation.org">Carl Wilson</a>
@@ -178,7 +177,7 @@ public class ResultSetImpl implements ResultSet {
                 // Do nothing
             }
             if (id != null) {
-                try (ModelParser loader = new ModelParser(
+                try (ModelParser loader = ModelParser.createModelWithFlavour(
                         corpus.getItemStream(itemName), validator.getProfile()
                                 .getPDFAFlavour())) {
                     ValidationResult result = validator.validate(loader);

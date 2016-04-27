@@ -9,9 +9,23 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta http-equiv="Content-Security-Policy" content="sandbox allow-scripts; default-src 'self' *.openpreservation.org; child-src 'self' *.openpreservation.org; style-src 'self' 'unsafe-inline' ">
   <title>veraPDF dest data</title>
-  <link href="http://verapdf.org/wp-content/themes/verapdf/includes/img/favicon.ico" rel="icon" type="image/x-icon" />
-  <link href="http://software.openpreservation.org/css/vera.integration.css" rel="stylesheet" type="text/css" media="screen">
-</head>
+  <style media="screen" type="text/css">
+    td {
+      padding : 5px;
+      font-size: 1.2em;
+      font-weight: bold;
+    }
+    .pass {
+      background-color: green;
+      color: white;
+    }
+    .fail {
+      background-color: red;
+    }
+    .undefined {
+      background-color: orange;
+    }
+    </style>
 <body>
   <h1>veraPDF Test Results</h1>
   {{#corpusDetails}}

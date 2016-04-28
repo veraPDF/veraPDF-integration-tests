@@ -3,6 +3,9 @@
  */
 package org.verapdf.pdfa.qa;
 
+import org.apache.commons.codec.digest.DigestUtils;
+import org.verapdf.pdfa.flavours.PDFAFlavour;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -14,8 +17,6 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipException;
 import java.util.zip.ZipFile;
 
-import org.apache.commons.codec.digest.DigestUtils;
-
 /**
  * @author <a href="mailto:carl@openpreservation.org">Carl Wilson</a>
  *
@@ -25,8 +26,8 @@ public class ZipBackedTestCorpus extends AbstractTestCorpus<ZipEntry> {
     private final ZipFile zipSource;
 
     private ZipBackedTestCorpus(final CorpusDetails details,
-            final File zipSource) throws ZipException, IOException {
-        super(details, itemsMapFromZipSource(zipSource));
+            final File zipSource, final PDFAFlavour flavour) throws ZipException, IOException {
+        super(details, itemsMapFromZipSource(zipSource, flavour));
         this.zipSource = new ZipFile(zipSource);
     }
 
@@ -56,7 +57,7 @@ public class ZipBackedTestCorpus extends AbstractTestCorpus<ZipEntry> {
      *             if there's an exception parsing the zip file
      */
     public static TestCorpus fromZipSource(final String name,
-            final String description, final File zipFile) throws ZipException,
+            final String description, final File zipFile, final PDFAFlavour flavour) throws ZipException,
             IOException {
         if (name == null)
             throw new NullPointerException("Parameter name can not be null");
@@ -70,23 +71,34 @@ public class ZipBackedTestCorpus extends AbstractTestCorpus<ZipEntry> {
             hexSha1 = DigestUtils.sha1Hex(is);
         }
 
-        return new ZipBackedTestCorpus(CorpusDetailsImpl.fromValues(name,
-                description, hexSha1), zipFile);
+        return new ZipBackedTestCorpus(CorpusDetailsImpl.fromValues(name, description, hexSha1),
+                zipFile, flavour);
     }
 
     private static final Map<String, ZipEntry> itemsMapFromZipSource(
-            final File zipFile) throws ZipException, IOException {
+            final File zipFile, final PDFAFlavour flavour) throws ZipException, IOException {
         Map<String, ZipEntry> itemMap = new HashMap<>();
-        try (ZipFile zipSource = new ZipFile(zipFile);) {
+        try (ZipFile zipSource = new ZipFile(zipFile)) {
             Enumeration<? extends ZipEntry> entries = zipSource.entries();
             while (entries.hasMoreElements()) {
                 ZipEntry entry = entries.nextElement();
                 if (entry.isDirectory()
                         || !entry.getName().endsWith(PDF_SUFFIX))
                     continue;
-                itemMap.put(entry.getName(), entry);
+                if (flavour == null) {
+                    itemMap.put(entry.getName(), entry);
+                } else {
+                    if (matchFlavour(entry.getName(), flavour)) {
+                        itemMap.put(entry.getName(), entry);
+                    }
+                }
             }
         }
         return itemMap;
     }
+
+    private static boolean matchFlavour(final String item, final PDFAFlavour flavour) {
+        return item.contains(flavour.toString());
+    }
+
 }

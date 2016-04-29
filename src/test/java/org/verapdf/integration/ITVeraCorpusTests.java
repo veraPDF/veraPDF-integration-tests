@@ -1,16 +1,8 @@
 package org.verapdf.integration;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.Writer;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.zip.ZipException;
-
-import javax.xml.bind.JAXBException;
-
+import com.github.mustachejava.DefaultMustacheFactory;
+import com.github.mustachejava.Mustache;
+import com.github.mustachejava.MustacheFactory;
 import org.junit.AfterClass;
 import org.junit.Test;
 import org.verapdf.pdfa.PDFAValidator;
@@ -23,9 +15,15 @@ import org.verapdf.pdfa.validation.ProfileDirectory;
 import org.verapdf.pdfa.validation.ValidationProfile;
 import org.verapdf.pdfa.validators.Validators;
 
-import com.github.mustachejava.DefaultMustacheFactory;
-import com.github.mustachejava.Mustache;
-import com.github.mustachejava.MustacheFactory;
+import javax.xml.bind.JAXBException;
+import java.io.File;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.Writer;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.zip.ZipException;
 
 @SuppressWarnings({ "javadoc" })
 public class ITVeraCorpusTests {
@@ -38,6 +36,7 @@ public class ITVeraCorpusTests {
     @AfterClass
     public static void outputResults() throws IOException {
         outputCorpusResults(VERA_RESULTS.get(PDFAFlavour.PDFA_1_B));
+        outputCorpusResults(VERA_RESULTS.get(PDFAFlavour.PDFA_2_B));
         outputCorpusResults(ISARTOR_RESULTS.get(PDFAFlavour.PDFA_1_B));
         outputCorpusResults(BFO_RESULTS.get(PDFAFlavour.PDFA_2_B));
     }
@@ -56,7 +55,7 @@ public class ITVeraCorpusTests {
      *             when there's a problem reading a particular zip entry
      */
     public void testVeraPdfCorpus() throws ZipException, IOException {
-        TestCorpus veraPDFcorpus = CorpusManager.getVeraCorpus();
+        TestCorpus veraPDFcorpus = CorpusManager.getVera1BCorpus();
         for (ValidationProfile profile : PROFILES.getValidationProfiles()) {
             PDFAValidator validator = Validators
                     .createValidator(profile, false);
@@ -140,12 +139,22 @@ public class ITVeraCorpusTests {
 
     @Test
     public void testVera1b() throws IOException {
-        TestCorpus isartorCorpus = CorpusManager.getVeraCorpus();
+        TestCorpus veraCorpus = CorpusManager.getVera1BCorpus();
         PDFAValidator validator = Validators.createValidator(
                 PDFAFlavour.PDFA_1_B, false);
-        ResultSet results = ResultSetImpl.validateCorpus(isartorCorpus,
+        ResultSet results = ResultSetImpl.validateCorpus(veraCorpus,
                 validator);
         VERA_RESULTS.put(PDFAFlavour.PDFA_1_B, results);
+    }
+
+    @Test
+    public void testVera2b() throws IOException {
+        TestCorpus veraCorpus = CorpusManager.getVera2BCorpus();
+        PDFAValidator validator = Validators.createValidator(
+                PDFAFlavour.PDFA_2_B, false);
+        ResultSet results = ResultSetImpl.validateCorpus(veraCorpus,
+                validator);
+        VERA_RESULTS.put(PDFAFlavour.PDFA_2_B, results);
     }
 
     @Test

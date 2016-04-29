@@ -3,6 +3,7 @@
  */
 package org.verapdf.integration;
 
+import org.verapdf.pdfa.flavours.PDFAFlavour;
 import org.verapdf.pdfa.qa.TestCorpus;
 import org.verapdf.pdfa.qa.ZipBackedTestCorpus;
 
@@ -18,7 +19,8 @@ public final class CorpusManager {
     private static File VERA_CORPUS_ZIP_FILE = null;
     private static File ISARTOR_CORPUS_ZIP_FILE = null;
     private static File BFO_CORPUS_ZIP_FILE = null;
-    private static TestCorpus VERA_CORPUS = null;
+    private static TestCorpus VERA_1B_CORPUS = null;
+    private static TestCorpus VERA_2B_CORPUS = null;
     private static TestCorpus ISARTOR_CORPUS = null;
     private static TestCorpus BFO_CORPUS = null;
 
@@ -26,14 +28,26 @@ public final class CorpusManager {
      * @return a TestCorpus set up from the downloaded verPDF test corpus zip file
      * @throws IOException if an error occurs downloading or parsing the corpus zip file
      */
-    public static TestCorpus getVeraCorpus() throws IOException {
-        if (VERA_CORPUS_ZIP_FILE == null) {
+    public static TestCorpus getVera1BCorpus() throws IOException {
+        if (VERA_1B_CORPUS == null) {
             URL corpusURL = new URL(
                     "https://github.com/veraPDF/veraPDF-corpus/archive/staging.zip");
             VERA_CORPUS_ZIP_FILE = createTempFileFromUrl(corpusURL, "veraCorpus");
-            VERA_CORPUS = ZipBackedTestCorpus.fromZipSource("veraPDF-corpus", "Synthetic test files for PDF/A validation.", VERA_CORPUS_ZIP_FILE);
+            VERA_1B_CORPUS = ZipBackedTestCorpus.fromZipSource("veraPDF-corpus", "Synthetic test files for PDF/A validation.",
+                    VERA_CORPUS_ZIP_FILE, PDFAFlavour.PDFA_1_B);
         }
-        return VERA_CORPUS;
+        return VERA_1B_CORPUS;
+    }
+
+    public static TestCorpus getVera2BCorpus() throws IOException {
+        if (VERA_2B_CORPUS == null) {
+            URL corpusURL = new URL(
+                    "https://github.com/veraPDF/veraPDF-corpus/archive/staging.zip");
+            VERA_CORPUS_ZIP_FILE = createTempFileFromUrl(corpusURL, "veraCorpus");
+            VERA_2B_CORPUS = ZipBackedTestCorpus.fromZipSource("veraPDF-corpus", "Synthetic test files for PDF/A validation.",
+                    VERA_CORPUS_ZIP_FILE, PDFAFlavour.PDFA_2_B);
+        }
+        return VERA_2B_CORPUS;
     }
 
     /**
@@ -45,7 +59,8 @@ public final class CorpusManager {
             URL corpusURL = new URL(
                     "http://www.pdfa.org/wp-content/uploads/2011/08/isartor-pdfa-2008-08-13.zip");
             ISARTOR_CORPUS_ZIP_FILE = createTempFileFromUrl(corpusURL, "isartorCorpus");
-            ISARTOR_CORPUS = ZipBackedTestCorpus.fromZipSource("Isartor-corpus", "Synthetic test files for PDF/A validation.", ISARTOR_CORPUS_ZIP_FILE);
+            ISARTOR_CORPUS = ZipBackedTestCorpus.fromZipSource("Isartor-corpus", "Synthetic test files for PDF/A validation.",
+                    ISARTOR_CORPUS_ZIP_FILE, null);
         }
         return ISARTOR_CORPUS;
     }
@@ -59,7 +74,8 @@ public final class CorpusManager {
             URL corpusURL = new URL(
                     "https://github.com/bfosupport/pdfa-testsuite/archive/master.zip");
             BFO_CORPUS_ZIP_FILE = createTempFileFromUrl(corpusURL, "bfoCorpus");
-            BFO_CORPUS = ZipBackedTestCorpus.fromZipSource("BFO-corpus", "Synthetic test files for PDF/A validation.", BFO_CORPUS_ZIP_FILE);
+            BFO_CORPUS = ZipBackedTestCorpus.fromZipSource("BFO-corpus", "Synthetic test files for PDF/A validation.",
+                    BFO_CORPUS_ZIP_FILE, null);
         }
         return BFO_CORPUS;
     }

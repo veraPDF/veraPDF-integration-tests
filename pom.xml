@@ -4,12 +4,12 @@
   <parent>
     <artifactId>verapdf-parent</artifactId>
     <groupId>org.verapdf</groupId>
-    <version>1.0.13</version>
+    <version>1.0.14</version>
   </parent>
 
   <groupId>org.verapdf</groupId>
   <artifactId>verapdf-integration-tests</artifactId>
-  <version>0.11.100-SNAPSHOT</version>
+  <version>0.14.0</version>
   <name>veraPDF Quality Assurance</name>
   <description>Test and QA utilities for the veraPDF Library.</description>
 
@@ -43,7 +43,7 @@
   <properties>
     <sonar.jacoco.itReportPath>${project.basedir}/../target/jacoco-it.exec</sonar.jacoco.itReportPath>
     <sonar.language>java</sonar.language>
-    <verapdf.pdfbox.validation.version>[0.11.100,0.12.0)</verapdf.pdfbox.validation.version>
+    <verapdf.pdfbox.validation.version>[0.14.0,0.15.0)</verapdf.pdfbox.validation.version>
   </properties>
 
   <dependencies>
@@ -121,8 +121,8 @@
         <artifactId>jacoco-maven-plugin</artifactId>
         <version>0.7.5.201505241946</version>
         <configuration>
-          <!-- The destination file for the code coverage report has to be set to 
-            the same value in the parent pom and in each module pom. Then JaCoCo will add up 
+          <!-- The destination file for the code coverage report has to be set to
+            the same value in the parent pom and in each module pom. Then JaCoCo will add up
             information in the same report, so that, it will give the cross-module code coverage. -->
           <destFile>${project.basedir}/../target/jacoco-it.exec</destFile>
         </configuration>

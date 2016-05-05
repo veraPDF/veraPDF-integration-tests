@@ -59,7 +59,7 @@ public class ValidatorTest {
     public final void testValidateValidationConsistency() throws IOException,
             JAXBException {
         // Grab a random sample of 20 corpus files
-        TestCorpus veraCorpus = CorpusManager.getVeraCorpus();
+        TestCorpus veraCorpus = CorpusManager.getVera1BCorpus();
         Set<String> sample = CorpusSampler.randomSample(veraCorpus, 20);
         // / Cycle through sample
         for (String itemName : sample) {
@@ -92,7 +92,7 @@ public class ValidatorTest {
     @Test
     public void testFailFastValidator() throws IOException, JAXBException {
         // Grab a random sample of 20 corpus files
-        TestCorpus veraCorpus = CorpusManager.getVeraCorpus();
+        TestCorpus veraCorpus = CorpusManager.getVera1BCorpus();
         Set<String> sample = CorpusSampler.randomSample(veraCorpus, 20);
         // / Cycle through sample
         for (String itemName : sample) {
@@ -160,7 +160,7 @@ public class ValidatorTest {
     public void testModelConsistency() throws IOException, ValidationException,
             JAXBException {
         // Grab a random sample of 10 corpus files
-        TestCorpus veraCorpus = CorpusManager.getVeraCorpus();
+        TestCorpus veraCorpus = CorpusManager.getVera1BCorpus();
         Set<String> sample = CorpusSampler.randomSample(veraCorpus, 10);
 
         // Cycle through all available profile on GitHub

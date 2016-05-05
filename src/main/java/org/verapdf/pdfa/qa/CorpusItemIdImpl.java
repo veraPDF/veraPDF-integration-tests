@@ -311,7 +311,12 @@ public class CorpusItemIdImpl implements CorpusItemId {
             if (ruleIdResult != 0) {
                 return ruleIdResult;
             }
-            return firstId.getTestCode().compareToIgnoreCase(secondId.getTestCode());
+            int testCodeResult = firstId.getTestCode().compareToIgnoreCase(secondId.getTestCode());
+            if (testCodeResult != 0) {
+                return testCodeResult;
+            }
+            //for test files with similar names but different expected result
+            return 1;
         }
     }
 }

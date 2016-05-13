@@ -11,3 +11,6 @@ branches:
 
 install:
   - mvn clean install
+
+script:
+  - cat target/test-results/index.html

@@ -30,9 +30,14 @@ public interface ResultSet {
     public CorpusDetails getCorpusDetails();
 
     /**
-     * @return the {@link ValidationProfile} used for the result set
+     * @return the {@link ValidationProfile} used to generate the result set
      */
     public ValidationProfile getValidationProfile();
+    
+    /**
+     * @return the {@link ResultSetSummary} for the result set
+     */
+    public ResultSetSummary getSummary();
 
     /**
      * @return the {@code Set} of {@link Result}s
@@ -146,7 +151,8 @@ public interface ResultSet {
      */
     public static class Incomplete {
         private final CorpusItemId corpusItemId;
-        private final String cause;
+        private final Exception cause;
+        
 
         /**
          * @param corpusItem
@@ -154,7 +160,7 @@ public interface ResultSet {
          */
         public Incomplete(final CorpusItemId corpusItemId, final Exception cause) {
             this.corpusItemId = corpusItemId;
-            this.cause = cause.getMessage();
+            this.cause = cause;
         }
 
         /**
@@ -167,7 +173,7 @@ public interface ResultSet {
         /**
          * @return the cause
          */
-        public String getCause() {
+        public Exception getCause() {
             return this.cause;
         }
 

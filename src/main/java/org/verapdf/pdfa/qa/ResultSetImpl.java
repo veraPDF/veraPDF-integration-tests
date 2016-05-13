@@ -28,6 +28,8 @@ public class ResultSetImpl implements ResultSet {
     private final CorpusDetails corpusDetails;
     @XmlElement(name = "profile")
     private final ValidationProfile profile;
+    @XmlElement(name = "summary")
+    private final ResultSetSummary summary;
     @XmlElementWrapper
     @XmlElement(name = "result")
     private final SortedSet<Result> results;
@@ -42,6 +44,7 @@ public class ResultSetImpl implements ResultSet {
         this.profile = profile;
         this.results = new TreeSet<Result>(new ResultComparator());
         this.results.addAll(results);
+        this.summary = ResultSetSummaryImpl.fromResults(results, exceptions);
         this.exceptions = new HashSet<>(exceptions);
     }
 
@@ -73,6 +76,14 @@ public class ResultSetImpl implements ResultSet {
      * { @inheritDoc }
      */
     @Override
+    public ResultSetSummary getSummary() {
+        return this.summary;
+    }
+    
+    /**
+     * { @inheritDoc }
+     */
+    @Override
     public Set<Result> getResults() {
         return this.results;
     }
@@ -82,7 +93,6 @@ public class ResultSetImpl implements ResultSet {
      */
     @Override
     public Set<Incomplete> getExceptions() {
-        // TODO Auto-generated method stub
         return this.exceptions;
     }
 

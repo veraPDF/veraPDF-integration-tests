@@ -15,11 +15,6 @@
       font-size: 1.2em;
       font-weight: bold;
     }
-    td.trace {
-      padding : 0;
-      font-size: 1em;
-      font-weight: normal;
-    }
     .pass {
       background-color: green;
       color: white;
@@ -30,21 +25,9 @@
     .undefined {
       background-color: orange;
     }
-
     </style>
 <body>
-  <h1>veraPDF Test Results : {{details.dateCreated}}</h1>
-  {{#corpusDetails}}
-  <div id="corpus">
-    <h2>{{name}}</h2>
-    {{description}}
-  </div>
-  {{/corpusDetails}}
-  {{#validationProfile}}
-  <div id="profile">
-    <h3>{{#details}}{{name}}{{/details}}</h3>
-  </div>
-  {{/validationProfile}}
+  <h1>veraPDF Test Summaries : {{details.dateCreated}}</h1>
   {{#details}}
   <div id="dependencies">
     <h3>Dependencies</h3>
@@ -55,37 +38,18 @@
     {{/dependencies}}
   </div>
   {{/details}}
-  <div id="exceptions">
-    <h2>Exceptions</h2>
-    <table>
-    {{#exceptions}}
-      <tr>
-        <td class="fail">{{corpusItemId.name}}</td>
-      </tr>
-      <tr>
-        <td class="trace">
-          <pre>
-          {{cause.message}}
-          {{#cause.stackTrace}}
-              {{className}}.{{methodName}}({{fileName}}:{{lineNumber}})
-          {{/cause.stackTrace}}
-          </pre>
-        </td>
-      </tr>
-    {{/exceptions}}
-    </table>
-  </div>
   <div id="results">
-    <h2>Results</h2>
-  <table>
-  {{#results}}
-    <tr>
-    {{#result}}
-      <td class="{{testType}}">{{corpusItemName}}</td>
-    {{/result}}
-    </tr>
-  {{/results}}
-  </table>
+    {{#results}}
+      <div id="{{corpusDetails.name}}">
+        <h2 class="{{summary.passed}}"><a href="{{corpusDetails.name}}-{{validationProfile.PDFAFlavour.id}}/index.html" title="">{{corpusDetails.name}}</a></h2>
+        <pre>
+        Valid Cases: {{summary.validCases}} | passed: {{summary.validCasesPassed}} | failed: {{summary.validCasesFailed}}
+        Invalid: {{summary.invalidCases}} | passed: {{summary.invalidCasesPassed}} | failed: {{summary.invalidCasesFailed}}
+        Exceptions: {{summary.exceptions}}
+        Undefined: {{summary.undefinedCases}} | Not Applicable: {{summary.inapplicableCases}}
+        </pre>
+      </div>
+    {{/results}}
   </div>
 </body>
 </html>

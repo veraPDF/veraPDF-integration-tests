@@ -4,6 +4,7 @@
 package org.verapdf.pdfa.validators;
 
 import org.junit.Test;
+import org.verapdf.core.ModelParsingException;
 import org.verapdf.core.ValidationException;
 import org.verapdf.integration.CorpusManager;
 import org.verapdf.model.ModelParser;
@@ -19,6 +20,7 @@ import org.verapdf.pdfa.validation.ProfileDirectory;
 import org.verapdf.pdfa.validation.ValidationProfile;
 
 import javax.xml.bind.JAXBException;
+
 import java.io.IOException;
 import java.io.StringWriter;
 import java.util.HashSet;
@@ -54,10 +56,11 @@ public class ValidatorTest {
      * 
      * @throws IOException
      * @throws JAXBException
+     * @throws ModelParsingException 
      */
     @Test
     public final void testValidateValidationConsistency() throws IOException,
-            JAXBException {
+            JAXBException, ModelParsingException {
         // Grab a random sample of 20 corpus files
         TestCorpus veraCorpus = CorpusManager.getVera1BCorpus();
         Set<String> sample = CorpusSampler.randomSample(veraCorpus, 20);
@@ -90,7 +93,7 @@ public class ValidatorTest {
 
     @SuppressWarnings("javadoc")
     @Test
-    public void testFailFastValidator() throws IOException, JAXBException {
+    public void testFailFastValidator() throws IOException, JAXBException, ModelParsingException {
         // Grab a random sample of 20 corpus files
         TestCorpus veraCorpus = CorpusManager.getVera1BCorpus();
         Set<String> sample = CorpusSampler.randomSample(veraCorpus, 20);
@@ -155,10 +158,11 @@ public class ValidatorTest {
      * @throws IOException
      * @throws ValidationException
      * @throws JAXBException
+     * @throws ModelParsingException 
      */
 //    @Test
     public void testModelConsistency() throws IOException, ValidationException,
-            JAXBException {
+            JAXBException, ModelParsingException {
         // Grab a random sample of 10 corpus files
         TestCorpus veraCorpus = CorpusManager.getVera1BCorpus();
         Set<String> sample = CorpusSampler.randomSample(veraCorpus, 10);

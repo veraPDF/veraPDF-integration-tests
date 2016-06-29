@@ -42,7 +42,7 @@ public class ITVeraCorpusTests {
 
     @Test
     public void testIsartor1b() throws IOException {
-        TestCorpus isartorCorpus = CorpusManager.get();
+        TestCorpus isartorCorpus = CorpusManager.getIsartorCorpus();
         PDFAValidator validator = Validators.createValidator(
                 PDFAFlavour.PDFA_1_B, false);
         ResultSet results = ResultSetImpl.validateCorpus(isartorCorpus,
@@ -60,10 +60,37 @@ public class ITVeraCorpusTests {
     }
 
     @Test
+    public void testVera1a() throws IOException {
+        TestCorpus veraCorpus = CorpusManager.getVera1ACorpus();
+        PDFAValidator validator = Validators.createValidator(
+                PDFAFlavour.PDFA_1_A, false);
+        ResultSet results = ResultSetImpl.validateCorpus(veraCorpus, validator);
+        RESULTS.add(results);
+    }
+
+    @Test
     public void testVera2b() throws IOException {
         TestCorpus veraCorpus = CorpusManager.getVera2BCorpus();
         PDFAValidator validator = Validators.createValidator(
                 PDFAFlavour.PDFA_2_B, false);
+        ResultSet results = ResultSetImpl.validateCorpus(veraCorpus, validator);
+        RESULTS.add(results);
+    }
+
+    @Test
+    public void testVera2u() throws IOException {
+        TestCorpus veraCorpus = CorpusManager.getVera2UCorpus();
+        PDFAValidator validator = Validators.createValidator(
+                PDFAFlavour.PDFA_2_U, false);
+        ResultSet results = ResultSetImpl.validateCorpus(veraCorpus, validator);
+        RESULTS.add(results);
+    }
+
+    @Test
+    public void testVera3b() throws IOException {
+        TestCorpus veraCorpus = CorpusManager.getVera3BCorpus();
+        PDFAValidator validator = Validators.createValidator(
+                PDFAFlavour.PDFA_3_B, false);
         ResultSet results = ResultSetImpl.validateCorpus(veraCorpus, validator);
         RESULTS.add(results);
     }

@@ -4,6 +4,7 @@
 package org.verapdf.pdfa.validators;
 
 import org.junit.Test;
+import org.verapdf.core.EncryptedPdfException;
 import org.verapdf.core.ModelParsingException;
 import org.verapdf.core.ValidationException;
 import org.verapdf.integration.CorpusManager;
@@ -60,7 +61,7 @@ public class ValidatorTest {
      */
     @Test
     public final void testValidateValidationConsistency() throws IOException,
-            JAXBException, ModelParsingException {
+            JAXBException, ModelParsingException, EncryptedPdfException {
         // Grab a random sample of 20 corpus files
         TestCorpus veraCorpus = CorpusManager.getVera1BCorpus();
         Set<String> sample = CorpusSampler.randomSample(veraCorpus, 20);
@@ -93,7 +94,7 @@ public class ValidatorTest {
 
     @SuppressWarnings("javadoc")
     @Test
-    public void testFailFastValidator() throws IOException, JAXBException, ModelParsingException {
+    public void testFailFastValidator() throws IOException, JAXBException, ModelParsingException, EncryptedPdfException {
         // Grab a random sample of 20 corpus files
         TestCorpus veraCorpus = CorpusManager.getVera1BCorpus();
         Set<String> sample = CorpusSampler.randomSample(veraCorpus, 20);
@@ -162,7 +163,7 @@ public class ValidatorTest {
      */
 //    @Test
     public void testModelConsistency() throws IOException, ValidationException,
-            JAXBException, ModelParsingException {
+            JAXBException, ModelParsingException, EncryptedPdfException {
         // Grab a random sample of 10 corpus files
         TestCorpus veraCorpus = CorpusManager.getVera1BCorpus();
         Set<String> sample = CorpusSampler.randomSample(veraCorpus, 10);

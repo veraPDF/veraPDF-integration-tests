@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.verapdf.pdfa.validators;
+package org.verapdf.pdfa.validation.validators;
 
 import org.junit.Test;
 import org.verapdf.core.EncryptedPdfException;
@@ -17,8 +17,8 @@ import org.verapdf.pdfa.results.TestAssertion;
 import org.verapdf.pdfa.results.TestAssertion.Status;
 import org.verapdf.pdfa.results.ValidationResult;
 import org.verapdf.pdfa.results.ValidationResults;
-import org.verapdf.pdfa.validation.ProfileDirectory;
-import org.verapdf.pdfa.validation.ValidationProfile;
+import org.verapdf.pdfa.validation.profiles.ProfileDirectory;
+import org.verapdf.pdfa.validation.profiles.ValidationProfile;
 
 import javax.xml.bind.JAXBException;
 

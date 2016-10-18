@@ -7,7 +7,7 @@ import org.verapdf.core.Directory;
 import org.verapdf.core.MapBackedRegistry;
 import org.verapdf.core.Registry;
 import org.verapdf.pdfa.flavours.PDFAFlavour;
-import org.verapdf.pdfa.validation.*;
+import org.verapdf.pdfa.validation.profiles.*;
 
 import javax.xml.bind.JAXBException;
 import java.io.*;

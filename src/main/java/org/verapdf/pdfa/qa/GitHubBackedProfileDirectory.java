@@ -12,9 +12,9 @@ import javax.xml.bind.JAXBException;
 
 import org.verapdf.pdfa.flavours.PDFAFlavour;
 import org.verapdf.pdfa.results.ValidationResults;
-import org.verapdf.pdfa.validation.ProfileDirectory;
-import org.verapdf.pdfa.validation.Profiles;
-import org.verapdf.pdfa.validation.ValidationProfile;
+import org.verapdf.pdfa.validation.profiles.ProfileDirectory;
+import org.verapdf.pdfa.validation.profiles.Profiles;
+import org.verapdf.pdfa.validation.profiles.ValidationProfile;
 
 /**
  * @author <a href="mailto:carl@openpreservation.org">Carl Wilson</a>

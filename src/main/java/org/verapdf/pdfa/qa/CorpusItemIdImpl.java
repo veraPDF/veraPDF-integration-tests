@@ -4,9 +4,9 @@
 package org.verapdf.pdfa.qa;
 
 import org.verapdf.pdfa.flavours.PDFAFlavour.Specification;
-import org.verapdf.pdfa.validation.Profiles;
-import org.verapdf.pdfa.validation.Profiles.RuleIdComparator;
-import org.verapdf.pdfa.validation.RuleId;
+import org.verapdf.pdfa.validation.profiles.Profiles;
+import org.verapdf.pdfa.validation.profiles.Profiles.RuleIdComparator;
+import org.verapdf.pdfa.validation.profiles.RuleId;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.adapters.XmlAdapter;

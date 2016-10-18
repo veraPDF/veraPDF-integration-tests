@@ -18,7 +18,7 @@ import org.verapdf.pdfa.qa.ResultSet;
 import org.verapdf.pdfa.qa.ResultSetDetailsImpl;
 import org.verapdf.pdfa.qa.ResultSetImpl;
 import org.verapdf.pdfa.qa.TestCorpus;
-import org.verapdf.pdfa.validators.Validators;
+import org.verapdf.pdfa.validation.validators.Validators;
 
 import com.github.mustachejava.DefaultMustacheFactory;
 import com.github.mustachejava.Mustache;

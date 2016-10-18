@@ -6,7 +6,7 @@ package org.verapdf.pdfa.qa;
 import org.verapdf.model.ModelParser;
 import org.verapdf.pdfa.PDFAValidator;
 import org.verapdf.pdfa.results.ValidationResult;
-import org.verapdf.pdfa.validation.ValidationProfile;
+import org.verapdf.pdfa.validation.profiles.ValidationProfile;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;

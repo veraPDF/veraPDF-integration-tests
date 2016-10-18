@@ -5,7 +5,7 @@ package org.verapdf.pdfa.qa;
 
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
-import org.verapdf.pdfa.validation.RuleId;
+import org.verapdf.pdfa.validation.profiles.RuleId;
 
 /**
  * @author <a href="mailto:carl@openpreservation.org">Carl Wilson</a>

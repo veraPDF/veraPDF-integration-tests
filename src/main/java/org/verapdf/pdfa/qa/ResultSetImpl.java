@@ -42,7 +42,7 @@ public class ResultSetImpl implements ResultSet {
             final Set<Incomplete> exceptions) {
         this.corpusDetails = corpusDetails;
         this.profile = profile;
-        this.results = new TreeSet<Result>(new ResultComparator());
+        this.results = new TreeSet<>(new ResultComparator());
         this.results.addAll(results);
         this.summary = ResultSetSummaryImpl.fromResults(results, exceptions);
         this.exceptions = new HashSet<>(exceptions);
@@ -184,7 +184,7 @@ public class ResultSetImpl implements ResultSet {
                 id = CorpusItemIdImpl.fromFileName(validator.getProfile()
                         .getPDFAFlavour().getPart(), itemName, "");
             } catch (IllegalArgumentException excep) {
-                // Do nothing
+                excep.printStackTrace();
             }
             if (id != null) {
                 try (ModelParser loader = ModelParser.createModelWithFlavour(
@@ -193,6 +193,8 @@ public class ResultSetImpl implements ResultSet {
                     ValidationResult result = validator.validate(loader);
                     results.add(new Result(id, result));
                 } catch (Exception e) {
+                	e.printStackTrace();
+                	e.getCause().printStackTrace();
                     exceptions.add(new Incomplete(id, e));
                 }
             }

@@ -103,9 +103,7 @@ public enum GitHubBackedProfileDirectory implements ProfileDirectory {
                 URL profileURL = new URL(profileURLString);
                 ValidationProfile profile = Profiles.profileFromXml(profileURL.openStream());
                 profileSet.add(profile);
-            } catch (IOException e) {
-                // Do nothing
-            } catch (JAXBException e) {
+            } catch (IOException | JAXBException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
             }

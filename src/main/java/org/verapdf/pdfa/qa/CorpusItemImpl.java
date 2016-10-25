@@ -144,6 +144,7 @@ public class CorpusItemImpl implements CorpusItem {
             return fromInputStream(fis, corpusFile.getPath());
         } catch (IOException e) {
             // Ignore stream close error
+        	e.printStackTrace();
             return fromValues(corpusFile.getPath(), "");
         }
     }
@@ -160,6 +161,7 @@ public class CorpusItemImpl implements CorpusItem {
             return CorpusItemImpl.fromValues(path,
                     DigestUtils.sha1Hex(corpusStream));
         } catch (IOException e) {
+        	e.printStackTrace();
             return CorpusItemImpl.fromValues(path);
         }
     }

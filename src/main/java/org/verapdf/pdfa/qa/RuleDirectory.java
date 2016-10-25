@@ -119,7 +119,7 @@ public final class RuleDirectory implements Directory<RuleId, Rule> {
             	rulesLocal.addAll(rulesFromDir(file, pdfaFlavour));
             if (file.isFile() && file.canRead()) {
                 try (InputStream fis = new FileInputStream(file)) {
-                    Set<Rule> rule = getRuleFromProfile(fis, pdfaFlavour);
+                    Set<Rule> rule = getRuleFromProfile(fis);
                     rulesLocal.addAll(rule);
                 }
             }
@@ -127,8 +127,7 @@ public final class RuleDirectory implements Directory<RuleId, Rule> {
         return rulesLocal;
     }
 
-    private Set<Rule> getRuleFromProfile(final InputStream toParse,
-                                         final PDFAFlavour pdfaFlavour) throws JAXBException {
+    private Set<Rule> getRuleFromProfile(final InputStream toParse) throws JAXBException {
         ValidationProfile profile = Profiles.profileFromXml(
                 toParse);
         checkAndAddAllVariables(this.variables, profile.getVariables());

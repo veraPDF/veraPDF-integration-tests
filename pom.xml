@@ -43,8 +43,8 @@
   <properties>
     <sonar.jacoco.itReportPath>${project.basedir}/../target/jacoco-it.exec</sonar.jacoco.itReportPath>
     <sonar.language>java</sonar.language>
-    <verapdf.library.version>[0.25.0-REFACT,0.26.0-REFACT)</verapdf.library.version>
-    <verapdf.pdfbox.validation.version>[0.25.0-REFACT,0.26.0-REFACT)</verapdf.pdfbox.validation.version>
+    <verapdf.library.version>0.25-REFACT</verapdf.library.version>
+    <verapdf.pdfbox.validation.version>0.25-REFACT</verapdf.pdfbox.validation.version>
   </properties>
 
   <dependencies>

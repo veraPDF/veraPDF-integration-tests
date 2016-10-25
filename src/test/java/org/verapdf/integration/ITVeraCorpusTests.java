@@ -24,7 +24,6 @@ import com.github.mustachejava.DefaultMustacheFactory;
 import com.github.mustachejava.Mustache;
 import com.github.mustachejava.MustacheFactory;
 
-@SuppressWarnings({ "javadoc" })
 public class ITVeraCorpusTests {
     // Directory of validation profiles poulated by download from GitHub
     private static final List<ResultSet> RESULTS = new ArrayList<>();

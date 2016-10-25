@@ -107,7 +107,7 @@ public final class CorpusManager {
     public static TestCorpus getIsartorCorpus() throws IOException {
         if (ISARTOR_CORPUS_ZIP_FILE == null) {
             URL corpusURL = new URL(
-                    "http://www.pdfa.org/wp-content/uploads/2011/08/isartor-pdfa-2008-08-13.zip");
+                    "http://downloads.verapdf.org/corp/isartor-pdfa-2008-08-13.zip");
             ISARTOR_CORPUS_ZIP_FILE = createTempFileFromUrl(corpusURL, "isartorCorpus");
             ISARTOR_CORPUS = ZipBackedTestCorpus.fromZipSource("Isartor-corpus", "Synthetic test files for PDF/A validation.",
                     ISARTOR_CORPUS_ZIP_FILE, null);

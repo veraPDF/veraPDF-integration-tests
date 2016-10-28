@@ -8,7 +8,7 @@
   <meta name="author" content="veraPDF Consortium">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta http-equiv="Content-Security-Policy" content="sandbox allow-scripts; default-src 'self' *.openpreservation.org; child-src 'self' *.openpreservation.org; style-src 'self' 'unsafe-inline' ">
-  <title>veraPDF dest data</title>
+  <title>veraPDF Corpus Test Results</title>
   <style media="screen" type="text/css">
     td {
       padding : 5px;
@@ -32,62 +32,118 @@
     }
 
     </style>
+  </head>
 <body>
-  <h1>veraPDF Test Results : {{details.dateCreated}}</h1>
-  {{#corpusDetails}}
-  <div id="corpus">
-    <h2>{{name}}</h2>
-    {{description}}
-  </div>
-  {{/corpusDetails}}
-  {{#validationProfile}}
-  <div id="profile">
-    <h3>{{#details}}{{name}}{{/details}}</h3>
-  </div>
-  {{/validationProfile}}
-  {{#details}}
-  <div id="dependencies">
-    <h3>Dependencies</h3>
-    {{#dependencies}}
-      <div id="{{id}}">
-        <p>{{id}} v{{version}}-{{buildDate}}</p>
-      </div>
-    {{/dependencies}}
-  </div>
-  {{/details}}
-  <div id="exceptions">
-    <h2>Exceptions</h2>
-    <table>
-    {{#exceptions}}
-      <tr>
-        <td class="fail">{{corpusItemId.name}}</td>
-      </tr>
-      <tr>
-        <td class="trace">
-          <pre>
-          {{cause.message}}
-          {{#cause.stackTrace}}
-              {{className}}.{{methodName}}({{fileName}}:{{lineNumber}})
-          {{/cause.stackTrace}}
-          </pre>
-        </td>
-      </tr>
-    {{/exceptions}}
-    </table>
-  </div>
-  <div id="results">
-    <h2>Results</h2>
-  <table>
-  {{#results}}
-    <tr>
-    {{#result}}
-      <td class="{{testType}}">{{corpusItemName}}</td>
-      <td>Duration: {{duration}}</td>
-      <td>Memory: {{memoryUsed}}</td>
-    {{/result}}
-    </tr>
-  {{/results}}
-  </table>
-  </div>
+
+  <div id="content">
+  <h1>veraPDF Corpus Test Results : {{pdfBoxResult.details.dateCreated}}</h1>
+  <h2>{{pdfBoxResult.corpusDetails.name}} - {{pdfBoxResult.valdiationProfile.details.name}}</h2>
+
+    <div id="wrapper">
+      <table id="layout">
+
+        <!-- Header Row -->
+        <tr>
+          <th>
+          {{#pdfBoxResult}}
+            <h2>{{details.foundryDetails.name}} v{{details.foundryDetails.version}}</h2>
+            <h3>Dependencies</h3>
+            {{#details.dependencies}}
+            <p>{{id}} v{{version}}-{{buildDate}}</p>
+            {{/details.dependencies}}
+          {{/pdfBoxResult}}
+          </th>
+
+          <th>
+          {{#gfResult}}
+            <h2>{{details.foundryDetails.name}} v{{details.foundryDetails.version}}</h2>
+            <h3>Dependencies</h3>
+            {{#details.dependencies}}
+            <p>{{id}} v{{version}}-{{buildDate}}</p>
+            {{/details.dependencies}}
+          {{/gfResult}}
+          </th>
+        </tr>
+
+        <!-- Content Row -->
+        <tr>
+          <td>
+          
+            <table id="pdfbox-results">
+              {{#pdfBoxResult.exceptions}}
+              <tr>
+                <td class="fail">{{corpusItemId.name}}</td>
+              </tr>
+              <tr>
+                <td class="trace">
+                  <pre>
+{{cause.message}}
+{{#cause.stackTrace}}
+{{className}}.{{methodName}}({{fileName}}:{{lineNumber}})
+{{/cause.stackTrace}}
+                 </pre>
+               </td>
+             </tr>
+             {{/pdfBoxResult.exceptions}}
+
+		     {{#pdfBoxResult.results}}
+             {{#result}}
+		     <tr>
+		         <td class="{{testType}}">{{corpusItemName}}</td>
+		     </tr>
+		     <tr>
+		       <td>
+                 <pre>
+Duration: {{duration}}
+Memory: {{memoryUsed}} MB
+                 </pre>
+               </td>
+		     </tr>
+             {{/result}}
+		     {{/pdfBoxResult.results}}
+            </table>
+          </td>
+          <td>
+
+            <table id="gf-results">
+              {{#gfResult.exceptions}}
+              <tr>
+                <td class="fail">{{corpusItemId.name}}</td>
+              </tr>
+              <tr>
+                <td class="trace">
+                  <pre>
+{{cause.message}}
+{{#cause.stackTrace}}
+{{className}}.{{methodName}}({{fileName}}:{{lineNumber}})
+{{/cause.stackTrace}}
+                 </pre>
+               </td>
+             </tr>
+             {{/gfResult.exceptions}}
+
+		     {{#gfResult.results}}
+             {{#result}}
+		     <tr>
+		         <td class="{{testType}}">{{corpusItemName}}</td>
+		     </tr>
+		     <tr>
+		       <td>
+                 <pre>
+Duration: {{duration}}
+Memory: {{memoryUsed}} MB
+                 </pre>
+               </td>
+		     </tr>
+             {{/result}}
+		     {{/gfResult.results}}
+            </table>
+
+          </td>
+        </tr>
+
+      </table><!-- layout -->
+    </div><!-- wrapper -->
+  </div><!-- content>
 </body>
 </html>

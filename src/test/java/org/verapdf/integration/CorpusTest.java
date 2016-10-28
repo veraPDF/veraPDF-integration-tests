@@ -30,7 +30,6 @@ import com.github.mustachejava.MustacheFactory;
 
 @SuppressWarnings({ "javadoc" })
 public class CorpusTest {
-	private static final int MEGABYTE = (1024*1024);
 	private static ComponentDetails gfDetails;
 	private static ComponentDetails pdfBoxDetails;
 	private static final List<ResultSet> gfResults = new ArrayList<>();
@@ -63,7 +62,7 @@ public class CorpusTest {
 		testCorpora(gfResults);
 	}
 
-	public void testCorpora(List<ResultSet> resultSets) {
+	private static void testCorpora(List<ResultSet> resultSets) {
 		for (PDFAFlavour flavour : CorpusManager.testableFlavours()) {
 			for (TestCorpus corpus : CorpusManager.corporaForFlavour(flavour)) {
 				PDFAValidator validator = Foundries.defaultInstance().newValidator(flavour, false);
@@ -97,19 +96,24 @@ public class CorpusTest {
 		File rootDir = new File("target/test-results");
 		if (!rootDir.exists())
 			rootDir.mkdirs();
-		writeSummary(rootDir);
-		for (ResultSet results : pdfBoxResults) {
+		writeSummaries(rootDir);
+		int index = 0;
+		for (ResultSet pdfBoxResult  : pdfBoxResults) {
+			ResultSet gfResult = gfResults.get(index++);
+			Map<String, Object> scopes = new HashMap<>();
+			scopes.put("pdfBoxResult", pdfBoxResult);
+			scopes.put("gfResult", gfResult);
 			if (rootDir.isDirectory() && rootDir.canWrite()) {
-				String dirName = results.getCorpusDetails().getName() + "-"
-						+ results.getValidationProfile().getPDFAFlavour().getId();
-				outputResultsToFile(results, new File(rootDir, dirName));
+				String dirName = pdfBoxResult.getCorpusDetails().getName() + "-"
+						+ pdfBoxResult.getValidationProfile().getPDFAFlavour().getId();
+				outputResultsToFile(scopes, new File(rootDir, dirName));
 			} else {
-				RESULTS_MUSTACHE.execute(new PrintWriter(System.out), results).flush();
+				RESULTS_MUSTACHE.execute(new PrintWriter(System.out), scopes).flush();
 			}
 		}
 	}
 
-	private static void writeSummary(final File outputDir) throws FileNotFoundException, IOException {
+	private static void writeSummaries(final File outputDir) throws FileNotFoundException, IOException {
 		Map<String, Object> scopes = new HashMap<>();
 		scopes.put("pdfBoxDetails", ResultSetDetailsImpl.getNewInstance(pdfBoxDetails));
 		scopes.put("gfDetails", ResultSetDetailsImpl.getNewInstance(gfDetails));
@@ -120,13 +124,13 @@ public class CorpusTest {
 		}
 	}
 
-	private static void outputResultsToFile(final ResultSet results, final File outputDir)
+	private static void outputResultsToFile(Map<String, Object> scopes, final File outputDir)
 			throws FileNotFoundException, IOException {
 		if (!outputDir.exists()) {
 			outputDir.mkdirs();
 		}
 		try (Writer writer = new PrintWriter(new File(outputDir, "index.html"))) {
-			RESULTS_MUSTACHE.execute(writer, results).flush();
+			RESULTS_MUSTACHE.execute(writer, scopes).flush();
 		}
 	}
 }

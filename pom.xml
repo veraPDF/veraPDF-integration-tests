@@ -45,6 +45,7 @@
     <sonar.language>java</sonar.language>
     <verapdf.library.version>[0.25.0,0.26.0)</verapdf.library.version>
     <verapdf.pdfbox.validation.version>[0.25.0,0.26.0)</verapdf.pdfbox.validation.version>
+    <verapdf.validation.version>[0.1.0,0.2.0)</verapdf.validation.version>
   </properties>
 
   <dependencies>
@@ -82,7 +83,7 @@
     <dependency>
       <groupId>org.verapdf</groupId>
       <artifactId>validation-model</artifactId>
-      <version>0.1.0-SNAPSHOT</version>
+      <version>${verapdf.validation.version}</version>
     </dependency>
   </dependencies>
 

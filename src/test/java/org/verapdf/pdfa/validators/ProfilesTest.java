@@ -17,7 +17,7 @@ import org.verapdf.pdfa.validation.ValidationProfile;
  */
 @SuppressWarnings("static-method")
 public class ProfilesTest {
-    private static final ProfileDirectory INTEGRATION_PROFILES = GitHubBackedProfileDirectory.INTEGRATION;
+    private static final ProfileDirectory INTEGRATION_PROFILES = GitHubBackedProfileDirectory.fromBranch("integration");
 
     /**
      * Test method for {@link org.verapdf.pdfa.validation.ValidationProfileImpl#getPDFAFlavour()}.

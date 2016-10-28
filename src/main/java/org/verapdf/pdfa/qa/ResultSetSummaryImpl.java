@@ -7,6 +7,8 @@ import java.util.Set;
 
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 
+import org.verapdf.component.AuditDuration;
+
 /**
  * @author <a href="mailto:carl@openpreservation.org">Carl Wilson</a>.
  *
@@ -22,11 +24,13 @@ public final class ResultSetSummaryImpl implements ResultSetSummary {
     private final int undefinedCases;
     private final int inapplicableCases;
     private final int exceptions;
+    private final AuditDuration duration;
+    private final long memoryUsed;
 
     private ResultSetSummaryImpl(final boolean isPassed,
             final int invalidCases,final int invalidCasesFailed, final int validCases, final int validCasesFailed,
             final int undefinedCases, final int inapplicableCases,
-            final int exceptions) {
+            final int exceptions, final AuditDuration duration, final long memoryUsed) {
         super();
         this.isPassed = isPassed;
         this.invalidCases = invalidCases;
@@ -38,6 +42,8 @@ public final class ResultSetSummaryImpl implements ResultSetSummary {
         this.undefinedCases = undefinedCases;
         this.inapplicableCases = inapplicableCases;
         this.exceptions = exceptions;
+        this.duration = duration;
+        this.memoryUsed = memoryUsed;
     }
 
     /*
@@ -140,8 +146,8 @@ public final class ResultSetSummaryImpl implements ResultSetSummary {
         return this.exceptions;
     }
 
-    public static ResultSetSummary fromResults(Set<ResultSet.Result> results,
-            Set<ResultSet.Incomplete> incompletes) {
+    public static ResultSetSummary fromResults(final Set<ResultSet.Result> results,
+            final Set<ResultSet.Incomplete> incompletes, final AuditDuration duration, final long memoryUsed) {
         int validCases = 0;
         int validFailed = 0;
         int invalidCases = 0;
@@ -172,7 +178,7 @@ public final class ResultSetSummaryImpl implements ResultSetSummary {
         }
 
         return new ResultSetSummaryImpl((validFailed == 0 && invalidFailed == 0 && exceptions == 0), invalidCases, invalidFailed, validCases, validFailed,
-                undefinedCases, inapplicableTestCount, exceptions);
+                undefinedCases, inapplicableTestCount, exceptions, duration, memoryUsed);
     }
 
     static class Adapter extends
@@ -187,5 +193,16 @@ public final class ResultSetSummaryImpl implements ResultSetSummary {
             return (ResultSetSummaryImpl) summary;
         }
     }
+
+	@Override
+	public AuditDuration getDuration() {
+		// TODO Auto-generated method stub
+		return duration;
+	}
+	
+	@Override
+	public long getMemoryUsed() {
+		return this.memoryUsed;
+	}
 
 }

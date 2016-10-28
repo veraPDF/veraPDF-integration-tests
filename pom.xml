@@ -79,7 +79,11 @@
       <artifactId>compiler</artifactId>
       <version>0.8.18</version>
     </dependency>
-
+    <dependency>
+      <groupId>org.verapdf</groupId>
+      <artifactId>validation-model</artifactId>
+      <version>0.1.0-SNAPSHOT</version>
+    </dependency>
   </dependencies>
 
   <build>
@@ -94,11 +98,6 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
-        <configuration>
-          <excludes>
-            <exclude>**/*IT.java</exclude>
-          </excludes>
-        </configuration>
       </plugin>
 
       <plugin>
@@ -123,12 +122,11 @@
       <plugin>
         <groupId>org.jacoco</groupId>
         <artifactId>jacoco-maven-plugin</artifactId>
-        <version>0.7.5.201505241946</version>
         <configuration>
-          <!-- The destination file for the code coverage report has to be set to
-            the same value in the parent pom and in each module pom. Then JaCoCo will add up
+          <!-- The destination file for the code coverage report has to be set to 
+            the same value in the parent pom and in each module pom. Then JaCoCo will add up 
             information in the same report, so that, it will give the cross-module code coverage. -->
-          <destFile>${project.basedir}/../target/jacoco-it.exec</destFile>
+          <destFile>${project.basedir}/target/jacoco-it.exec</destFile>
         </configuration>
       </plugin>
 
@@ -190,10 +188,6 @@
                   <value>org.sonar.java.jacoco.JUnitListener</value>
                 </property>
               </properties>
-
-              <excludes>
-                <exclude>**/*IT.java</exclude>
-              </excludes>
 
             </configuration>
           </plugin>

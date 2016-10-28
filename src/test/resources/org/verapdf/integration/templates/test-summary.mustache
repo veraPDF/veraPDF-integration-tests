@@ -27,29 +27,68 @@
     }
     </style>
 <body>
-  <h1>veraPDF Test Summaries : {{details.dateCreated}}</h1>
-  {{#details}}
-  <div id="dependencies">
-    <h3>Dependencies</h3>
-    {{#dependencies}}
-      <div id="{{id}}">
-        <p>{{id}} v{{version}}-{{buildDate}}</p>
-      </div>
-    {{/dependencies}}
-  </div>
-  {{/details}}
-  <div id="results">
-    {{#results}}
-      <div id="{{corpusDetails.name}}">
-        <h2 class="{{summary.passed}}"><a href="{{corpusDetails.name}}-{{validationProfile.PDFAFlavour.id}}/index.html" title="">{{corpusDetails.name}}</a></h2>
-        <pre>
-        Valid Cases: {{summary.validCases}} | passed: {{summary.validCasesPassed}} | failed: {{summary.validCasesFailed}}
-        Invalid: {{summary.invalidCases}} | passed: {{summary.invalidCasesPassed}} | failed: {{summary.invalidCasesFailed}}
-        Exceptions: {{summary.exceptions}}
-        Undefined: {{summary.undefinedCases}} | Not Applicable: {{summary.inapplicableCases}}
-        </pre>
-      </div>
-    {{/results}}
+  <div id="content">
+    <h1>verPDF Integration Corpus Tests : {{pdfBoxDetails.dateCreated}}</h1>
+    <div>
+      <table>
+        <tr>
+          <th>
+          {{#pdfBoxDetails}}
+            <h2>{{foundryDetails.name}} v{{foundryDetails.version}}</h2>
+            <h3>Dependencies</h3>
+            {{#dependencies}}
+              <div id="{{id}}">
+                <p>{{id}} v{{version}}-{{buildDate}}</p>
+              </div>
+            {{/dependencies}}
+          {{/pdfBoxDetails}}
+          </th>
+          <th>
+          {{#gfDetails}}
+            <h2>{{foundryDetails.name}} v{{foundryDetails.version}}</h2>
+            <h3>Dependencies</h3>
+            {{#dependencies}}
+              <div id="{{id}}">
+                <p>{{id}} v{{version}}-{{buildDate}}</p>
+              </div>
+            {{/dependencies}}
+          {{/gfDetails}}
+          </th>
+        </tr>
+        <tr>
+          <td>
+  		  <div id="pdfBoxResults">
+		    {{#pdfBoxResults}}
+		      <div id="{{corpusDetails.name}}">
+		        <h2 class="{{summary.passed}}"><a href="{{corpusDetails.name}}-{{validationProfile.PDFAFlavour.id}}/index.html" title="">{{corpusDetails.name}}-{{validationProfile.PDFAFlavour.id}}</a></h2>
+		        <pre>
+		        Valid Cases: {{summary.validCases}} | passed: {{summary.validCasesPassed}} | failed: {{summary.validCasesFailed}}
+		        Invalid: {{summary.invalidCases}} | passed: {{summary.invalidCasesPassed}} | failed: {{summary.invalidCasesFailed}}
+		        Time Taken: {{summary.duration.duration}} | Memory Used: {{summary.memoryUsed}} MB
+		        Exceptions: {{summary.exceptions}} | Undefined: {{summary.undefinedCases}} | Not Applicable: {{summary.inapplicableCases}}
+		        </pre>
+		      </div>
+		    {{/pdfBoxResults}}
+		  </div>
+          </td>
+          <td>
+  		  <div id="gfResults">
+		    {{#gfResults}}
+		      <div id="{{corpusDetails.name}}">
+		        <h2 class="{{summary.passed}}"><a href="{{corpusDetails.name}}-{{validationProfile.PDFAFlavour.id}}/index.html" title="">{{corpusDetails.name}}-{{validationProfile.PDFAFlavour.id}}</a></h2>
+		        <pre>
+		        Valid Cases: {{summary.validCases}} | passed: {{summary.validCasesPassed}} | failed: {{summary.validCasesFailed}}
+		        Invalid: {{summary.invalidCases}} | passed: {{summary.invalidCasesPassed}} | failed: {{summary.invalidCasesFailed}}
+		        Time Taken: {{summary.duration.duration}} | Memory Used: {{summary.memoryUsed}} MB
+		        Exceptions: {{summary.exceptions}} | Undefined: {{summary.undefinedCases}} | Not Applicable: {{summary.inapplicableCases}}
+		        </pre>
+		      </div>
+		    {{/gfResults}}
+		  </div>
+          </td>
+        </tr>
+      </table>
+    </div>
   </div>
 </body>
 </html>

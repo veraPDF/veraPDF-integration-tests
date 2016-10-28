@@ -7,6 +7,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
@@ -18,6 +20,7 @@ import org.apache.commons.codec.digest.DigestUtils;
  *
  */
 public class CorpusItemImpl implements CorpusItem {
+	private static final Logger LOG = Logger.getLogger(CorpusItemImpl.class.getCanonicalName());
     @XmlElement(name = "id")
     private final CorpusItemId id;
     @XmlElement(name = "path")
@@ -143,6 +146,7 @@ public class CorpusItemImpl implements CorpusItem {
         try (FileInputStream fis = new FileInputStream(corpusFile)) {
             return fromInputStream(fis, corpusFile.getPath());
         } catch (IOException e) {
+        	LOG.log(Level.FINE, "IOException closing corpus file.", e);
             // Ignore stream close error
             return fromValues(corpusFile.getPath(), "");
         }
@@ -160,6 +164,7 @@ public class CorpusItemImpl implements CorpusItem {
             return CorpusItemImpl.fromValues(path,
                     DigestUtils.sha1Hex(corpusStream));
         } catch (IOException e) {
+        	LOG.log(Level.FINE, "IOException calculating file digest", e);
             return CorpusItemImpl.fromValues(path);
         }
     }

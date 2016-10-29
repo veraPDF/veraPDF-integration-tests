@@ -8,6 +8,7 @@ import java.io.InputStream;
 import java.util.Set;
 
 import org.verapdf.pdfa.flavours.PDFAFlavour;
+import org.verapdf.pdfa.qa.AbstractTestCorpus.Corpus;
 
 /**
  * @author <a href="mailto:carl@openpreservation.org">Carl Wilson</a>
@@ -44,4 +45,6 @@ public interface TestCorpus {
      *             if there's a problem retrieving the stream
      */
     public InputStream getItemStream(String itemName) throws IOException;
+    
+    public Corpus getType();
 }

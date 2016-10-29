@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en-GB">
 <head>
-
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="veraPDF test results.">
@@ -9,6 +8,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta http-equiv="Content-Security-Policy" content="sandbox allow-scripts; default-src 'self' *.openpreservation.org; child-src 'self' *.openpreservation.org; style-src 'self' 'unsafe-inline' ">
   <title>veraPDF dest data</title>
+
   <style media="screen" type="text/css">
     td {
       padding : 5px;
@@ -26,30 +26,65 @@
       background-color: orange;
     }
     </style>
+</head>
 <body>
-  <h1>veraPDF Test Summaries : {{details.dateCreated}}</h1>
-  {{#details}}
-  <div id="dependencies">
-    <h3>Dependencies</h3>
-    {{#dependencies}}
-      <div id="{{id}}">
-        <p>{{id}} v{{version}}-{{buildDate}}</p>
-      </div>
-    {{/dependencies}}
-  </div>
-  {{/details}}
-  <div id="results">
-    {{#results}}
-      <div id="{{corpusDetails.name}}">
-        <h2 class="{{summary.passed}}"><a href="{{corpusDetails.name}}-{{validationProfile.PDFAFlavour.id}}/index.html" title="">{{corpusDetails.name}}</a></h2>
-        <pre>
-        Valid Cases: {{summary.validCases}} | passed: {{summary.validCasesPassed}} | failed: {{summary.validCasesFailed}}
-        Invalid: {{summary.invalidCases}} | passed: {{summary.invalidCasesPassed}} | failed: {{summary.invalidCasesFailed}}
-        Exceptions: {{summary.exceptions}}
-        Undefined: {{summary.undefinedCases}} | Not Applicable: {{summary.inapplicableCases}}
-        </pre>
-      </div>
-    {{/results}}
-  </div>
+
+  <div id="content">
+    <h1>verPDF Integration Corpus Tests : {{pdfBoxDetails.dateCreated}}</h1>
+
+    <div id="wrapper">
+      <table id="layout">
+      <!-- Header Row -->
+        <tr>
+          <th>
+          {{#pdfBoxDetails}}
+            <h2>{{foundryDetails.name}} v{{foundryDetails.version}}</h2>
+            <h3>Dependencies</h3>
+            {{#dependencies}}
+            <p>{{id}} v{{version}}-{{buildDate}}</p>
+            {{/dependencies}}
+          {{/pdfBoxDetails}}
+          </th>
+          <th>
+          {{#gfDetails}}
+            <h2>{{foundryDetails.name}} v{{foundryDetails.version}}</h2>
+            <h3>Dependencies</h3>
+            {{#dependencies}}
+            <p>{{id}} v{{version}}-{{buildDate}}</p>
+            {{/dependencies}}
+          {{/gfDetails}}
+          </th>
+        </tr>
+
+        <!-- Summaries Row -->
+        <tr>
+          <td>
+          {{#pdfBoxResults}}
+            <h2 class="{{summary.passed}}"><a href="{{corpusDetails.name}}-{{validationProfile.PDFAFlavour.id}}/index.html" title="">{{corpusDetails.name}}-{{validationProfile.PDFAFlavour.id}}</a></h2>
+            <pre>
+Valid Cases: {{summary.validCases}} | passed: {{summary.validCasesPassed}} | failed: {{summary.validCasesFailed}}
+Invalid: {{summary.invalidCases}} | passed: {{summary.invalidCasesPassed}} | failed: {{summary.invalidCasesFailed}}
+Time Taken: {{summary.duration.duration}} | Memory Used: {{summary.memoryUsed}} MB
+Exceptions: {{summary.exceptions}} | Undefined: {{summary.undefinedCases}} | Not Applicable: {{summary.inapplicableCases}}
+            </pre>
+            {{/pdfBoxResults}}
+          </td>
+          <td>
+            {{#gfResults}}
+            <h2 class="{{summary.passed}}"><a href="{{corpusDetails.name}}-{{validationProfile.PDFAFlavour.id}}/index.html" title="">{{corpusDetails.name}}-{{validationProfile.PDFAFlavour.id}}</a></h2>
+            <pre>
+Valid Cases: {{summary.validCases}} | passed: {{summary.validCasesPassed}} | failed: {{summary.validCasesFailed}}
+Invalid: {{summary.invalidCases}} | passed: {{summary.invalidCasesPassed}} | failed: {{summary.invalidCasesFailed}}
+Time Taken: {{summary.duration.duration}} | Memory Used: {{summary.memoryUsed}} MB
+Exceptions: {{summary.exceptions}} | Undefined: {{summary.undefinedCases}} | Not Applicable: {{summary.inapplicableCases}}
+            </pre>
+            {{/gfResults}}
+          </td>
+        </tr>
+
+      </table><!-- layout -->
+    </div><!-- wrapper -->
+  </div><!-- content>
+
 </body>
 </html>

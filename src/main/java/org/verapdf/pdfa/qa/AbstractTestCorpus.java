@@ -3,9 +3,15 @@
  */
 package org.verapdf.pdfa.qa;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.URI;
+import java.net.URL;
 import java.util.Collections;
+import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -21,17 +27,28 @@ import org.verapdf.pdfa.flavours.PDFAFlavour;
  *
  */
 @XmlRootElement(namespace = "http://www.verapdf.org/corpus", name = "corpus")
-abstract class AbstractTestCorpus<L> implements TestCorpus {
-    @XmlElement(name = "details")
+public abstract class AbstractTestCorpus<L> implements TestCorpus {
+	private static final String veraUrl = "https://github.com/veraPDF/veraPDF-corpus/archive/staging.zip";
+	private static final String isartorUrl = "http://downloads.verapdf.org/corp/isartor-pdfa-2008-08-13.zip";
+	private static final String bfoUrl = "https://github.com/bfosupport/pdfa-testsuite/archive/master.zip";
+
+	@XmlElement(name = "details")
     private final CorpusDetails details;
     @XmlElementWrapper
     @XmlElement(name = "item")
     private final Map<String, L> itemMap;
+    protected final Corpus type;
 
     protected AbstractTestCorpus(final CorpusDetails details,
-            final Map<String, L> itemMap) {
+            final Corpus type, final Map<String, L> itemMap) {
         this.details = details;
+        this.type = type;
         this.itemMap = new HashMap<>(itemMap);
+    }
+    
+    @Override
+	public Corpus getType() {
+    	return this.type;
     }
 
     /**
@@ -120,5 +137,61 @@ abstract class AbstractTestCorpus<L> implements TestCorpus {
             return false;
         return true;
     }
+    public static enum Corpus {
+		VERA("veraPDF",
+				EnumSet.of(PDFAFlavour.PDFA_1_A, PDFAFlavour.PDFA_1_B, PDFAFlavour.PDFA_2_B, PDFAFlavour.PDFA_2_U,
+						PDFAFlavour.PDFA_3_B),
+				URI.create(veraUrl), "veraCorp-"), ISARTOR("Isartor", EnumSet.of(PDFAFlavour.PDFA_1_B),
+						URI.create(isartorUrl),
+						"isartCorp-"), BFO("BFO", EnumSet.of(PDFAFlavour.PDFA_2_B), URI.create(bfoUrl), "bfoCorp-");
+		private static final String desc = "Synthetic test files for PDF/A validation.";
+	
+		private final String id;
+		private final EnumSet<PDFAFlavour> flavours;
+		private final File zipFile; 
+	
+		private Corpus(final String id, final EnumSet<PDFAFlavour> flavours, final URI downloadUri,
+				final String prefix) {
+			this.id = id;
+			this.flavours = EnumSet.copyOf(flavours);
+			try {
+				this.zipFile = createTempFileFromCorpus(downloadUri.toURL(), prefix);
+			} catch (IOException excep) {
+				throw new IllegalStateException(excep);				
+			}
+		}
+	
+		public String getId() {
+			return this.id;
+		}
+	
+		@SuppressWarnings("static-method")
+		public String getDescription() {
+			return desc;
+		}
+	
+		public File getZipFile() {
+			return this.zipFile;
+		}
 
+		public EnumSet<PDFAFlavour> getFlavours() {
+			return this.flavours;
+		}
+	}
+
+	static File createTempFileFromCorpus(final URL downloadLoc, final String prefix) throws IOException {
+		System.out.println("Downloading:" + downloadLoc);
+		File tempFile = File.createTempFile(prefix, ".zip");
+		System.out.println("temp:" + tempFile);
+		try (OutputStream output = new FileOutputStream(tempFile);
+				InputStream corpusInput = downloadLoc.openStream();) {
+			byte[] buffer = new byte[8 * 1024];
+			int bytesRead;
+			while ((bytesRead = corpusInput.read(buffer)) != -1) {
+				output.write(buffer, 0, bytesRead);
+			}
+		}
+		tempFile.deleteOnExit();
+		return tempFile;
+	}
 }

@@ -3,144 +3,56 @@
  */
 package org.verapdf.integration;
 
+import java.io.IOException;
+import java.util.Collections;
+import java.util.EnumMap;
+import java.util.HashSet;
+import java.util.Set;
+
 import org.verapdf.pdfa.flavours.PDFAFlavour;
+import org.verapdf.pdfa.qa.AbstractTestCorpus.Corpus;
 import org.verapdf.pdfa.qa.TestCorpus;
 import org.verapdf.pdfa.qa.ZipBackedTestCorpus;
 
-import java.io.*;
-import java.net.URL;
-
 /**
  * @author <a href="mailto:carl@openpreservation.org">Carl Wilson</a>
- *
  */
 public final class CorpusManager {
-    // Reference to corpus zip temp file
-    private static File VERA_CORPUS_ZIP_FILE = null;
-    private static File ISARTOR_CORPUS_ZIP_FILE = null;
-    private static File BFO_CORPUS_ZIP_FILE = null;
-    private static TestCorpus VERA_1A_CORPUS = null;
-    private static TestCorpus VERA_1B_CORPUS = null;
-    private static TestCorpus VERA_2B_CORPUS = null;
-    private static TestCorpus VERA_2U_CORPUS = null;
-    private static TestCorpus VERA_3B_CORPUS = null;
-    private static TestCorpus ISARTOR_CORPUS = null;
-    private static TestCorpus BFO_CORPUS = null;
+	// Reference to corpus zip temp file
+	private static final EnumMap<PDFAFlavour, Set<TestCorpus>> corporaByFlavour = new EnumMap<>(PDFAFlavour.class);
 
-    /**
-     * @return a TestCorpus set up from the downloaded verPDF test corpus zip file
-     * @throws IOException if an error occurs downloading or parsing the corpus zip file
-     */
-    public static TestCorpus getVera1ACorpus() throws IOException {
-        if (VERA_1A_CORPUS == null) {
-            URL corpusURL = new URL(
-                    "https://github.com/veraPDF/veraPDF-corpus/archive/staging.zip");
-            if ((VERA_CORPUS_ZIP_FILE == null) || (!VERA_CORPUS_ZIP_FILE.exists())) {
-            	VERA_CORPUS_ZIP_FILE = createTempFileFromUrl(corpusURL, "veraCorpus");
-            }
-            VERA_1A_CORPUS = ZipBackedTestCorpus.fromZipSource("veraPDF-1a-corpus", "Synthetic test files for PDF/A validation.",
-                    VERA_CORPUS_ZIP_FILE, PDFAFlavour.PDFA_1_A);
-        }
-        return VERA_1A_CORPUS;
-    }
+	private CorpusManager() {
+		assert (false);
+	}
 
-    /**
-     * @return a TestCorpus set up from the downloaded verPDF test corpus zip file
-     * @throws IOException if an error occurs downloading or parsing the corpus zip file
-     */
-    public static TestCorpus getVera1BCorpus() throws IOException {
-        if (VERA_1B_CORPUS == null) {
-            URL corpusURL = new URL(
-                    "https://github.com/veraPDF/veraPDF-corpus/archive/staging.zip");
-            if ((VERA_CORPUS_ZIP_FILE == null) || (!VERA_CORPUS_ZIP_FILE.exists())) {
-            	VERA_CORPUS_ZIP_FILE = createTempFileFromUrl(corpusURL, "veraCorpus");
-            }
-            VERA_1B_CORPUS = ZipBackedTestCorpus.fromZipSource("veraPDF-1b-corpus", "Synthetic test files for PDF/A validation.",
-                    VERA_CORPUS_ZIP_FILE, PDFAFlavour.PDFA_1_B);
-        }
-        return VERA_1B_CORPUS;
-    }
+	public static void initialise() throws IOException {
+		if (!corporaByFlavour.isEmpty())
+			return;
+		for (Corpus corpus : Corpus.values()) {
+			for (PDFAFlavour flavour : corpus.getFlavours()) {
+				TestCorpus toAdd = ZipBackedTestCorpus.fromZipSource(corpus.getId(), corpus, corpus.getDescription(), flavour);
+				if (!corporaByFlavour.containsKey(flavour)) {
+					corporaByFlavour.put(flavour, new HashSet<TestCorpus>());
+				}
+				corporaByFlavour.get(flavour).add(toAdd);
+			}
+		}
+	}
 
-    public static TestCorpus getVera2BCorpus() throws IOException {
-        if (VERA_2B_CORPUS == null) {
-            URL corpusURL = new URL(
-                    "https://github.com/veraPDF/veraPDF-corpus/archive/staging.zip");
-            if ((VERA_CORPUS_ZIP_FILE == null) || (!VERA_CORPUS_ZIP_FILE.exists())) {
-            	VERA_CORPUS_ZIP_FILE = createTempFileFromUrl(corpusURL, "veraCorpus");
-            }
-            VERA_2B_CORPUS = ZipBackedTestCorpus.fromZipSource("veraPDF-2b-corpus", "Synthetic test files for PDF/A validation.",
-                    VERA_CORPUS_ZIP_FILE, PDFAFlavour.PDFA_2_B);
-        }
-        return VERA_2B_CORPUS;
-    }
+	public static Set<PDFAFlavour> testableFlavours() {
+		return Collections.unmodifiableSet(corporaByFlavour.keySet());
+	}
 
-    public static TestCorpus getVera2UCorpus() throws IOException {
-        if (VERA_2U_CORPUS == null) {
-            URL corpusURL = new URL(
-                    "https://github.com/veraPDF/veraPDF-corpus/archive/staging.zip");
-            if ((VERA_CORPUS_ZIP_FILE == null) || (!VERA_CORPUS_ZIP_FILE.exists())) {
-            	VERA_CORPUS_ZIP_FILE = createTempFileFromUrl(corpusURL, "veraCorpus");
-            }
-            VERA_2U_CORPUS = ZipBackedTestCorpus.fromZipSource("veraPDF-2u-corpus", "Synthetic test files for PDF/A validation.",
-                    VERA_CORPUS_ZIP_FILE, PDFAFlavour.PDFA_2_U);
-        }
-        return VERA_2U_CORPUS;
-    }
+	public static Set<TestCorpus> corporaForFlavour(final PDFAFlavour key) {
+		return Collections.unmodifiableSet(corporaByFlavour.get(key));
+	}
 
-    public static TestCorpus getVera3BCorpus() throws IOException {
-        if (VERA_3B_CORPUS == null) {
-            URL corpusURL = new URL(
-                    "https://github.com/veraPDF/veraPDF-corpus/archive/staging.zip");
-            if ((VERA_CORPUS_ZIP_FILE == null) || (!VERA_CORPUS_ZIP_FILE.exists())) {
-            	VERA_CORPUS_ZIP_FILE = createTempFileFromUrl(corpusURL, "veraCorpus");
-            }
-            VERA_3B_CORPUS = ZipBackedTestCorpus.fromZipSource("veraPDF-3b-corpus", "Synthetic test files for PDF/A validation.",
-                    VERA_CORPUS_ZIP_FILE, PDFAFlavour.PDFA_3_B);
-        }
-        return VERA_3B_CORPUS;
-    }
-
-    /**
-     * @return a TestCorpus set up from the downloaded Isartor test corpus zip file
-     * @throws IOException if an error occurs downloading or parsing the corpus zip file
-     */
-    public static TestCorpus getIsartorCorpus() throws IOException {
-        if (ISARTOR_CORPUS_ZIP_FILE == null) {
-            URL corpusURL = new URL(
-                    "http://downloads.verapdf.org/corp/isartor-pdfa-2008-08-13.zip");
-            ISARTOR_CORPUS_ZIP_FILE = createTempFileFromUrl(corpusURL, "isartorCorpus");
-            ISARTOR_CORPUS = ZipBackedTestCorpus.fromZipSource("Isartor-corpus", "Synthetic test files for PDF/A validation.",
-                    ISARTOR_CORPUS_ZIP_FILE, null);
-        }
-        return ISARTOR_CORPUS;
-    }
-
-    /**
-     * @return a TestCorpus set up from the downloaded Isartor test corpus zip file
-     * @throws IOException if an error occurs downloading or parsing the corpus zip file
-     */
-    public static TestCorpus getBFOCorpus() throws IOException {
-        if (BFO_CORPUS_ZIP_FILE == null) {
-            URL corpusURL = new URL(
-                    "https://github.com/bfosupport/pdfa-testsuite/archive/master.zip");
-            BFO_CORPUS_ZIP_FILE = createTempFileFromUrl(corpusURL, "bfoCorpus");
-            BFO_CORPUS = ZipBackedTestCorpus.fromZipSource("BFO-corpus", "Synthetic test files for PDF/A validation.",
-                    BFO_CORPUS_ZIP_FILE, null);
-        }
-        return BFO_CORPUS;
-    }
-
-    private static File createTempFileFromUrl(final URL sourceUrl,
-            final String tempPrefix) throws IOException {
-        File tempFile = File.createTempFile(tempPrefix, "zip");
-        try (OutputStream output = new FileOutputStream(tempFile);
-                InputStream corpusInput = sourceUrl.openStream();) {
-            byte[] buffer = new byte[8 * 1024];
-            int bytesRead;
-            while ((bytesRead = corpusInput.read(buffer)) != -1) {
-                output.write(buffer, 0, bytesRead);
-            }
-        }
-        return tempFile;
-    }
+	public static TestCorpus corpusByFlavourAndType(final PDFAFlavour key, final Corpus type) {
+		for (TestCorpus corpus : corporaByFlavour.get(key)) {
+			if (corpus.getType() == type) {
+				return corpus;
+			}
+		}
+		return null;
+	}
 }

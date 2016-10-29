@@ -5,6 +5,8 @@ package org.verapdf.pdfa.qa;
 
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
+import org.verapdf.component.AuditDuration;
+
 /**
  * @author  <a href="mailto:carl@openpreservation.org">Carl Wilson</a>.
  *
@@ -21,4 +23,6 @@ public interface ResultSetSummary {
     public int undefinedCases();
     public int inapplicableCases();
     public int exceptions();
+    public AuditDuration getDuration();
+    public long getMemoryUsed();
 }

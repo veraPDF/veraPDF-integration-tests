@@ -9,6 +9,7 @@ import java.util.Set;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import org.verapdf.ReleaseDetails;
+import org.verapdf.component.ComponentDetails;
 
 /**
  * @author <a href="mailto:carl@openpreservation.org">Carl Wilson</a>
@@ -22,4 +23,6 @@ public interface ResultSetDetails {
     public Date getDateCreated();
 
     public Set<ReleaseDetails> getDependencies();
+    
+    public ComponentDetails getFoundryDetails();
 }

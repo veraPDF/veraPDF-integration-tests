@@ -3,18 +3,27 @@
  */
 package org.verapdf.pdfa.qa;
 
-import org.verapdf.core.Directory;
-import org.verapdf.core.MapBackedRegistry;
-import org.verapdf.core.Registry;
-import org.verapdf.pdfa.flavours.PDFAFlavour;
-import org.verapdf.pdfa.validation.profiles.*;
-
-import javax.xml.bind.JAXBException;
-import java.io.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
+
+import javax.xml.bind.JAXBException;
+
+import org.verapdf.core.Directory;
+import org.verapdf.core.MapBackedRegistry;
+import org.verapdf.core.Registry;
+import org.verapdf.pdfa.flavours.PDFAFlavour;
+import org.verapdf.pdfa.validation.profiles.Profiles;
+import org.verapdf.pdfa.validation.profiles.Rule;
+import org.verapdf.pdfa.validation.profiles.RuleId;
+import org.verapdf.pdfa.validation.profiles.ValidationProfile;
+import org.verapdf.pdfa.validation.profiles.Variable;
 
 /**
  * @author <a href="mailto:carl@openpreservation.org">Carl Wilson</a>

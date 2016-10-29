@@ -3,18 +3,6 @@
  */
 package org.verapdf.pdfa.qa;
 
-import org.verapdf.component.AuditDuration;
-import org.verapdf.component.Components;
-import org.verapdf.model.ModelParser;
-import org.verapdf.pdfa.Foundries;
-import org.verapdf.pdfa.PDFAValidator;
-import org.verapdf.pdfa.results.ValidationResult;
-import org.verapdf.pdfa.validation.ValidationProfile;
-
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElementWrapper;
-import javax.xml.bind.annotation.adapters.XmlAdapter;
-
 import java.lang.management.ManagementFactory;
 import java.util.HashSet;
 import java.util.Set;
@@ -22,6 +10,18 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.adapters.XmlAdapter;
+
+import org.verapdf.component.AuditDuration;
+import org.verapdf.component.Components;
+import org.verapdf.model.ModelParser;
+import org.verapdf.pdfa.Foundries;
+import org.verapdf.pdfa.PDFAValidator;
+import org.verapdf.pdfa.results.ValidationResult;
+import org.verapdf.pdfa.validation.profiles.ValidationProfile;
 
 /**
  * @author <a href="mailto:carl@openpreservation.org">Carl Wilson</a>

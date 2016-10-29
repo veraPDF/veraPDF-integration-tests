@@ -13,13 +13,13 @@ import java.util.TreeSet;
 import javax.xml.bind.JAXBException;
 
 import org.verapdf.pdfa.flavours.PDFAFlavour;
-import org.verapdf.pdfa.validation.ProfileDetails;
-import org.verapdf.pdfa.validation.Profiles;
-import org.verapdf.pdfa.validation.Profiles.RuleComparator;
-import org.verapdf.pdfa.validation.Rule;
-import org.verapdf.pdfa.validation.RuleId;
-import org.verapdf.pdfa.validation.ValidationProfile;
-import org.verapdf.pdfa.validation.Variable;
+import org.verapdf.pdfa.validation.profiles.ProfileDetails;
+import org.verapdf.pdfa.validation.profiles.Profiles;
+import org.verapdf.pdfa.validation.profiles.Profiles.RuleComparator;
+import org.verapdf.pdfa.validation.profiles.Rule;
+import org.verapdf.pdfa.validation.profiles.RuleId;
+import org.verapdf.pdfa.validation.profiles.ValidationProfile;
+import org.verapdf.pdfa.validation.profiles.Variable;
 
 /**
  * @author Maksim Bezrukov

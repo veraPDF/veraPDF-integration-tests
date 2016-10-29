@@ -148,6 +148,7 @@ public class CorpusItemImpl implements CorpusItem {
         } catch (IOException e) {
         	LOG.log(Level.FINE, "IOException closing corpus file.", e);
             // Ignore stream close error
+        	e.printStackTrace();
             return fromValues(corpusFile.getPath(), "");
         }
     }

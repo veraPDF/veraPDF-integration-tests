@@ -3,14 +3,15 @@
  */
 package org.verapdf.pdfa.qa;
 
-import org.verapdf.pdfa.flavours.PDFAFlavour.Specification;
-import org.verapdf.pdfa.validation.Profiles;
-import org.verapdf.pdfa.validation.Profiles.RuleIdComparator;
-import org.verapdf.pdfa.validation.RuleId;
+import java.util.Comparator;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
-import java.util.Comparator;
+
+import org.verapdf.pdfa.flavours.PDFAFlavour.Specification;
+import org.verapdf.pdfa.validation.profiles.Profiles;
+import org.verapdf.pdfa.validation.profiles.Profiles.RuleIdComparator;
+import org.verapdf.pdfa.validation.profiles.RuleId;
 
 /**
  * @author <a href="mailto:carl@openpreservation.org">Carl Wilson</a>

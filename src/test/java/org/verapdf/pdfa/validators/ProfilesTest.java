@@ -7,9 +7,8 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 import org.verapdf.pdfa.qa.GitHubBackedProfileDirectory;
-import org.verapdf.pdfa.validation.ProfileDirectory;
-import org.verapdf.pdfa.validation.Rule;
-import org.verapdf.pdfa.validation.ValidationProfile;
+import org.verapdf.pdfa.validation.profiles.Rule;
+import org.verapdf.pdfa.validation.profiles.ValidationProfile;
 
 /**
  * @author <a href="mailto:carl@openpreservation.org">Carl Wilson</a>
@@ -17,7 +16,7 @@ import org.verapdf.pdfa.validation.ValidationProfile;
  */
 @SuppressWarnings("static-method")
 public class ProfilesTest {
-    private static final ProfileDirectory INTEGRATION_PROFILES = GitHubBackedProfileDirectory.fromBranch("integration");
+    private static final org.verapdf.pdfa.validation.profiles.ProfileDirectory INTEGRATION_PROFILES = GitHubBackedProfileDirectory.fromBranch("integration");
 
     /**
      * Test method for {@link org.verapdf.pdfa.validation.ValidationProfileImpl#getPDFAFlavour()}.

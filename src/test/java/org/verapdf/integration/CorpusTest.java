@@ -65,7 +65,7 @@ public class CorpusTest {
 	private static void testCorpora(List<ResultSet> resultSets) {
 		for (PDFAFlavour flavour : CorpusManager.testableFlavours()) {
 			for (TestCorpus corpus : CorpusManager.corporaForFlavour(flavour)) {
-				PDFAValidator validator = Foundries.defaultInstance().newValidator(flavour, false);
+				PDFAValidator validator = Foundries.defaultInstance().createValidator(flavour, false);
 				ResultSet results = ResultSetImpl.validateCorpus(corpus, validator);
 				resultSets.add(results);
 			}

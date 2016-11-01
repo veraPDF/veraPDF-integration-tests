@@ -54,7 +54,7 @@ public class ValidatorTest {
 //    @Test
     public final void testGetProfile() {
         for (ValidationProfile profile : PROFILES.getValidationProfiles()) {
-            PDFAValidator validator = Foundries.defaultInstance().newValidator(profile, false);
+            PDFAValidator validator = Foundries.defaultInstance().createValidator(profile, false);
             assertTrue(profile.equals(validator.getProfile()));
         }
     }
@@ -79,7 +79,7 @@ public class ValidatorTest {
             // Try all profiles
             for (ValidationProfile profile : PROFILES.getValidationProfiles()) {
                 // Create a validator for profile
-                PDFAValidator validator = Foundries.defaultInstance().newValidator(profile,
+                PDFAValidator validator = Foundries.defaultInstance().createValidator(profile,
                         false);
                 Set<ValidationResult> results = new HashSet<>();
                 // Validate a fresh model instance and add the result to the set
@@ -113,7 +113,7 @@ public class ValidatorTest {
             for (ValidationProfile profile : PROFILES.getValidationProfiles()) {
                 // Create a validator for the profile and get a result with no
                 // failures
-                PDFAValidator validator = Foundries.defaultInstance().newValidator(profile,
+                PDFAValidator validator = Foundries.defaultInstance().createValidator(profile,
                         false);
                 ValidationResult result = ValidationResults.defaultResult();
                 // Validate a fresh model instance and add the result to the set
@@ -127,7 +127,7 @@ public class ValidatorTest {
                 int failedMax = result.getTestAssertions().size() + 1;
                 // Set up a loop to restrict failures
                 for (int index = failedMax; index > 0; index--) {
-                    PDFAValidator fastFailValidator = Foundries.defaultInstance().newFailFastValidator(profile, index);
+                    PDFAValidator fastFailValidator = Foundries.defaultInstance().createFailFastValidator(profile, index);
                     ValidationResult failFastResult = ValidationResults
                             .defaultResult();
                     try (ModelParser parser = ModelParser.createModelWithFlavour(
@@ -180,9 +180,9 @@ public class ValidatorTest {
         for (ValidationProfile profile : PROFILES.getValidationProfiles()) {
             for (String itemName : sample) {
                 // Create fresh validators for each sample item
-                PDFAValidator validator = Foundries.defaultInstance().newValidator(profile,
+                PDFAValidator validator = Foundries.defaultInstance().createValidator(profile,
                         false);
-                PDFAValidator checkValidator = Foundries.defaultInstance().newValidator(
+                PDFAValidator checkValidator = Foundries.defaultInstance().createValidator(
                         profile, false);
                 // Create a new model parser instance
                 try (ModelParser parser = ModelParser.createModelWithFlavour(

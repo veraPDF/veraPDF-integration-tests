@@ -21,6 +21,7 @@ import org.verapdf.core.ValidationException;
 import org.verapdf.integration.CorpusManager;
 import org.verapdf.model.ModelParser;
 import org.verapdf.pdfa.Foundries;
+import org.verapdf.pdfa.PDFAParser;
 import org.verapdf.pdfa.PDFAValidator;
 import org.verapdf.pdfa.PdfBoxFoundryProvider;
 import org.verapdf.pdfa.flavours.PDFAFlavour;
@@ -84,7 +85,7 @@ public class ValidatorTest {
                 Set<ValidationResult> results = new HashSet<>();
                 // Validate a fresh model instance and add the result to the set
                 for (int index = 0; index < 2; index++) {
-                    try (ModelParser parser = ModelParser.createModelWithFlavour(
+                    try (PDFAParser parser = ModelParser.createModelWithFlavour(
                             veraCorpus.getItemStream(itemName), profile.getPDFAFlavour())) {
                         ValidationResult result = validator.validate(parser);
                         results.add(result);
@@ -117,7 +118,7 @@ public class ValidatorTest {
                         false);
                 ValidationResult result = ValidationResults.defaultResult();
                 // Validate a fresh model instance and add the result to the set
-                try (ModelParser parser = ModelParser.createModelWithFlavour(
+                try (PDFAParser parser = ModelParser.createModelWithFlavour(
                         veraCorpus.getItemStream(itemName), profile.getPDFAFlavour())) {
                     result = validator.validate(parser);
                 } catch (ValidationException e) {
@@ -185,7 +186,7 @@ public class ValidatorTest {
                 PDFAValidator checkValidator = Foundries.defaultInstance().createValidator(
                         profile, false);
                 // Create a new model parser instance
-                try (ModelParser parser = ModelParser.createModelWithFlavour(
+                try (PDFAParser parser = ModelParser.createModelWithFlavour(
                         veraCorpus.getItemStream(itemName), profile.getPDFAFlavour())) {
                     // Validate model with fresh validator
                     ValidationResult firstResult = validator.validate(parser);

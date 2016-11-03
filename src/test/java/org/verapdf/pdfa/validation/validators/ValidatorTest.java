@@ -245,7 +245,7 @@ public class ValidatorTest {
 
         if (results.size() > 0) {
             for (ValidationResult result : results) {
-                ValidationResults.toXml(result, writer, Boolean.TRUE);
+                ValidationResults.toXml(result, writer, true, true);
             }
         }
         return writer.toString();
@@ -258,9 +258,9 @@ public class ValidatorTest {
         StringWriter writer = new StringWriter();
         writer.write(testContextMessage(corpus, itemName, profile));
         writer.write("\nFirstResult:\n");
-        ValidationResults.toXml(firstResult, writer, Boolean.TRUE);
+        ValidationResults.toXml(firstResult, writer, true, true);
         writer.write("\nSecondResult:\n");
-        ValidationResults.toXml(secondResult, writer, Boolean.TRUE);
+        ValidationResults.toXml(secondResult, writer, true, true);
         return writer.toString();
     }
     

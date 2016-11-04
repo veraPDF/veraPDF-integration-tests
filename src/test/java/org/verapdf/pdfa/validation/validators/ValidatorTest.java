@@ -18,6 +18,7 @@ import org.junit.BeforeClass;
 import org.verapdf.core.EncryptedPdfException;
 import org.verapdf.core.ModelParsingException;
 import org.verapdf.core.ValidationException;
+import org.verapdf.core.XmlSerialiser;
 import org.verapdf.integration.CorpusManager;
 import org.verapdf.model.ModelParser;
 import org.verapdf.pdfa.Foundries;
@@ -245,7 +246,7 @@ public class ValidatorTest {
 
         if (results.size() > 0) {
             for (ValidationResult result : results) {
-                ValidationResults.toXml(result, writer, true, true);
+            	XmlSerialiser.toXml(result, writer, true, true);
             }
         }
         return writer.toString();
@@ -258,9 +259,9 @@ public class ValidatorTest {
         StringWriter writer = new StringWriter();
         writer.write(testContextMessage(corpus, itemName, profile));
         writer.write("\nFirstResult:\n");
-        ValidationResults.toXml(firstResult, writer, true, true);
+        XmlSerialiser.toXml(firstResult, writer, true, true);
         writer.write("\nSecondResult:\n");
-        ValidationResults.toXml(secondResult, writer, true, true);
+        XmlSerialiser.toXml(secondResult, writer, true, true);
         return writer.toString();
     }
     

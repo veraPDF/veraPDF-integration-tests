@@ -68,7 +68,7 @@ public class ProfilesMerger {
 
         ProfileDetails det = Profiles.profileDetailsFromValues(name, description, creator, new Date());
         ValidationProfile mergedProfile = Profiles.profileFromSortedValues(flavour, det, "", rules, variables);
-        Profiles.profileToXml(mergedProfile, out, Boolean.TRUE);
+        Profiles.profileToXml(mergedProfile, out, true, false);
     }
 
     private static Set<Rule> updateSpecification(final Collection<Rule> rules, final PDFAFlavour flavour) {

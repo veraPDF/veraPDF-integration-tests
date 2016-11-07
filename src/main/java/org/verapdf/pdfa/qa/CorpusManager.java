@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.verapdf.integration;
+package org.verapdf.pdfa.qa;
 
 import java.io.IOException;
 import java.util.Collections;
@@ -11,8 +11,6 @@ import java.util.Set;
 
 import org.verapdf.pdfa.flavours.PDFAFlavour;
 import org.verapdf.pdfa.qa.AbstractTestCorpus.Corpus;
-import org.verapdf.pdfa.qa.TestCorpus;
-import org.verapdf.pdfa.qa.ZipBackedTestCorpus;
 
 /**
  * @author <a href="mailto:carl@openpreservation.org">Carl Wilson</a>

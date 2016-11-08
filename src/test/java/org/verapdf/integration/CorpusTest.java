@@ -19,6 +19,7 @@ import org.verapdf.pdfa.PDFAValidator;
 import org.verapdf.pdfa.PdfBoxFoundryProvider;
 import org.verapdf.pdfa.VeraGreenfieldFoundryProvider;
 import org.verapdf.pdfa.flavours.PDFAFlavour;
+import org.verapdf.pdfa.qa.CorpusManager;
 import org.verapdf.pdfa.qa.ResultSet;
 import org.verapdf.pdfa.qa.ResultSetDetailsImpl;
 import org.verapdf.pdfa.qa.ResultSetImpl;

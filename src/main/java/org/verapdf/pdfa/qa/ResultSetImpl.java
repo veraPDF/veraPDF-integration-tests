@@ -17,7 +17,6 @@ import javax.xml.bind.annotation.adapters.XmlAdapter;
 
 import org.verapdf.component.AuditDuration;
 import org.verapdf.component.Components;
-import org.verapdf.model.ModelParser;
 import org.verapdf.pdfa.Foundries;
 import org.verapdf.pdfa.PDFAParser;
 import org.verapdf.pdfa.PDFAValidator;
@@ -187,7 +186,7 @@ public class ResultSetImpl implements ResultSet {
 				LOG.log(Level.FINE, "Problem generating ID for corpus item:" + itemName, excep);
 			}
 			if (id != null) {
-				try (PDFAParser loader = ModelParser.createModelWithFlavour(corpus.getItemStream(itemName),
+				try (PDFAParser loader = Foundries.defaultInstance().createParser(corpus.getItemStream(itemName),
 						validator.getProfile().getPDFAFlavour())) {
 					ValidationResult result = validator.validate(loader);
 					long memUsed = (ManagementFactory.getMemoryMXBean().getHeapMemoryUsage().getUsed() / MEGABYTE);

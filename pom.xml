@@ -9,7 +9,7 @@
 
   <groupId>org.verapdf</groupId>
   <artifactId>verapdf-integration-tests</artifactId>
-  <version>0.28.0</version>
+  <version>0.29.0-SNAPSHOT</version>
   <name>veraPDF Quality Assurance</name>
   <description>Test and QA utilities for the veraPDF Library.</description>
 
@@ -43,9 +43,9 @@
   <properties>
     <sonar.jacoco.itReportPath>${project.basedir}/../target/jacoco-it.exec</sonar.jacoco.itReportPath>
     <sonar.language>java</sonar.language>
-    <verapdf.library.version>[0.28.0,0.29.0)</verapdf.library.version>
-    <verapdf.pdfbox.validation.version>[0.28.0,0.29.0)</verapdf.pdfbox.validation.version>
-    <verapdf.validation.version>[0.4.0, 0.5.0)</verapdf.validation.version>
+    <verapdf.library.version>[0.29.0,0.30.0)</verapdf.library.version>
+    <verapdf.pdfbox.validation.version>[0.29.0,0.30.0)</verapdf.pdfbox.validation.version>
+    <verapdf.validation.version>[0.5.0,0.6.0)</verapdf.validation.version>
   </properties>
 
   <dependencies>

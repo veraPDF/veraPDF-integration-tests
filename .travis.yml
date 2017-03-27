@@ -9,26 +9,17 @@ branches:
   except:
     - /^v|d\d+\.\d+\.\d+$/
 
-install:
-  - mvn clean install
-
-script:
-  - cat target/test-results/index.html
-
-addons:
-  coverity_scan:
-    project:
-      name: "veraPDF/veraPDF-integration-tests"
-      description: "Industry supported, open source PDF/A validation"
-      notification_email: carl@openpreservation.org
-    build_command_prepend: "mvn clean"
-    build_command:   "mvn -DskipTests=true compile"
-    branch_pattern: integration
 
 before_install:
 - curl -sL https://github.com/jpm4j/jpm4j.installers/raw/master/dist/biz.aQute.jpm.run.jar >jpm4j.jar
 - java -jar jpm4j.jar -u init
 - ~/jpm/bin/jpm install com.codacy:codacy-coverage-reporter:assembly
+
+install:
+  - mvn clean install
+
+script:
+  - cat target/test-results/index.html
 
 after_success:
 - bash <(curl -s https://codecov.io/bash)

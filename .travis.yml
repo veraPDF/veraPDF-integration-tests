@@ -32,4 +32,4 @@ before_install:
 
 after_success:
 - bash <(curl -s https://codecov.io/bash)
-- ~/jpm/bin/codacy-coverage-reporter -l Java -r jhove-apps/target/site/jacoco/jacoco.xml
+- ~/jpm/bin/codacy-coverage-reporter -l Java -r target/site/jacoco/jacoco.xml

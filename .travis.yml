@@ -11,9 +11,8 @@ branches:
 
 
 before_install:
-- curl -sL https://github.com/jpm4j/jpm4j.installers/raw/master/dist/biz.aQute.jpm.run.jar >jpm4j.jar
-- java -jar jpm4j.jar -u init
-- ~/jpm/bin/jpm install com.codacy:codacy-coverage-reporter:assembly
+  - sudo apt-get install jq
+  - wget -O ~/codacy-coverage-reporter-assembly-latest.jar $(curl https://api.github.com/repos/codacy/codacy-coverage-reporter/releases/latest | jq -r .assets[0].browser_download_url)
 
 install:
   - mvn clean install
@@ -22,5 +21,5 @@ script:
   - cat target/test-results/index.html
 
 after_success:
-- bash <(curl -s https://codecov.io/bash)
-- ~/jpm/bin/codacy-coverage-reporter -l Java -r target/site/jacoco/jacoco.xml
+  - bash <(curl -s https://codecov.io/bash)
+  - java -cp ~/codacy-coverage-reporter-assembly-latest.jar com.codacy.CodacyCoverageReporter -l Java -r target/site/jacoco/jacoco.xml

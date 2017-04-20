@@ -23,26 +23,26 @@
  */
 package org.verapdf.pdfa.qa;
 
-import java.util.Date;
-import java.util.Set;
-
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
-import org.verapdf.ReleaseDetails;
-import org.verapdf.component.ComponentDetails;
+import org.verapdf.component.AuditDuration;
 
 /**
- * @author <a href="mailto:carl@openpreservation.org">Carl Wilson</a>
+ * @author  <a href="mailto:carl@openpreservation.org">Carl Wilson</a>.
  *
  */
-@XmlJavaTypeAdapter(ResultSetDetailsImpl.Adapter.class)
-public interface ResultSetDetails {
-    /**
-     * @return the date that the result set was created
-     */
-    public Date getDateCreated();
-
-    public Set<ReleaseDetails> getDependencies();
-    
-    public ComponentDetails getFoundryDetails();
+@XmlJavaTypeAdapter(ResultSetSummaryImpl.Adapter.class)
+public interface ResultSetSummary {
+    public String getPassed();
+    public int invalidCases();
+    public int invalidCasesFailed();
+    public int invalidCasesPassed();
+    public int validCases();
+    public int validCasesFailed();
+    public int validCasesPassed();
+    public int undefinedCases();
+    public int inapplicableCases();
+    public int exceptions();
+    public AuditDuration getDuration();
+    public long getMemoryUsed();
 }

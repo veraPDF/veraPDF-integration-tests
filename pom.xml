@@ -1,111 +1,172 @@
+<!--
+
+    This file is part of veraPDF Quality Assurance, a module of the veraPDF project.
+    Copyright (c) 2015, veraPDF Consortium <info@verapdf.org>
+    All rights reserved.
+
+    veraPDF Quality Assurance is free software: you can redistribute it and/or modify
+    it under the terms of either:
+
+    The GNU General public license GPLv3+.
+    You should have received a copy of the GNU General Public License
+    along with veraPDF Quality Assurance as the LICENSE.GPL file in the root of the source
+    tree.  If not, see http://www.gnu.org/licenses/ or
+    https://www.gnu.org/licenses/gpl-3.0.en.html.
+
+    The Mozilla Public License MPLv2+.
+    You should have received a copy of the Mozilla Public License along with
+    veraPDF Quality Assurance as the LICENSE.MPL file in the root of the source tree.
+    If a copy of the MPL was not distributed with this file, you can obtain one at
+    http://mozilla.org/MPL/2.0/.
+
+-->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
+    <artifactId>verapdf-parent</artifactId>
     <groupId>org.verapdf</groupId>
-    <artifactId>verapdf-library</artifactId>
-    <version>0.11.0-SNAPSHOT</version>
+    <version>1.4.1</version>
   </parent>
-  <artifactId>verapdf-qa</artifactId>
+
+  <groupId>org.verapdf</groupId>
+  <artifactId>verapdf-integration-tests</artifactId>
+  <version>1.4.0</version>
   <name>veraPDF Quality Assurance</name>
   <description>Test and QA utilities for the veraPDF Library.</description>
+
+  <scm>
+    <url>https://github.com/veraPDF/veraPDF-integration-tests/</url>
+    <connection>scm:git:https://github.com/veraPDF/veraPDF-integration-tests.git</connection>
+    <developerConnection>scm:git:git@github.com:veraPDF/veraPDF-integration-tests.git</developerConnection>
+  </scm>
+
+  <repositories>
+    <repository>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
+      <id>vera-dev</id>
+      <name>Vera development</name>
+      <url>http://artifactory.openpreservation.org/artifactory/vera-dev</url>
+    </repository>
+  </repositories>
+  <pluginRepositories>
+    <pluginRepository>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+      <id>vera-dev</id>
+      <name>Vera development</name>
+      <url>http://artifactory.openpreservation.org/artifactory/vera-dev</url>
+    </pluginRepository>
+  </pluginRepositories>
+
+  <properties>
+    <jacoco.version>0.7.9</jacoco.version>
+    <verapdf.library.version>[1.4.0,1.5.0)</verapdf.library.version>
+    <verapdf.pdfbox.validation.version>[1.4.0,1.5.0)</verapdf.pdfbox.validation.version>
+    <verapdf.validation.version>[1.4.0,1.5.0)</verapdf.validation.version>
+  </properties>
 
   <dependencies>
     <dependency>
       <groupId>org.verapdf</groupId>
-      <artifactId>gui</artifactId>
+      <artifactId>core</artifactId>
+      <version>${verapdf.library.version}</version>
     </dependency>
     <dependency>
-      <groupId>xmlunit</groupId>
-      <artifactId>xmlunit</artifactId>
+      <groupId>org.verapdf</groupId>
+      <artifactId>pdfbox-validation-model</artifactId>
+      <version>${verapdf.pdfbox.validation.version}</version>
     </dependency>
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>com.google.guava</groupId>
-      <artifactId>guava</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.bouncycastle</groupId>
-      <artifactId>bcprov-jdk15on</artifactId>
+      <version>4.12</version>
+      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>commons-codec</groupId>
       <artifactId>commons-codec</artifactId>
       <version>1.10</version>
     </dependency>
-
-    <!-- TEST DEPENDENCIES -->
     <dependency>
-      <groupId>com.fasterxml.jackson.core</groupId>
-      <artifactId>jackson-annotations</artifactId>
-      <scope>test</scope>
+      <groupId>org.bouncycastle</groupId>
+      <artifactId>bcprov-jdk15on</artifactId>
+      <version>1.54</version>
     </dependency>
     <dependency>
-      <groupId>com.fasterxml.jackson.core</groupId>
-      <artifactId>jackson-core</artifactId>
-      <scope>test</scope>
+      <groupId>com.github.spullara.mustache.java</groupId>
+      <artifactId>compiler</artifactId>
+      <version>0.8.18</version>
     </dependency>
     <dependency>
-      <groupId>com.fasterxml.jackson.core</groupId>
-      <artifactId>jackson-databind</artifactId>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>commons-io</groupId>
-      <artifactId>commons-io</artifactId>
-      <scope>test</scope>
+      <groupId>org.verapdf</groupId>
+      <artifactId>validation-model</artifactId>
+      <version>${verapdf.validation.version}</version>
     </dependency>
   </dependencies>
 
   <build>
+
     <plugins>
+
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-failsafe-plugin</artifactId>
+        <artifactId>maven-compiler-plugin</artifactId>
+      </plugin>
+      <plugin>
+         <groupId>org.apache.maven.plugins</groupId>
+         <artifactId>maven-dependency-plugin</artifactId>
+         <version>3.0.0</version>
+         <executions>
+           <execution>
+             <id>unpack</id>
+             <phase>test</phase>
+             <goals>
+               <goal>unpack-dependencies</goal>
+             </goals>
+             <configuration>
+               <overWrite>true</overWrite>
+               <outputDirectory>${project.build.directory}/classes</outputDirectory>
+               <overWriteReleases>false</overWriteReleases>
+               <overWriteSnapshots>true</overWriteSnapshots>
+             </configuration>
+           </execution>
+         </executions>
+       </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
       </plugin>
       <plugin>
         <groupId>org.jacoco</groupId>
         <artifactId>jacoco-maven-plugin</artifactId>
-        <version>0.7.5.201505241946</version>
+        <version>${jacoco.version}</version>
         <configuration>
-          <!-- The destination file for the code coverage report has to be set to the same value in the parent pom and in 
-            each module pom. Then JaCoCo will add up information in the same report, so that, it will give the cross-module code coverage. -->
-          <destFile>${project.basedir}/../target/jacoco-it.exec</destFile>
+          <sessionId>${project.artifactId}</sessionId>
+          <includes>
+            <include>org/verapdf/**</include>
+          </includes>
         </configuration>
+        <executions>
+          <execution>
+            <id>prepare</id>
+            <goals>
+              <goal>prepare-agent</goal>
+            </goals>
+          </execution>
+          <execution>
+            <id>report</id>
+            <goals>
+              <goal>report-aggregate</goal>
+            </goals>
+          </execution>
+        </executions>
       </plugin>
     </plugins>
   </build>
-
-  <profiles>
-    <profile>
-      <id>clone-test-resources</id>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.codehaus.mojo</groupId>
-            <artifactId>exec-maven-plugin</artifactId>
-          </plugin>
-          <plugin>
-            <groupId>com.googlecode.maven-download-plugin</groupId>
-            <artifactId>download-maven-plugin</artifactId>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-    <profile>
-      <id>update-test-resources</id>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.codehaus.mojo</groupId>
-            <artifactId>exec-maven-plugin</artifactId>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-  </profiles>
 
 </project>

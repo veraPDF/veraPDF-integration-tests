@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="veraPDF test results.">
+  <meta name="author" content="veraPDF Consortium">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta http-equiv="Content-Security-Policy" content="sandbox allow-scripts; default-src 'self' *.openpreservation.org; child-src 'self' *.openpreservation.org; style-src 'self' 'unsafe-inline' ">
+  <title>veraPDF Corpus Test Results</title>
+  <style media="screen" type="text/css">
+    td {
+      padding : 5px;
+      font-size: 1.2em;
+      font-weight: bold;
+    }
+    td.trace {
+      padding : 0;
+      font-size: 1em;
+      font-weight: normal;
+    }
+    .pass {
+      background-color: green;
+      color: white;
+    }
+    .fail {
+      background-color: red;
+    }
+    .undefined {
+      background-color: orange;
+    }
+
+    </style>
+  </head>
+<body>
+
+  <div id="content">
+  <h1>veraPDF Corpus Test Results : {{pdfBoxResult.details.dateCreated}}</h1>
+  <h2>{{pdfBoxResult.corpusDetails.name}} - {{pdfBoxResult.valdiationProfile.details.name}}</h2>
+
+    <div id="wrapper">
+      <table id="layout">
+
+        <!-- Header Row -->
+        <tr>
+          <th>
+          {{#pdfBoxResult}}
+            <h2>{{details.foundryDetails.name}} v{{details.foundryDetails.version}}</h2>
+            <h3>Dependencies</h3>
+            {{#details.dependencies}}
+            <p>{{id}} v{{version}}-{{buildDate}}</p>
+            {{/details.dependencies}}
+          {{/pdfBoxResult}}
+          </th>
+
+          <th>
+          {{#gfResult}}
+            <h2>{{details.foundryDetails.name}} v{{details.foundryDetails.version}}</h2>
+            <h3>Dependencies</h3>
+            {{#details.dependencies}}
+            <p>{{id}} v{{version}}-{{buildDate}}</p>
+            {{/details.dependencies}}
+          {{/gfResult}}
+          </th>
+        </tr>
+
+        <!-- Content Row -->
+        <tr>
+          <td>
+          
+            <table id="pdfbox-results">
+              {{#pdfBoxResult.exceptions}}
+              <tr>
+                <td class="fail">{{corpusItemId.name}}</td>
+              </tr>
+              <tr>
+                <td class="trace">
+                  <pre>
+{{cause.message}}
+{{#cause.stackTrace}}
+{{className}}.{{methodName}}({{fileName}}:{{lineNumber}})
+{{/cause.stackTrace}}
+                 </pre>
+               </td>
+             </tr>
+             {{/pdfBoxResult.exceptions}}
+
+		     {{#pdfBoxResult.results}}
+             {{#result}}
+		     <tr>
+		         <td class="{{testType}}">{{corpusItemName}}</td>
+		     </tr>
+		     <tr>
+		       <td>
+                 <pre>
+Duration: {{duration}}
+Memory: {{memoryUsed}} MB
+                 </pre>
+               </td>
+		     </tr>
+             {{/result}}
+		     {{/pdfBoxResult.results}}
+            </table>
+          </td>
+          <td>
+
+            <table id="gf-results">
+              {{#gfResult.exceptions}}
+              <tr>
+                <td class="fail">{{corpusItemId.name}}</td>
+              </tr>
+              <tr>
+                <td class="trace">
+                  <pre>
+{{cause.message}}
+{{#cause.stackTrace}}
+{{className}}.{{methodName}}({{fileName}}:{{lineNumber}})
+{{/cause.stackTrace}}
+                 </pre>
+               </td>
+             </tr>
+             {{/gfResult.exceptions}}
+
+		     {{#gfResult.results}}
+             {{#result}}
+		     <tr>
+		         <td class="{{testType}}">{{corpusItemName}}</td>
+		     </tr>
+		     <tr>
+		       <td>
+                 <pre>
+Duration: {{duration}}
+Memory: {{memoryUsed}} MB
+                 </pre>
+               </td>
+		     </tr>
+             {{/result}}
+		     {{/gfResult.results}}
+            </table>
+
+          </td>
+        </tr>
+
+      </table><!-- layout -->
+    </div><!-- wrapper -->
+  </div><!-- content>
+</body>
+</html>

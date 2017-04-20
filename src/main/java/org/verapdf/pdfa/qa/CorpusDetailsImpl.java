@@ -1,19 +1,48 @@
 /**
+ * This file is part of veraPDF Quality Assurance, a module of the veraPDF project.
+ * Copyright (c) 2015, veraPDF Consortium <info@verapdf.org>
+ * All rights reserved.
+ *
+ * veraPDF Quality Assurance is free software: you can redistribute it and/or modify
+ * it under the terms of either:
+ *
+ * The GNU General public license GPLv3+.
+ * You should have received a copy of the GNU General Public License
+ * along with veraPDF Quality Assurance as the LICENSE.GPL file in the root of the source
+ * tree.  If not, see http://www.gnu.org/licenses/ or
+ * https://www.gnu.org/licenses/gpl-3.0.en.html.
+ *
+ * The Mozilla Public License MPLv2+.
+ * You should have received a copy of the Mozilla Public License along with
+ * veraPDF Quality Assurance as the LICENSE.MPL file in the root of the source tree.
+ * If a copy of the MPL was not distributed with this file, you can obtain one at
+ * http://mozilla.org/MPL/2.0/.
+ */
+/**
  * 
  */
 package org.verapdf.pdfa.qa;
+
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.adapters.XmlAdapter;
 
 /**
  * @author <a href="mailto:carl@openpreservation.org">Carl Wilson</a>
  *
  */
 public class CorpusDetailsImpl implements CorpusDetails {
+    @XmlElement(name = "name")
     final String name;
+    @XmlElement(name = "description")
     final String description;
+    @XmlElement(name = "hexSha1")
+    final String hexSha1;
 
-    private CorpusDetailsImpl(final String name, final String description) {
+    private CorpusDetailsImpl(final String name, final String description,
+            final String hexSha1) {
         this.name = name;
         this.description = description;
+        this.hexSha1 = hexSha1;
     }
 
     /**
@@ -32,7 +61,14 @@ public class CorpusDetailsImpl implements CorpusDetails {
         return this.description;
     }
 
-    
+    /**
+     * { @inheritDoc }
+     */
+    @Override
+    public String getHexSha1() {
+        return this.hexSha1;
+    }
+
     /**
      * { @inheritDoc }
      */
@@ -40,9 +76,11 @@ public class CorpusDetailsImpl implements CorpusDetails {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result
+        result = prime
+                * result
                 + ((this.description == null) ? 0 : this.description.hashCode());
-        result = prime * result + ((this.name == null) ? 0 : this.name.hashCode());
+        result = prime * result
+                + ((this.name == null) ? 0 : this.name.hashCode());
         return result;
     }
 
@@ -71,7 +109,6 @@ public class CorpusDetailsImpl implements CorpusDetails {
         return true;
     }
 
-    
     /**
      * { @inheritDoc }
      */
@@ -90,7 +127,7 @@ public class CorpusDetailsImpl implements CorpusDetails {
      *         values
      */
     static CorpusDetails fromValues(final String name,
-            final String description) {
+            final String description, final String hexSha1) {
         if (name == null)
             throw new NullPointerException("Parameter name can not be null");
         if (name.isEmpty())
@@ -98,6 +135,19 @@ public class CorpusDetailsImpl implements CorpusDetails {
         if (description == null)
             throw new NullPointerException(
                     "Parameter description can not be null");
-        return new CorpusDetailsImpl(name, description);
+        return new CorpusDetailsImpl(name, description, hexSha1);
     }
+
+    static class Adapter extends XmlAdapter<CorpusDetailsImpl, CorpusDetails> {
+        @Override
+        public CorpusDetails unmarshal(CorpusDetailsImpl details) {
+            return details;
+        }
+
+        @Override
+        public CorpusDetailsImpl marshal(CorpusDetails details) {
+            return (CorpusDetailsImpl) details;
+        }
+    }
+
 }

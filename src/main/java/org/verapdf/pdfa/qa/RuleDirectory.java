@@ -1,20 +1,49 @@
 /**
+ * This file is part of veraPDF Quality Assurance, a module of the veraPDF project.
+ * Copyright (c) 2015, veraPDF Consortium <info@verapdf.org>
+ * All rights reserved.
+ *
+ * veraPDF Quality Assurance is free software: you can redistribute it and/or modify
+ * it under the terms of either:
+ *
+ * The GNU General public license GPLv3+.
+ * You should have received a copy of the GNU General Public License
+ * along with veraPDF Quality Assurance as the LICENSE.GPL file in the root of the source
+ * tree.  If not, see http://www.gnu.org/licenses/ or
+ * https://www.gnu.org/licenses/gpl-3.0.en.html.
+ *
+ * The Mozilla Public License MPLv2+.
+ * You should have received a copy of the Mozilla Public License along with
+ * veraPDF Quality Assurance as the LICENSE.MPL file in the root of the source tree.
+ * If a copy of the MPL was not distributed with this file, you can obtain one at
+ * http://mozilla.org/MPL/2.0/.
+ */
+/**
  *
  */
 package org.verapdf.pdfa.qa;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
+
+import javax.xml.bind.JAXBException;
 
 import org.verapdf.core.Directory;
 import org.verapdf.core.MapBackedRegistry;
 import org.verapdf.core.Registry;
 import org.verapdf.pdfa.flavours.PDFAFlavour;
-import org.verapdf.pdfa.validation.*;
-
-import javax.xml.bind.JAXBException;
-import java.io.*;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
+import org.verapdf.pdfa.validation.profiles.Profiles;
+import org.verapdf.pdfa.validation.profiles.Rule;
+import org.verapdf.pdfa.validation.profiles.RuleId;
+import org.verapdf.pdfa.validation.profiles.ValidationProfile;
+import org.verapdf.pdfa.validation.profiles.Variable;
 
 /**
  * @author <a href="mailto:carl@openpreservation.org">Carl Wilson</a>
@@ -108,7 +137,7 @@ public final class RuleDirectory implements Directory<RuleId, Rule> {
     }
 
     private Set<Rule> rulesFromDir(final File dir,
-                                   final PDFAFlavour flavour) throws FileNotFoundException,
+                                   final PDFAFlavour pdfaFlavour) throws FileNotFoundException,
             IOException, JAXBException {
         Set<Rule> rulesLocal = new HashSet<>();
         File[] files = dir.listFiles();
@@ -116,10 +145,10 @@ public final class RuleDirectory implements Directory<RuleId, Rule> {
             if (file.isHidden())
                 continue;
             if (file.isDirectory())
-            	rulesLocal.addAll(rulesFromDir(file, flavour));
+            	rulesLocal.addAll(rulesFromDir(file, pdfaFlavour));
             if (file.isFile() && file.canRead()) {
                 try (InputStream fis = new FileInputStream(file)) {
-                    Set<Rule> rule = getRuleFromProfile(fis, flavour);
+                    Set<Rule> rule = getRuleFromProfile(fis);
                     rulesLocal.addAll(rule);
                 }
             }
@@ -127,8 +156,7 @@ public final class RuleDirectory implements Directory<RuleId, Rule> {
         return rulesLocal;
     }
 
-    private Set<Rule> getRuleFromProfile(final InputStream toParse,
-                                         final PDFAFlavour flavour) throws JAXBException {
+    private Set<Rule> getRuleFromProfile(final InputStream toParse) throws JAXBException {
         ValidationProfile profile = Profiles.profileFromXml(
                 toParse);
         checkAndAddAllVariables(this.variables, profile.getVariables());

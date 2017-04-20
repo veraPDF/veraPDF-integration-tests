@@ -1,11 +1,37 @@
 /**
+ * This file is part of veraPDF Quality Assurance, a module of the veraPDF project.
+ * Copyright (c) 2015, veraPDF Consortium <info@verapdf.org>
+ * All rights reserved.
+ *
+ * veraPDF Quality Assurance is free software: you can redistribute it and/or modify
+ * it under the terms of either:
+ *
+ * The GNU General public license GPLv3+.
+ * You should have received a copy of the GNU General Public License
+ * along with veraPDF Quality Assurance as the LICENSE.GPL file in the root of the source
+ * tree.  If not, see http://www.gnu.org/licenses/ or
+ * https://www.gnu.org/licenses/gpl-3.0.en.html.
+ *
+ * The Mozilla Public License MPLv2+.
+ * You should have received a copy of the Mozilla Public License along with
+ * veraPDF Quality Assurance as the LICENSE.MPL file in the root of the source tree.
+ * If a copy of the MPL was not distributed with this file, you can obtain one at
+ * http://mozilla.org/MPL/2.0/.
+ */
+/**
  * 
  */
 package org.verapdf.pdfa.qa;
 
+import java.util.Comparator;
+
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.adapters.XmlAdapter;
+
 import org.verapdf.pdfa.flavours.PDFAFlavour.Specification;
-import org.verapdf.pdfa.validation.Profiles;
-import org.verapdf.pdfa.validation.RuleId;
+import org.verapdf.pdfa.validation.profiles.Profiles;
+import org.verapdf.pdfa.validation.profiles.Profiles.RuleIdComparator;
+import org.verapdf.pdfa.validation.profiles.RuleId;
 
 /**
  * @author <a href="mailto:carl@openpreservation.org">Carl Wilson</a>
@@ -18,12 +44,19 @@ public class CorpusItemIdImpl implements CorpusItemId {
     private static final String FAIL = "fail";
     private static final String TEST_PREFIX = "t";
     private static final String TEST_FILE_EXT = ".pdf";
+    @XmlElement(name = "ruleId")
     private final RuleId ruleId;
+    @XmlElement(name = "sha1")
+    private final String hexSha1;
+    @XmlElement(name = "testCode")
     private final String testCode;
+    @XmlElement(name = "result")
     private final boolean result;
+    @XmlElement(name = "testType")
+    private final TestType type;
 
     private CorpusItemIdImpl() {
-        this(Profiles.defaultRuleId(), "testCode", false);
+        this(Profiles.defaultRuleId(), "sha1", "testCode", false, TestType.NOT_APPLICABLE);
     }
 
     /**
@@ -31,12 +64,25 @@ public class CorpusItemIdImpl implements CorpusItemId {
      * @param testCode
      * @param status
      */
-    private CorpusItemIdImpl(final RuleId ruleId, final String testCode,
-            final boolean result) {
+    private CorpusItemIdImpl(final RuleId ruleId, final String hexSha1,
+            final String testCode, final boolean result, final TestType type) {
         super();
         this.ruleId = ruleId;
+        this.hexSha1 = hexSha1;
         this.testCode = testCode;
         this.result = result;
+        this.type = type;
+    }
+
+    /**
+     * { @inheritDoc }
+     */
+    @Override
+    public String getName() {
+        return this.ruleId.getClause()
+                + "-t"
+                + this.ruleId.getTestNumber() + "-"
+                + this.type.id + "-" + this.testCode;
     }
 
     /**
@@ -45,6 +91,14 @@ public class CorpusItemIdImpl implements CorpusItemId {
     @Override
     public RuleId getRuleId() {
         return this.ruleId;
+    }
+
+    /**
+     * { @inheritDoc }
+     */
+    @Override
+    public String getHexSha1() {
+        return this.hexSha1;
     }
 
     /**
@@ -62,11 +116,17 @@ public class CorpusItemIdImpl implements CorpusItemId {
     public boolean getExpectedResult() {
         return this.result;
     }
+    
+    /**
+     * { @inheritDoc }
+     */
+    @Override
+    public TestType getTestType() {
+        return this.type;
+    }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.lang.Object#hashCode()
+    /**
+     * { @inheritDoc }
      */
     @Override
     public int hashCode() {
@@ -80,10 +140,8 @@ public class CorpusItemIdImpl implements CorpusItemId {
         return hashResult;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.lang.Object#equals(java.lang.Object)
+    /**
+     * { @inheritDoc }
      */
     @Override
     public boolean equals(Object obj) {
@@ -109,10 +167,8 @@ public class CorpusItemIdImpl implements CorpusItemId {
         return true;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.lang.Object#toString()
+    /**
+     * { @inheritDoc }
      */
     @Override
     public String toString() {
@@ -139,8 +195,24 @@ public class CorpusItemIdImpl implements CorpusItemId {
      *         values
      */
     public static CorpusItemId fromValues(final RuleId ruleId,
-            final String testCode, final boolean result) {
-        return new CorpusItemIdImpl(ruleId, testCode, result);
+            final String testCode, final boolean result, final String hexSha1) {
+        return new CorpusItemIdImpl(ruleId, hexSha1, testCode, result, result ? TestType.PASS : TestType.FAIL);
+    }
+
+    /**
+     * @param ruleId
+     *            the {@link RuleId} value for the instance
+     * @param testCode
+     *            the test code value for the instance
+     * @param result
+     *            the expected boolean test fresult for the associated
+     *            CorpusItem
+     * @return a {@code CorpusItemId} instance initialised with the passed
+     *         values
+     */
+    public static CorpusItemId fromValues(final RuleId ruleId,
+            final String testCode, final boolean result, final String hexSha1, final TestType type) {
+        return new CorpusItemIdImpl(ruleId, hexSha1, testCode, result, type);
     }
 
     /**
@@ -157,29 +229,66 @@ public class CorpusItemIdImpl implements CorpusItemId {
      *         parameters
      */
     public static CorpusItemId fromFileName(final Specification specification,
-            final String fileName) {
-        for (String part : fileName.split(" ")) {
+            final String fileName, final String sha1) {
+        for (String part : fileName.split("/")) {
             if (part.endsWith(TEST_FILE_EXT)) {
-                return fromCode(specification, part);
+                if (part.contains("bfo")) {
+                    return fromBFOCode(specification, part, sha1);
+                }
+                return fromCode(specification, part, sha1);
             }
         }
         return DEFAULT;
     }
 
     private static CorpusItemId fromCode(final Specification specification,
-            final String code) {
+            final String code, final String sha1) {
         StringBuilder builder = new StringBuilder();
         String separator = "";
         boolean status = false;
         String testCode = "";
+        TestType type = TestType.NOT_APPLICABLE;
         int testNumber = 0;
         for (String part : code.split(SEPARATOR)) {
             if (part.endsWith(TEST_FILE_EXT)) {
                 testCode = part.substring(0, 1);
-            } else if (isTestResult(part)) {
+            } else if (TestType.fromId(part) != TestType.NOT_APPLICABLE) {
                 status = testPassFail(part);
+                type = TestType.fromId(part);
             } else if (part.startsWith(TEST_PREFIX)) {
                 testNumber = Integer.parseInt(part.substring(1));
+            } else {
+                if (part.contains(" ")) {
+                    part = part.substring(part.lastIndexOf(" ") + 1);
+                } else if (part.equalsIgnoreCase("isartor")) {
+                    continue;
+                }
+                builder.append(separator);
+                builder.append(part);
+                separator = ".";
+            }
+        }
+        RuleId ruleId = Profiles.ruleIdFromValues(specification,
+                builder.toString(), testNumber);
+        return CorpusItemIdImpl.fromValues(ruleId, testCode, status, sha1, type);
+    }
+
+    private static CorpusItemId fromBFOCode(final Specification specification,
+            final String code, final String sha1) {
+        StringBuilder builder = new StringBuilder();
+        String separator = "";
+        boolean status = false;
+        String testCode = "a";
+        int testNumber = 0;
+        for (String part : code.split(SEPARATOR)) {
+            if (part.endsWith(TEST_FILE_EXT) && isTestResult(part.substring(0, 4))) {
+                status = testPassFail(part.substring(0, 4));
+            } else if (part.startsWith(TEST_PREFIX)) {
+                testNumber = Integer.parseInt(part.substring(1));
+            } else if (part.startsWith("pdf")) {
+                continue;
+            } else if (part.startsWith("bfo")) {
+                continue;
             } else {
                 builder.append(separator);
                 builder.append(part);
@@ -188,7 +297,7 @@ public class CorpusItemIdImpl implements CorpusItemId {
         }
         RuleId ruleId = Profiles.ruleIdFromValues(specification,
                 builder.toString(), testNumber);
-        return CorpusItemIdImpl.fromValues(ruleId, testCode, status);
+        return CorpusItemIdImpl.fromValues(ruleId, testCode, status, sha1);
     }
 
     private static boolean isTestResult(final String code) {
@@ -197,5 +306,38 @@ public class CorpusItemIdImpl implements CorpusItemId {
 
     private static boolean testPassFail(final String code) {
         return code.equalsIgnoreCase(PASS);
+    }
+
+    static class Adapter extends XmlAdapter<CorpusItemIdImpl, CorpusItemId> {
+        @Override
+        public CorpusItemId unmarshal(CorpusItemIdImpl corpusItem) {
+            return corpusItem;
+        }
+
+        @Override
+        public CorpusItemIdImpl marshal(CorpusItemId corpusItem) {
+            return (CorpusItemIdImpl) corpusItem;
+        }
+    }
+    
+    public static class CorpusItemIdComparator implements Comparator<CorpusItemId> {
+        @Override
+        public int compare(CorpusItemId firstId, CorpusItemId secondId) {
+            int ruleIdResult = -100;
+            try {
+                ruleIdResult = new RuleIdComparator().compare(firstId.getRuleId(), secondId.getRuleId());
+            } catch (NumberFormatException e) {
+                e.printStackTrace();
+            }
+            if (ruleIdResult != 0) {
+                return ruleIdResult;
+            }
+            int testCodeResult = firstId.getTestCode().compareToIgnoreCase(secondId.getTestCode());
+            if (testCodeResult != 0) {
+                return testCodeResult;
+            }
+            //for test files with similar names but different expected result
+            return 1;
+        }
     }
 }

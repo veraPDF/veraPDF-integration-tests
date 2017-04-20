@@ -1,13 +1,45 @@
+/**
+ * This file is part of veraPDF Quality Assurance, a module of the veraPDF project.
+ * Copyright (c) 2015, veraPDF Consortium <info@verapdf.org>
+ * All rights reserved.
+ *
+ * veraPDF Quality Assurance is free software: you can redistribute it and/or modify
+ * it under the terms of either:
+ *
+ * The GNU General public license GPLv3+.
+ * You should have received a copy of the GNU General Public License
+ * along with veraPDF Quality Assurance as the LICENSE.GPL file in the root of the source
+ * tree.  If not, see http://www.gnu.org/licenses/ or
+ * https://www.gnu.org/licenses/gpl-3.0.en.html.
+ *
+ * The Mozilla Public License MPLv2+.
+ * You should have received a copy of the Mozilla Public License along with
+ * veraPDF Quality Assurance as the LICENSE.MPL file in the root of the source tree.
+ * If a copy of the MPL was not distributed with this file, you can obtain one at
+ * http://mozilla.org/MPL/2.0/.
+ */
 package org.verapdf.pdfa.qa;
 
-import org.verapdf.pdfa.flavours.PDFAFlavour;
-import org.verapdf.pdfa.validation.*;
-
-import javax.xml.bind.JAXBException;
 import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.*;
+import java.util.Collection;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.SortedSet;
+import java.util.TreeSet;
+
+import javax.xml.bind.JAXBException;
+
+import org.verapdf.pdfa.flavours.PDFAFlavour;
+import org.verapdf.pdfa.validation.profiles.ProfileDetails;
+import org.verapdf.pdfa.validation.profiles.Profiles;
+import org.verapdf.pdfa.validation.profiles.Profiles.RuleComparator;
+import org.verapdf.pdfa.validation.profiles.Rule;
+import org.verapdf.pdfa.validation.profiles.RuleId;
+import org.verapdf.pdfa.validation.profiles.ValidationProfile;
+import org.verapdf.pdfa.validation.profiles.Variable;
 
 /**
  * @author Maksim Bezrukov
@@ -41,7 +73,7 @@ public class ProfilesMerger {
                                            final String name,
                                            final String description,
                                            final String creator) throws IOException, JAXBException {
-        SortedSet<Rule> rules = new TreeSet<>(new RuleComparatorById());
+        SortedSet<Rule> rules = new TreeSet<>(new RuleComparator());
         Set<Variable> variables = new HashSet<>();
         PDFAFlavour flavour = null;
 
@@ -56,7 +88,7 @@ public class ProfilesMerger {
 
         ProfileDetails det = Profiles.profileDetailsFromValues(name, description, creator, new Date());
         ValidationProfile mergedProfile = Profiles.profileFromSortedValues(flavour, det, "", rules, variables);
-        Profiles.profileToXml(mergedProfile, out, true);
+        Profiles.profileToXml(mergedProfile, out, true, false);
     }
 
     private static Set<Rule> updateSpecification(final Collection<Rule> rules, final PDFAFlavour flavour) {
@@ -66,32 +98,5 @@ public class ProfilesMerger {
             res.add(Profiles.ruleFromValues(id, r.getObject(), r.getDescription(), r.getTest(), r.getError(), r.getReferences()));
         }
         return res;
-    }
-
-    public static class RuleComparatorById implements Comparator<Rule> {
-
-        @Override
-        public int compare(Rule o1, Rule o2) {
-            RuleId o1RuleId = o1.getRuleId();
-            RuleId o2RuleId = o2.getRuleId();
-            String o1Clause = o1RuleId.getClause();
-            String o2Clause = o2RuleId.getClause();
-
-            if (o1Clause.equals(o2Clause)) {
-                return o1RuleId.getTestNumber() - o2RuleId.getTestNumber();
-            } else {
-                String[] o1StrArr = o1Clause.split("\\.");
-                String[] o2StrArr = o2Clause.split("\\.");
-                int min = Math.min(o1StrArr.length, o2StrArr.length);
-
-                for (int i = 0; i < min; ++i) {
-                    if (!o1StrArr[i].equals(o2StrArr[i])) {
-                        return Integer.parseInt(o1StrArr[i]) - Integer.parseInt(o2StrArr[i]);
-                    }
-                }
-
-                return o1StrArr.length - o2StrArr.length;
-            }
-        }
     }
 }

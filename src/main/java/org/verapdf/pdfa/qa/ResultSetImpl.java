@@ -207,8 +207,9 @@ public class ResultSetImpl implements ResultSet {
 					maxMemUse = (memUsed > maxMemUse) ? memUsed : maxMemUse;
 					results.add(new Result(id, result, jobTimer.stop(), memUsed));
 				} catch (Throwable e) {
-					LOG.log(Level.SEVERE, String.format("Caught throwable testing %s from corpus %s", itemName,
-							corpus.getDetails().getName()), e);
+					LOG.log(Level.SEVERE, String.format("Caught throwable testing %s from corpus %s", itemName));
+					LOG.log(Level.SEVERE, e.getClass().getName()); 
+					LOG.log(Level.SEVERE, e.getMessage()); 
 					exceptions.add(new Incomplete(id, e));
 				}
 			}

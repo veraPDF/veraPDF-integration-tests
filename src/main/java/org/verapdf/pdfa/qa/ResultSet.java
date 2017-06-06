@@ -176,13 +176,13 @@ public interface ResultSet {
 	 */
 	public static class Incomplete {
 		private final CorpusItemId corpusItemId;
-		private final Exception cause;
+		private final Throwable cause;
 
 		/**
 		 * @param corpusItem
 		 * @param cause
 		 */
-		public Incomplete(final CorpusItemId corpusItemId, final Exception cause) {
+		public Incomplete(final CorpusItemId corpusItemId, final Throwable cause) {
 			this.corpusItemId = corpusItemId;
 			this.cause = cause;
 		}
@@ -197,7 +197,7 @@ public interface ResultSet {
 		/**
 		 * @return the cause
 		 */
-		public Exception getCause() {
+		public Throwable getCause() {
 			return this.cause;
 		}
 

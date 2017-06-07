@@ -327,7 +327,7 @@ public class CorpusItemIdImpl implements CorpusItemId {
             try {
                 ruleIdResult = new RuleIdComparator().compare(firstId.getRuleId(), secondId.getRuleId());
             } catch (NumberFormatException e) {
-                e.printStackTrace();
+                //  e.printStackTrace();
             }
             if (ruleIdResult != 0) {
                 return ruleIdResult;

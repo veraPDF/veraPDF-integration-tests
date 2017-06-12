@@ -100,11 +100,14 @@ public class ZipBackedTestCorpus extends AbstractTestCorpus<ZipEntry> {
 				ZipEntry entry = entries.nextElement();
 				if (entry.isDirectory() || !entry.getName().endsWith(PDF_SUFFIX))
 					continue;
-				if (flavour == null || type == Corpus.BFO) {
-					itemMap.put(entry.getName(), entry);
+				String entryName = entry.getName();
+				if (type == Corpus.TWG && entryName.contains("TWG")) {
+					itemMap.put(entryName, entry);
+				} else if (flavour == null || type == Corpus.BFO) {
+					itemMap.put(entryName, entry);
 				} else {
-					if (matchFlavour(entry.getName(), flavour)) {
-						itemMap.put(entry.getName(), entry);
+					if (matchFlavour(entryName, flavour)) {
+						itemMap.put(entryName, entry);
 					}
 				}
 			}
@@ -113,7 +116,7 @@ public class ZipBackedTestCorpus extends AbstractTestCorpus<ZipEntry> {
 	}
 
 	private static boolean matchFlavour(final String item, final PDFAFlavour flavour) {
-		return item.contains(flavour.toString());
+		return flavour != PDFAFlavour.NO_FLAVOUR && item.contains(flavour.toString());
 	}
 
 }

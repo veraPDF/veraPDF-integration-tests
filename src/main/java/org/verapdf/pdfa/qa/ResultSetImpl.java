@@ -34,7 +34,9 @@ import org.verapdf.component.Components;
 import org.verapdf.pdfa.Foundries;
 import org.verapdf.pdfa.PDFAParser;
 import org.verapdf.pdfa.PDFAValidator;
+import org.verapdf.pdfa.flavours.PDFAFlavour;
 import org.verapdf.pdfa.results.ValidationResult;
+import org.verapdf.pdfa.validation.profiles.Profiles;
 import org.verapdf.pdfa.validation.profiles.ValidationProfile;
 
 /**
@@ -216,6 +218,35 @@ public class ResultSetImpl implements ResultSet {
 			}
 		}
 		return new ResultSetImpl(corpus.getDetails(), validator.getProfile(), results, exceptions, batchTimer.stop(),
+				maxMemUse);
+	}
+
+	public static ResultSet validateCorpus(final TestCorpus corpus) {
+		Set<Result> results = new HashSet<>();
+		Set<Incomplete> exceptions = new HashSet<>();
+		Components.Timer batchTimer = Components.Timer.start();
+		long maxMemUse = 0;
+		for (String itemName : corpus.getItemNames()) {
+			CorpusItemId id = null;
+			Components.Timer jobTimer = Components.Timer.start();
+			try (PDFAParser loader = Foundries.defaultInstance().createParser(corpus.getItemStream(itemName))) {
+				PDFAFlavour flavour = loader.getFlavour();
+				try (PDFAValidator validator = Foundries.defaultInstance().createValidator(flavour, false)) {
+					id = CorpusItemIdImpl.fromFileName(validator.getProfile().getPDFAFlavour().getPart(), itemName, "");
+					ValidationResult result = validator.validate(loader);
+					long memUsed = (ManagementFactory.getMemoryMXBean().getHeapMemoryUsage().getUsed() / MEGABYTE);
+					maxMemUse = (memUsed > maxMemUse) ? memUsed : maxMemUse;
+					results.add(new Result(id, result, jobTimer.stop(), memUsed));
+				}
+			} catch (Throwable e) {
+				LOG.log(Level.SEVERE, String.format("Caught throwable testing %s from corpus %s", itemName,
+						corpus.getDetails().getName()));
+				LOG.log(Level.SEVERE, e.getClass().getName());
+				LOG.log(Level.SEVERE, e.getMessage());
+				exceptions.add(new Incomplete(id, e));
+			}
+		}
+		return new ResultSetImpl(corpus.getDetails(), Profiles.defaultProfile(), results, exceptions, batchTimer.stop(),
 				maxMemUse);
 	}
 

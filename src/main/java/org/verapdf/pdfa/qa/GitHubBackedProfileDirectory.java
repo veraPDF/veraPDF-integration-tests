@@ -23,6 +23,7 @@
  */
 package org.verapdf.pdfa.qa;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
 import java.util.HashSet;
@@ -119,7 +120,13 @@ public class GitHubBackedProfileDirectory implements ProfileDirectory {
 				URL profileURL = new URL(profileURLString);
 				ValidationProfile profile = Profiles.profileFromXml(profileURL.openStream());
 				profileSet.add(profile);
-			} catch (IOException | JAXBException e) {
+			} catch (FileNotFoundException fnf) {
+				// Couldn't load the profile from GitHun log and continue
+				LOG.log(Level.WARNING, String.format("Couldn't find GitHub Validation Profile for flavour %s", flavour));
+				LOG.log(Level.WARNING, String.format("Effectively a 404 for %s", profileURLString));
+				LOG.log(Level.WARNING, "FileNotFoundException caught.", fnf);
+				
+			} catch	(IOException | JAXBException e) {
 				LOG.log(Level.SEVERE, "Exception when trying to load validation profile from:" + profileURLString,
 						e);
 			}

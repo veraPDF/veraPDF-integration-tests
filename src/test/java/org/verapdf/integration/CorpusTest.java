@@ -92,12 +92,17 @@ public class CorpusTest {
 	private static void testCorpora(final List<ResultSet> resultSets) {
 		for (PDFAFlavour flavour : CorpusManager.testableFlavours()) {
 			for (TestCorpus corpus : CorpusManager.corporaForFlavour(flavour)) {
-				try (PDFAValidator validator = Foundries.defaultInstance().createValidator(flavour, false)) {
-					ResultSet results = ResultSetImpl.validateCorpus(corpus, validator);
+				if (flavour != PDFAFlavour.NO_FLAVOUR) {
+					try (PDFAValidator validator = Foundries.defaultInstance().createValidator(flavour, false)) {
+						ResultSet results = ResultSetImpl.validateCorpus(corpus, validator);
+						resultSets.add(results);
+					} catch (IOException excep) {
+						// Just exception closing validator
+						excep.printStackTrace();
+					}
+				} else {
+					ResultSet results = ResultSetImpl.validateCorpus(corpus);
 					resultSets.add(results);
-				} catch (IOException excep) {
-					// Just exception closing validator
-					excep.printStackTrace();
 				}
 			}
 		}

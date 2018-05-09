@@ -26,12 +26,12 @@
   <parent>
     <artifactId>verapdf-parent</artifactId>
     <groupId>org.verapdf</groupId>
-    <version>1.4.1</version>
+    <version>1.12.2</version>
   </parent>
 
   <groupId>org.verapdf</groupId>
   <artifactId>verapdf-integration-tests</artifactId>
-  <version>1.9.0-SNAPSHOT</version>
+  <version>1.12.0</version>
   <name>veraPDF Quality Assurance</name>
   <description>Test and QA utilities for the veraPDF Library.</description>
 
@@ -63,22 +63,20 @@
   </pluginRepositories>
 
   <properties>
-    <jacoco.version>0.7.9</jacoco.version>
-    <verapdf.library.version>[1.9.0,1.10.0)</verapdf.library.version>
-    <verapdf.pdfbox.validation.version>[1.9.0,1.10.0)</verapdf.pdfbox.validation.version>
-    <verapdf.validation.version>[1.9.0,1.10.0)</verapdf.validation.version>
+    <jacoco.version>0.8.1</jacoco.version>
+    <verapdf.version>[1.12.0,1.13.0)</verapdf.version>
   </properties>
 
   <dependencies>
     <dependency>
       <groupId>org.verapdf</groupId>
       <artifactId>core</artifactId>
-      <version>${verapdf.library.version}</version>
+      <version>${verapdf.version}</version>
     </dependency>
     <dependency>
       <groupId>org.verapdf</groupId>
       <artifactId>pdfbox-validation-model</artifactId>
-      <version>${verapdf.pdfbox.validation.version}</version>
+      <version>${verapdf.version}</version>
     </dependency>
     <dependency>
       <groupId>junit</groupId>
@@ -89,22 +87,22 @@
     <dependency>
       <groupId>commons-codec</groupId>
       <artifactId>commons-codec</artifactId>
-      <version>1.10</version>
+      <version>1.11</version>
     </dependency>
     <dependency>
       <groupId>org.bouncycastle</groupId>
       <artifactId>bcprov-jdk15on</artifactId>
-      <version>1.54</version>
+      <version>1.58</version>
     </dependency>
     <dependency>
       <groupId>com.github.spullara.mustache.java</groupId>
       <artifactId>compiler</artifactId>
-      <version>0.8.18</version>
+      <version>0.9.5</version>
     </dependency>
     <dependency>
       <groupId>org.verapdf</groupId>
       <artifactId>validation-model</artifactId>
-      <version>${verapdf.validation.version}</version>
+      <version>${verapdf.version}</version>
     </dependency>
   </dependencies>
 
@@ -119,7 +117,7 @@
       <plugin>
          <groupId>org.apache.maven.plugins</groupId>
          <artifactId>maven-dependency-plugin</artifactId>
-         <version>3.0.0</version>
+         <version>3.0.2</version>
          <executions>
            <execution>
              <id>unpack</id>

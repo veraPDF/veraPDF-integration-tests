@@ -20,26 +20,15 @@
  */
 package org.verapdf.pdfa.qa;
 
+import org.verapdf.pdfa.flavours.PDFAFlavour;
+import org.verapdf.pdfa.validation.profiles.*;
+import org.verapdf.pdfa.validation.profiles.Profiles.RuleComparator;
+
+import javax.xml.bind.JAXBException;
 import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.Collection;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.SortedSet;
-import java.util.TreeSet;
-
-import javax.xml.bind.JAXBException;
-
-import org.verapdf.pdfa.flavours.PDFAFlavour;
-import org.verapdf.pdfa.validation.profiles.ProfileDetails;
-import org.verapdf.pdfa.validation.profiles.Profiles;
-import org.verapdf.pdfa.validation.profiles.Profiles.RuleComparator;
-import org.verapdf.pdfa.validation.profiles.Rule;
-import org.verapdf.pdfa.validation.profiles.RuleId;
-import org.verapdf.pdfa.validation.profiles.ValidationProfile;
-import org.verapdf.pdfa.validation.profiles.Variable;
+import java.util.*;
 
 /**
  * @author Maksim Bezrukov
@@ -95,7 +84,7 @@ public class ProfilesMerger {
         Set<Rule> res = new HashSet<>(rules.size());
         for (Rule r : rules) {
             RuleId id = Profiles.ruleIdFromValues(flavour.getPart(), r.getRuleId().getClause(), r.getRuleId().getTestNumber());
-            res.add(Profiles.ruleFromValues(id, r.getObject(), r.getDescription(), r.getTest(), r.getError(), r.getReferences()));
+            res.add(Profiles.ruleFromValues(id, r.getObject(), r.getDeferred(), r.getDescription(), r.getTest(), r.getError(), r.getReferences()));
         }
         return res;
     }

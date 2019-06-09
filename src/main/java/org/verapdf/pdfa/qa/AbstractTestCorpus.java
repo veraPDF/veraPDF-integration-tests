@@ -51,7 +51,7 @@ import org.verapdf.pdfa.flavours.PDFAFlavour;
 @XmlRootElement(namespace = "http://www.verapdf.org/corpus", name = "corpus")
 public abstract class AbstractTestCorpus<L> implements TestCorpus {
 	private static final String veraUrl = "https://github.com/veraPDF/veraPDF-corpus/archive/staging.zip";
-	private static final String isartorUrl = "http://downloads.verapdf.org/corp/isartor-pdfa-2008-08-13.zip";
+	private static final String isartorUrl = "https://corpora.openpreservation.org/veraPDF/isartor-pdfa-2008-08-13.zip";
 	private static final String bfoUrl = "https://github.com/bfosupport/pdfa-testsuite/archive/master.zip";
 
 	@XmlElement(name = "details")

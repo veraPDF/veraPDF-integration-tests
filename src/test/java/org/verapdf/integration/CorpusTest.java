@@ -57,7 +57,13 @@ public class CorpusTest {
 
 	@BeforeClass
 	public static final void SetUp() throws IOException {
-		CorpusManager.initialise();
+		try {
+			CorpusManager.initialise();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			throw e;
+		}
 	}
 
 	@AfterClass

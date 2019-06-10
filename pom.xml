@@ -31,7 +31,7 @@
 
   <groupId>org.verapdf</groupId>
   <artifactId>verapdf-integration-tests</artifactId>
-  <version>1.14.0-RC</version>
+  <version>1.15.0-SNAPSHOT</version>
   <name>veraPDF Quality Assurance</name>
   <description>Test and QA utilities for the veraPDF Library.</description>
 
@@ -64,7 +64,7 @@
 
   <properties>
     <jacoco.version>0.8.1</jacoco.version>
-    <verapdf.version>[1.14.0-RC,1.15.0-RC)</verapdf.version>
+    <verapdf.version>[1.15.0,1.16.0)</verapdf.version>
     <org.bouncycastle.version>1.62</org.bouncycastle.version>
   </properties>
 

@@ -12,7 +12,7 @@
  * source tree. If a copy of the MPL was not distributed with this file, you can
  * obtain one at http://mozilla.org/MPL/2.0/.
  */
-package org.verapdf.integration;
+package org.verapdf.integration.tests;
 
 import static org.junit.Assert.assertFalse;
 

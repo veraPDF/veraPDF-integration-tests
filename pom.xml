@@ -26,7 +26,7 @@
   <parent>
     <artifactId>verapdf-parent</artifactId>
     <groupId>org.verapdf</groupId>
-    <version>1.14.1</version>
+    <version>1.14.3</version>
   </parent>
 
   <groupId>org.verapdf</groupId>
@@ -64,7 +64,7 @@
 
   <properties>
     <jacoco.version>0.8.1</jacoco.version>
-    <verapdf.version>[1.14.0-RC,1.15.0-RC)</verapdf.version>
+    <verapdf.version>[1.14.0,1.15.0)</verapdf.version>
     <org.bouncycastle.version>1.62</org.bouncycastle.version>
   </properties>
 

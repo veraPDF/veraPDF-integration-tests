@@ -19,7 +19,7 @@
  * http://mozilla.org/MPL/2.0/.
  */
 /**
- * 
+ *
  */
 package org.verapdf.pdfa.qa;
 
@@ -52,7 +52,7 @@ public class ZipBackedTestCorpus extends AbstractTestCorpus<ZipEntry> {
 
 	/**
 	 * { @inheritDoc }
-	 * 
+	 *
 	 * @throws IOException
 	 */
 	@Override
@@ -94,6 +94,7 @@ public class ZipBackedTestCorpus extends AbstractTestCorpus<ZipEntry> {
 	private static final Map<String, ZipEntry> itemsMapFromZipSource(final File zipFile, final PDFAFlavour flavour, Corpus type)
 			throws ZipException, IOException {
 		Map<String, ZipEntry> itemMap = new HashMap<>();
+
 		try (ZipFile zipSource = new ZipFile(zipFile)) {
 			Enumeration<? extends ZipEntry> entries = zipSource.entries();
 			while (entries.hasMoreElements()) {

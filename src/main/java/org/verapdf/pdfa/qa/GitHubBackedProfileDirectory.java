@@ -112,7 +112,7 @@ public class GitHubBackedProfileDirectory implements ProfileDirectory {
 		String pathPrefix = GITHUB_ROOT + branchName + PROFILE_PATH_PART + PROFILE_PREFIX;
 		Set<ValidationProfile> profileSet = new HashSet<>();
 		for (PDFAFlavour flavour : PDFAFlavour.values()) {
-			if (flavour == PDFAFlavour.NO_FLAVOUR) {
+			if (flavour == PDFAFlavour.NO_FLAVOUR || flavour == PDFAFlavour.PDFA_4) {
 				continue;
 			}
 			String profileURLString = pathPrefix + flavour.getId().toUpperCase() + XML_SUFFIX;

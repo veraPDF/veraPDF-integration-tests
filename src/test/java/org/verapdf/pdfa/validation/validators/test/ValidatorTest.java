@@ -21,7 +21,7 @@
 /**
  * 
  */
-package org.verapdf.pdfa.validation.validators;
+package org.verapdf.pdfa.validation.validators.test;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;

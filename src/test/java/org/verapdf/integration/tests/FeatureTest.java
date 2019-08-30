@@ -1,4 +1,4 @@
-package org.verapdf.integration;
+package org.verapdf.integration.tests;
 
 import com.github.mustachejava.DefaultMustacheFactory;
 import com.github.mustachejava.Mustache;

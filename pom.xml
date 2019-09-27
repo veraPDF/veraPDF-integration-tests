@@ -26,12 +26,12 @@
   <parent>
     <artifactId>verapdf-parent</artifactId>
     <groupId>org.verapdf</groupId>
-    <version>1.14.3</version>
+    <version>1.14.4</version>
   </parent>
 
   <groupId>org.verapdf</groupId>
   <artifactId>verapdf-integration-tests</artifactId>
-  <version>1.14.0-RC</version>
+  <version>1.14.0</version>
   <name>veraPDF Quality Assurance</name>
   <description>Test and QA utilities for the veraPDF Library.</description>
 

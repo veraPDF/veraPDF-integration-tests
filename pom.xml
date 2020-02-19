@@ -26,11 +26,11 @@
   <parent>
     <artifactId>verapdf-parent</artifactId>
     <groupId>org.verapdf</groupId>
-    <version>1.14.4</version>
+    <version>1.16.1</version>
   </parent>
 
   <artifactId>verapdf-integration-tests</artifactId>
-  <version>1.15.0-SNAPSHOT</version>
+  <version>1.16.0-RC1</version>
   <name>veraPDF Quality Assurance</name>
   <description>Test and QA utilities for the veraPDF Library.</description>
 
@@ -63,7 +63,9 @@
 
   <properties>
     <jacoco.version>0.8.1</jacoco.version>
-    <verapdf.version>[1.15.0,1.16.0)</verapdf.version>
+    <verapdf.greenfield.version>[1.16.0-RC1,1.17.0)</verapdf.greenfield.version>
+    <verapdf.pdfbox.version>[1.16.0-RC1,1.17.0)</verapdf.pdfbox.version>
+    <verapdf.library.version>[1.16.0-RC1,1.17.0)</verapdf.library.version>
     <org.bouncycastle.version>1.62</org.bouncycastle.version>
   </properties>
 
@@ -72,13 +74,13 @@
     <dependency>
       <groupId>org.verapdf</groupId>
       <artifactId>core</artifactId>
-      <version>${verapdf.version}</version>
+      <version>${verapdf.library.version}</version>
     </dependency>
 
     <dependency>
       <groupId>org.verapdf</groupId>
       <artifactId>pdfbox-validation-model</artifactId>
-      <version>${verapdf.version}</version>
+      <version>${verapdf.pdfbox.version}</version>
     </dependency>
 
     <dependency>
@@ -109,7 +111,7 @@
     <dependency>
       <groupId>org.verapdf</groupId>
       <artifactId>validation-model</artifactId>
-      <version>${verapdf.version}</version>
+      <version>${verapdf.greenfield.version}</version>
     </dependency>
 
     <dependency>

@@ -47,8 +47,11 @@ public class GitHubBackedProfileDirectory implements ProfileDirectory {
 	 * This would work for Master branch profiles MASTER("master");
 	 */
 	private static final String GITHUB_ROOT = "https://raw.githubusercontent.com/veraPDF/veraPDF-validation-profiles/";
-	private static final String PROFILE_PATH_PART = "/PDF_A/";
-	private static final String PROFILE_PREFIX = "PDFA-";
+
+	private static final String PDFA_PROFILE_PATH_PART = "/PDF_A/";
+	private static final String PDFA_PROFILE_PREFIX = "PDFA-";
+	private static final String PDFUA_PROFILE_PATH_PART = "/PDF_UA/";
+	private static final String PDFUA_PROFILE_PREFIX = "PDFUA-";
 	private static final String XML_SUFFIX = ".xml";
 	private final String branchName;
 	private final ProfileDirectory profiles;
@@ -109,13 +112,15 @@ public class GitHubBackedProfileDirectory implements ProfileDirectory {
 		return new GitHubBackedProfileDirectory(branchName);
 	}
 	private static Set<ValidationProfile> fromGitHubBranch(final String branchName) {
-		String pathPrefix = GITHUB_ROOT + branchName + PROFILE_PATH_PART + PROFILE_PREFIX;
+		String PDFApathPrefix = GITHUB_ROOT + branchName + PDFA_PROFILE_PATH_PART + PDFA_PROFILE_PREFIX;
+		String PDFUApathPrefix = GITHUB_ROOT + branchName + PDFUA_PROFILE_PATH_PART + PDFUA_PROFILE_PREFIX;
 		Set<ValidationProfile> profileSet = new HashSet<>();
 		for (PDFAFlavour flavour : PDFAFlavour.values()) {
 			if (flavour == PDFAFlavour.NO_FLAVOUR || flavour == PDFAFlavour.PDFA_4) {
 				continue;
 			}
-			String profileURLString = pathPrefix + flavour.getId().toUpperCase() + XML_SUFFIX;
+			String profileURLString = (flavour != PDFAFlavour.PDFUA_1 ? PDFApathPrefix : PDFUApathPrefix)
+					+ flavour.getPart().getPartNumber() + flavour.getLevel().getCode().toUpperCase() + XML_SUFFIX;;
 			try {
 				URL profileURL = new URL(profileURLString);
 				ValidationProfile profile = Profiles.profileFromXml(profileURL.openStream());

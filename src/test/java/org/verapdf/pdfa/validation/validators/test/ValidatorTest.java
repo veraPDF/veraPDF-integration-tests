@@ -63,7 +63,7 @@ import org.verapdf.pdfa.validation.profiles.ValidationProfile;
  */
 @SuppressWarnings("static-method")
 public class ValidatorTest {
-    private static final ProfileDirectory PROFILES = GitHubBackedProfileDirectory.fromBranch("pdfua");
+    private static final ProfileDirectory PROFILES = GitHubBackedProfileDirectory.fromBranch("integration");
 
     @BeforeClass
     public static final void SetUp() {

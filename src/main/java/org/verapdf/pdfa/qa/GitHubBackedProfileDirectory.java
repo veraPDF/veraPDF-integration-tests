@@ -126,7 +126,7 @@ public class GitHubBackedProfileDirectory implements ProfileDirectory {
 				ValidationProfile profile = Profiles.profileFromXml(profileURL.openStream());
 				profileSet.add(profile);
 			} catch (FileNotFoundException fnf) {
-				// Couldn't load the profile from GitHun log and continue
+				// Couldn't load the profile from GitHub log and continue
 				LOG.log(Level.WARNING, String.format("Couldn't find GitHub Validation Profile for flavour %s", flavour));
 				LOG.log(Level.WARNING, String.format("Effectively a 404 for %s", profileURLString));
 				LOG.log(Level.WARNING, "FileNotFoundException caught.", fnf);

@@ -116,7 +116,7 @@ public class GitHubBackedProfileDirectory implements ProfileDirectory {
 		String PDFUApathPrefix = GITHUB_ROOT + branchName + PDFUA_PROFILE_PATH_PART + PDFUA_PROFILE_PREFIX;
 		Set<ValidationProfile> profileSet = new HashSet<>();
 		for (PDFAFlavour flavour : PDFAFlavour.values()) {
-			if (flavour == PDFAFlavour.NO_FLAVOUR || flavour == PDFAFlavour.PDFA_4) {
+			if (flavour == PDFAFlavour.NO_FLAVOUR) {
 				continue;
 			}
 			String profileURLString = (flavour != PDFAFlavour.PDFUA_1 ? PDFApathPrefix : PDFUApathPrefix)
@@ -126,7 +126,7 @@ public class GitHubBackedProfileDirectory implements ProfileDirectory {
 				ValidationProfile profile = Profiles.profileFromXml(profileURL.openStream());
 				profileSet.add(profile);
 			} catch (FileNotFoundException fnf) {
-				// Couldn't load the profile from GitHun log and continue
+				// Couldn't load the profile from GitHub log and continue
 				LOG.log(Level.WARNING, String.format("Couldn't find GitHub Validation Profile for flavour %s", flavour));
 				LOG.log(Level.WARNING, String.format("Effectively a 404 for %s", profileURLString));
 				LOG.log(Level.WARNING, "FileNotFoundException caught.", fnf);

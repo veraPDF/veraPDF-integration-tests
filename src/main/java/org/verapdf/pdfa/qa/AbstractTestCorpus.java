@@ -157,7 +157,8 @@ public abstract class AbstractTestCorpus<L> implements TestCorpus {
 	public static enum Corpus {
 		VERA("veraPDF",
 				EnumSet.of(PDFAFlavour.PDFA_1_A, PDFAFlavour.PDFA_1_B, PDFAFlavour.PDFA_2_B, PDFAFlavour.PDFA_2_U,
-						PDFAFlavour.PDFA_3_B, PDFAFlavour.PDFUA_1),
+						PDFAFlavour.PDFA_3_B, PDFAFlavour.PDFA_4, PDFAFlavour.PDFA_4_F, PDFAFlavour.PDFA_4_E,
+						PDFAFlavour.PDFUA_1),
 				URI.create(veraUrl), "veraCorp-"),
 		ISARTOR("Isartor", EnumSet.of(PDFAFlavour.PDFA_1_B), URI.create(isartorUrl), "isartCorp-"),
 		BFO("BFO", EnumSet.of(PDFAFlavour.PDFA_2_B), URI.create(bfoUrl), "bfoCorp-"),

@@ -109,7 +109,7 @@ public class ZipBackedTestCorpus extends AbstractTestCorpus<ZipEntry> {
 				} else if (flavour == PDFAFlavour.PDFUA_1 && entryName.contains("PDF_UA-1")) {
 					itemMap.put(entryName, entry);
 				} else if (flavour == PDFAFlavour.PDFA_4) {
-					 if (entryName.contains("PDF_A-4")) {
+					 if (entryName.contains("PDF_A-4") && !matchFlavour(entryName, PDFAFlavour.PDFA_4_E) && !matchFlavour(entryName, PDFAFlavour.PDFA_4_F)) {
 						 itemMap.put(entryName, entry);
 					 }
 				} else {

@@ -5,6 +5,7 @@ dist: trusty
 jdk:
   - openjdk8
   - oraclejdk8
+  - openjdk11
 
 branches:
   except:
@@ -16,7 +17,7 @@ before_install:
   - wget -O ~/codacy-coverage-reporter-assembly-latest.jar http://resources.openpreservation.org/codacy-coverage-reporter-assembly-latest.jar
 
 install:
-  - mvn clean install
+  - mvn clean install -Dmaven.wagon.http.ssl.insecure=true -Dmaven.wagon.http.ssl.allowall=true
 
 script:
   - cat target/test-results/index.html

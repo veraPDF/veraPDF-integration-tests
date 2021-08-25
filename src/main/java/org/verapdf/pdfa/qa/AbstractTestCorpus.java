@@ -160,6 +160,7 @@ public abstract class AbstractTestCorpus<L> implements TestCorpus {
 						PDFAFlavour.PDFA_3_B, PDFAFlavour.PDFA_4, PDFAFlavour.PDFA_4_F, PDFAFlavour.PDFA_4_E,
 						PDFAFlavour.PDFUA_1),
 				URI.create(veraUrl), "veraCorp-"),
+		//				"D:\\verapdf-dev\\verapdf-corpus\\veraPDF-corpus.zip"),
 		ISARTOR("Isartor", EnumSet.of(PDFAFlavour.PDFA_1_B), URI.create(isartorUrl), "isartCorp-"),
 		BFO("BFO", EnumSet.of(PDFAFlavour.PDFA_2_B), URI.create(bfoUrl), "bfoCorp-"),
 		TWG("TWG", EnumSet.of(PDFAFlavour.NO_FLAVOUR), VERA.getZipFile().toURI(), "twgCorp-");
@@ -179,6 +180,13 @@ public abstract class AbstractTestCorpus<L> implements TestCorpus {
 				throw new IllegalStateException(excep);
 			}
 		}
+
+		private Corpus(final String id, final EnumSet<PDFAFlavour> flavours, final String name) {
+			this.id = id;
+			this.flavours = EnumSet.copyOf(flavours);
+			this.zipFile = new File(name);
+		}
+
 
 		public String getId() {
 			return this.id;

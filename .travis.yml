@@ -17,7 +17,7 @@ before_install:
   - wget -O ~/codacy-coverage-reporter-assembly-latest.jar http://resources.openpreservation.org/codacy-coverage-reporter-assembly-latest.jar
 
 install:
-  - mvn clean install -Dmaven.wagon.http.ssl.insecure=true -Dmaven.wagon.http.ssl.allowall=true -Dhttps.protocols=TLSv1,TLSv1.1,TLSv1.2
+  - mvn clean install -Dmaven.wagon.http.ssl.insecure=true -Dmaven.wagon.http.ssl.allowall=true -Dhttps.protocols=TLSv1,TLSv1.1,TLSv1.2 -Dmaven.wagon.http.pool=false
 
 script:
   - cat target/test-results/index.html

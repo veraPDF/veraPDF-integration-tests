@@ -116,7 +116,7 @@ public class GitHubBackedProfileDirectory implements ProfileDirectory {
 		String PDFUApathPrefix = GITHUB_ROOT + branchName + PDFUA_PROFILE_PATH_PART + PDFUA_PROFILE_PREFIX;
 		Set<ValidationProfile> profileSet = new HashSet<>();
 		for (PDFAFlavour flavour : PDFAFlavour.values()) {
-			if (flavour == PDFAFlavour.NO_FLAVOUR) {
+			if (flavour == PDFAFlavour.NO_FLAVOUR || flavour == PDFAFlavour.WCAG2_1) {
 				continue;
 			}
 			String profileURLString = (flavour != PDFAFlavour.PDFUA_1 ? PDFApathPrefix : PDFUApathPrefix)

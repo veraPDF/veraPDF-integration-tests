@@ -1,7 +1,7 @@
 veraPDF-integration-tests
 =========================
 
-[![Build Status](https://travis-ci.org/veraPDF/veraPDF-integration-tests.svg?branch=rc/1.20)](https://travis-ci.org/veraPDF/integration-tests/ "Travis-CI")
+[![Build Status](https://travis-ci.org/veraPDF/veraPDF-integration-tests.svg?branch=rel/1.20)](https://travis-ci.org/veraPDF/integration-tests/ "Travis-CI")
 [![Build Status](http://jenkins.openpreservation.org/buildStatus/icon?job=veraPDF-integration-tests)](http://jenkins.openpreservation.org/job/veraPDF-integration-tests/ "OPF Jenkins Release")
 [![CodeCov Coverage](https://img.shields.io/codecov/c/github/veraPDF/veraPDF-integration-tests.svg)](https://codecov.io/gh/veraPDF/veraPDF-integration-tests/ "CodeCov coverage")
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/41570ba00d614d4083bf249a1d6c852e)](https://www.codacy.com/app/carlwilson/veraPDF-integration-tests?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=veraPDF/veraPDF-integration-tests&amp;utm_campaign=Badge_Grade)

@@ -42,11 +42,26 @@ as a set of files. To checkout the project and produce the test files locally:
     git clone https://github.com/veraPDF/veraPDF-integration-tests.git
     cd veraPDF-integration-tests
     mvn clean install
-    ls -alh target/*.html
+    ls target/test-results/
 
-    -rw-rw-r-- 1 cfw cfw 3.7K Apr 26 12:51 target/BFO-corpus-pdf2b.html
-    -rw-rw-r-- 1 cfw cfw  14K Apr 26 12:51 target/Isartor-corpus-pdf1b.html
-    -rw-rw-r-- 1 cfw cfw  23K Apr 26 12:51 target/veraPDF-corpus-pdf1b.html
+    BFO-2b          veraPDF-1a      veraPDF-2b      veraPDF-4       veraPDF-ua1
+    Isartor-1b      veraPDF-1b      veraPDF-2u      veraPDF-4e      index.html
+    TWG-0           veraPDF-2a      veraPDF-3b      veraPDF-4f
 
-These can be opened in a browser and show the test results in a table with
+`index.html` can be opened in a browser and show the test results in a table with
 green cells for successful tests and red cells for failed tests.
+
+### Running regression tests
+
+The project's Maven build generates .jar files that run regression tests for PDF and WCAG validation. 
+
+To run regression tests after project's Maven build:
+
+    cd veraPDF-pdf-regression-tests/target/
+    java -jar veraPDF-pdf-regression-tests-${project.version}.jar
+
+    cd ../../veraPDF-wcag-regression-tests/target/
+    java -jar veraPDF-wcag-regression-tests-${project.version}.jar
+
+Where `${project.version}` is the last development or release version. 
+Regression test results will be produced to `stdout`.

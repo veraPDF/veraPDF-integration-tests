@@ -125,6 +125,6 @@ public class ZipBackedTestCorpus extends AbstractTestCorpus<ZipEntry> {
 	}
 
 	public static boolean matchFlavour(final String item, final PDFAFlavour flavour) {
-		return flavour != PDFAFlavour.NO_FLAVOUR && item.contains("PDF_A-" + flavour.getId());
+		return flavour != PDFAFlavour.NO_FLAVOUR && item.matches(String.format(".*PDF_?A-%s.*", flavour.getId()));
 	}
 }

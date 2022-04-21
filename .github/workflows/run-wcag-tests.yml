@@ -1,0 +1,24 @@
+
+name: Run regression tests for wcag
+
+on:
+  pull_request:
+    branches:
+      [ integration ]
+
+jobs:
+  test_run:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          submodules: true
+      - name: Set up JDK 1.11
+        uses: actions/setup-java@v1
+        with:
+          java-version: 1.11
+      - name: Set up and run tests
+        working-directory: ./veraPDF-wcag-regression-tests
+        run: |
+          mvn clean install
+          java -cp "target"\* org.verapdf.wcag.regression.tests.RegressionTestUtils

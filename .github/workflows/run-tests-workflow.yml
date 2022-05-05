@@ -18,3 +18,23 @@ jobs:
         run: mvn -B -DskipTests=true clean package --file pom.xml
       - name: Run wcag regression tests
         run: java -cp "/home/runner/work/veraPDF-integration-tests/veraPDF-integration-tests/veraPDF-wcag-regression-tests/target"/'*' org.verapdf.wcag.regression.tests.RegressionTestUtils
+
+      - name: Notify slack tests succeded
+        if: success()
+        env:
+          SLACK_BOT_TOKEN: ${{ secrets.SLACK_NOTIFICATIONS_BOT_TOKEN }}
+        uses: voxmedia/github-action-slack-notify-build@v1
+        with:
+          channel_id: C03E3JJGLQL
+          status: SUCCESS
+          color: good
+
+      - name: Notify slack tests failed
+        if: failure()
+        env:
+          SLACK_BOT_TOKEN: ${{ secrets.SLACK_NOTIFICATIONS_BOT_TOKEN }}
+        uses: voxmedia/github-action-slack-notify-build@v1
+        with:
+          channel_id: C03E3JJGLQL
+          status: FAILED
+          color: danger

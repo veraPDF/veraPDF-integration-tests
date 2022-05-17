@@ -39,11 +39,11 @@ public class ProfilesTest {
     private static final org.verapdf.pdfa.validation.profiles.ProfileDirectory INTEGRATION_PROFILES = GitHubBackedProfileDirectory.fromBranch("integration");
 
     /**
-     * Test method for {@link org.verapdf.pdfa.validation.ValidationProfileImpl#getPDFAFlavour()}.
+     * Test method for {@link org.verapdf.pdfa.validation.profiles.ValidationProfileImpl#getPDFAFlavour()}.
      */
     @Test
     public final void testGetPDFAFlavour() {
-        for (ValidationProfile profile: INTEGRATION_PROFILES.getValidationProfiles()) {
+        for (ValidationProfile profile : INTEGRATION_PROFILES.getValidationProfiles()) {
             for (Rule rule : profile.getRules()) {
                 assertTrue("Profile=" + profile.getPDFAFlavour().getPart() + ", rule=" + rule.getRuleId().getSpecification(), rule.getRuleId().getSpecification() == profile.getPDFAFlavour().getPart());
             }

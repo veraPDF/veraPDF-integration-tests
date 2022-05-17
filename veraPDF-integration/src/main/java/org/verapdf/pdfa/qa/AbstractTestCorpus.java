@@ -151,7 +151,6 @@ public abstract class AbstractTestCorpus<L> implements TestCorpus {
 						PDFAFlavour.PDFA_3_B, PDFAFlavour.PDFA_4, PDFAFlavour.PDFA_4_F, PDFAFlavour.PDFA_4_E,
 						PDFAFlavour.PDFUA_1),
 				URI.create(veraUrl), "veraCorp-"),
-		//				"D:\\verapdf-dev\\verapdf-corpus\\veraPDF-corpus.zip"),
 		ISARTOR("Isartor", EnumSet.of(PDFAFlavour.PDFA_1_B), URI.create(isartorUrl), "isartCorp-"),
 		BFO("BFO", EnumSet.of(PDFAFlavour.PDFA_2_B), URI.create(bfoUrl), "bfoCorp-"),
 		TWG("TWG", EnumSet.of(PDFAFlavour.NO_FLAVOUR), VERA.getZipFile().toURI(), "twgCorp-");
@@ -220,7 +219,9 @@ public abstract class AbstractTestCorpus<L> implements TestCorpus {
 			return url.openStream();
 		}
 		System.err.println("Prot:" + url.getProtocol());
-		URL resourceUrl, base, next;
+		URL resourceUrl;
+		URL base;
+		URL next;
 		Map<String, Integer> visited;
 		HttpURLConnection conn;
 		String location;

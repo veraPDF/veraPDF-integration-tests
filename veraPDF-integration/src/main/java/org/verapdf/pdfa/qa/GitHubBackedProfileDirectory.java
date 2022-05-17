@@ -119,7 +119,7 @@ public class GitHubBackedProfileDirectory implements ProfileDirectory {
 				continue;
 			}
 			String profileURLString = (flavour != PDFAFlavour.PDFUA_1 ? PDFApathPrefix : PDFUApathPrefix)
-					+ flavour.getPart().getPartNumber() + flavour.getLevel().getCode().toUpperCase() + XML_SUFFIX;;
+					+ flavour.getPart().getPartNumber() + flavour.getLevel().getCode().toUpperCase() + XML_SUFFIX;
 			try {
 				URL profileURL = new URL(profileURLString);
 				ValidationProfile profile = Profiles.profileFromXml(profileURL.openStream());

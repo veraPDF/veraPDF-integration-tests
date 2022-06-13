@@ -27,6 +27,7 @@ public class RegressionTestUtils {
             Assert.assertFalse(RegressionTestingHelper.totalFailedPolicyJobsCount(helper
                     .getFailedPolicyComplianceFiles(null, customProfile, helper.getPdfFileNames())) > 0);
         } catch (IOException | JAXBException e) {
+            Assert.fail("Some tests are fallen due to an error");
             e.printStackTrace();
         }
     }

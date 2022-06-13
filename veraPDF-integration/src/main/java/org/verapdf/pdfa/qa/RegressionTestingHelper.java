@@ -87,6 +87,7 @@ public class RegressionTestingHelper {
                     failedFiles.add(pdfName);
                 }
             } catch (IOException | SAXException | ParserConfigurationException | XPathExpressionException | VeraPDFException e) {
+                failedFiles.add(pdfName);
                 e.printStackTrace();
             }
         }

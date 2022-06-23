@@ -28,7 +28,7 @@ import org.verapdf.pdfa.qa.GitHubBackedProfileDirectory;
 import org.verapdf.pdfa.validation.profiles.Rule;
 import org.verapdf.pdfa.validation.profiles.ValidationProfile;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertSame;
 
 /**
  * @author <a href="mailto:carl@openpreservation.org">Carl Wilson</a>
@@ -45,7 +45,7 @@ public class ProfilesTest {
     public final void testGetPDFAFlavour() {
         for (ValidationProfile profile : INTEGRATION_PROFILES.getValidationProfiles()) {
             for (Rule rule : profile.getRules()) {
-                assertTrue("Profile=" + profile.getPDFAFlavour().getPart() + ", rule=" + rule.getRuleId().getSpecification(), rule.getRuleId().getSpecification() == profile.getPDFAFlavour().getPart());
+                assertSame("Profile=" + profile.getPDFAFlavour().getPart() + ", rule=" + rule.getRuleId().getSpecification(), rule.getRuleId().getSpecification(), profile.getPDFAFlavour().getPart());
             }
         }
     }

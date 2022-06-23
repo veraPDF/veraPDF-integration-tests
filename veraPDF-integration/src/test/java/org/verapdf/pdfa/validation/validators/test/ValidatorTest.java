@@ -112,10 +112,9 @@ public class ValidatorTest {
                         results.add(ValidationResults.defaultResult());
                     }
                 }
-                assertTrue(
-                        resultsMessage(veraCorpus.getDetails().getName(),
-                                itemName, profile.getPDFAFlavour().toString(),
-                                results), results.size() == 1);
+                assertEquals(resultsMessage(veraCorpus.getDetails().getName(),
+                        itemName, profile.getPDFAFlavour().toString(),
+                        results), 1, results.size());
             }
         }
     }

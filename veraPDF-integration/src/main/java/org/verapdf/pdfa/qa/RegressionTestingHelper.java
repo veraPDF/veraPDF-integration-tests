@@ -80,13 +80,18 @@ public class RegressionTestingHelper {
                 copyInputStreamToFile(this.getPdfStream(pdfName), tempPdfFile);
                 processor.process(files, ProcessorFactory.getHandler(FormatOption.MRR, false, reportStream, false));
                 reportStream.flush();
-                copyInputStreamToFile(this.getSchStream(pdfName.replace(".pdf", ".sch")), tempSchFile);
+            } catch (IOException | VeraPDFException e) {
+                failedFiles.add(pdfName);
+            }
+            try {
+                String schName = pdfName.substring(0, pdfName.length() - 3) + "sch";
+                copyInputStreamToFile(this.getSchStream(schName), tempSchFile);
                 applyPolicy(tempSchFile, tempMrrFile, tempResultFile);
                 int failedPolicyJobsCount = countFailedPolicyJobs(tempResultFile);
                 if (failedPolicyJobsCount > 0) {
                     failedFiles.add(pdfName);
                 }
-            } catch (IOException | SAXException | ParserConfigurationException | XPathExpressionException | VeraPDFException e) {
+            } catch (Exception e) {
                 failedFiles.add(pdfName);
                 e.printStackTrace();
             }

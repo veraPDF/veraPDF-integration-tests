@@ -32,7 +32,7 @@ import org.verapdf.model.ModelParser;
 import org.verapdf.pdfa.Foundries;
 import org.verapdf.pdfa.PDFAParser;
 import org.verapdf.pdfa.PDFAValidator;
-import org.verapdf.pdfa.PdfBoxFoundryProvider;
+import org.verapdf.pdfbox.foundry.PdfBoxFoundryProvider;
 import org.verapdf.pdfa.flavours.PDFAFlavour;
 import org.verapdf.pdfa.qa.AbstractTestCorpus.Corpus;
 import org.verapdf.pdfa.qa.CorpusManager;

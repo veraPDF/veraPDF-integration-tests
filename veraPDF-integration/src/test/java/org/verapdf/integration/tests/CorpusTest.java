@@ -23,8 +23,8 @@ import org.junit.Test;
 import org.verapdf.component.ComponentDetails;
 import org.verapdf.pdfa.Foundries;
 import org.verapdf.pdfa.PDFAValidator;
-import org.verapdf.pdfa.PdfBoxFoundryProvider;
-import org.verapdf.pdfa.VeraGreenfieldFoundryProvider;
+import org.verapdf.pdfbox.foundry.PdfBoxFoundryProvider;
+import org.verapdf.gf.foundry.VeraGreenfieldFoundryProvider;
 import org.verapdf.pdfa.flavours.PDFAFlavour;
 import org.verapdf.pdfa.qa.*;
 

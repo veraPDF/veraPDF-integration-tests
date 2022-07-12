@@ -5,13 +5,14 @@ dist: trusty
 jdk:
   - openjdk8
   - oraclejdk8
+  - openjdk11
 
 branches:
   except:
     - /^v|d\d+\.\d+\.\d+$/
 
 install:
-  - mvn clean install
+  - mvn clean install -Dmaven.wagon.http.ssl.insecure=true -Dmaven.wagon.http.ssl.allowall=true -Dhttps.protocols=TLSv1,TLSv1.1,TLSv1.2 -Dmaven.wagon.http.pool=false
 
 script:
   - cat target/test-results/index.html

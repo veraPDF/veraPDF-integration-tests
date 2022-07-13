@@ -22,7 +22,7 @@ jobs:
           distribution: 'temurin'
           cache: maven
       - name: Build with Maven
-        run: mvn --batch-mode --update-snapshots package
+        run: mvn --batch-mode --update-snapshots -Dmaven.wagon.http.ssl.insecure=true -Dmaven.wagon.http.ssl.allowall=true -Dhttps.protocols=TLSv1,TLSv1.1,TLSv1.2 -Dmaven.wagon.http.pool=false install
       - name: Output integration test results
         run: cat target/test-results/index.html
 

@@ -1,5 +1,7 @@
 package org.verapdf.pdfa.qa;
 
+import com.sun.org.apache.xerces.internal.dom.DeferredElementImpl;
+import com.sun.org.apache.xml.internal.dtm.ref.DTMNodeList;
 import org.verapdf.core.VeraPDFException;
 import org.verapdf.metadata.fixer.FixerFactory;
 import org.verapdf.metadata.fixer.MetadataFixerConfig;
@@ -11,6 +13,8 @@ import org.verapdf.pdfa.validation.validators.ValidatorFactory;
 import org.verapdf.policy.PolicyChecker;
 import org.verapdf.processor.*;
 import org.w3c.dom.Document;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 import javax.xml.bind.JAXBException;
@@ -53,9 +57,7 @@ public class RegressionTestingHelper {
         return pdfMap.keySet();
     }
 
-    public List<String> getFailedPolicyComplianceFiles(PDFAFlavour flavour, ValidationProfile customProfile, Set<String> fileNames) throws JAXBException, IOException {
-        List<String> failedFiles = new ArrayList<>();
-
+    public void getFailedPolicyComplianceFiles(Map<String, List<FailedPolicyCheck>> failedFiles, PDFAFlavour flavour, ValidationProfile customProfile, Set<String> fileNames) throws JAXBException, IOException {
         MetadataFixerConfig fixConf = FixerFactory.configFromValues("test", true);
         ProcessorConfig processorConfig = customProfile == null ?
                 ProcessorFactory.fromValues(ValidatorFactory.createConfig(flavour, PDFAFlavour.NO_FLAVOUR,
@@ -81,7 +83,7 @@ public class RegressionTestingHelper {
                 processor.process(files, ProcessorFactory.getHandler(FormatOption.MRR, false, reportStream, false));
                 reportStream.flush();
             } catch (IOException | VeraPDFException e) {
-                failedFiles.add(pdfName);
+                failedFiles.put(pdfName, Collections.singletonList(new FailedPolicyCheck(e.getMessage())));
             }
             try {
                 String schName = pdfName.substring(0, pdfName.length() - 3) + "sch";
@@ -89,11 +91,10 @@ public class RegressionTestingHelper {
                 applyPolicy(tempSchFile, tempMrrFile, tempResultFile);
                 int failedPolicyJobsCount = countFailedPolicyJobs(tempResultFile);
                 if (failedPolicyJobsCount > 0) {
-                    failedFiles.add(pdfName);
+                    failedFiles.put(pdfName, getFailedChecks(tempResultFile));
                 }
             } catch (Exception e) {
-                failedFiles.add(pdfName);
-                e.printStackTrace();
+                failedFiles.put(pdfName, Collections.singletonList(new FailedPolicyCheck(e.getMessage())));
             }
         }
 
@@ -101,18 +102,19 @@ public class RegressionTestingHelper {
         tempPdfFile.deleteOnExit();
         tempMrrFile.deleteOnExit();
         tempResultFile.deleteOnExit();
-
-        return failedFiles;
     }
 
-    public static int totalFailedPolicyJobsCount(List<String> failedFiles) {
+    public static void printResult(Map<String, List<FailedPolicyCheck>> failedFiles) {
         if (failedFiles.size() > 0) {
             System.out.println("Some files is not compliant with policy: ");
-            failedFiles.forEach(System.out::println);
+            for (Map.Entry<String, List<FailedPolicyCheck>> entry : failedFiles.entrySet()) {
+                System.out.println(entry.getKey());
+                System.out.println(entry.getValue());
+            }
+            System.out.println();
         } else {
             System.out.println("Files are compliant with policies");
         }
-        return failedFiles.size();
     }
 
     private void itemsMapFromZipSource(File zipFile, boolean isWcag) throws IOException {
@@ -161,17 +163,48 @@ public class RegressionTestingHelper {
         return ((Number) path.evaluate("count(//policyReport[@failedChecks > 0])", document, XPathConstants.NUMBER)).intValue();
     }
 
+    public static List<FailedPolicyCheck> getFailedChecks(File xmlReport) throws IOException, SAXException, ParserConfigurationException, XPathExpressionException {
+        DocumentBuilder documentBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+        Document document = documentBuilder.parse(xmlReport);
+        XPath path = XPathFactory.newInstance().newXPath();
+        List<FailedPolicyCheck> failedChecks = new LinkedList<>();
+        DTMNodeList list = ((DTMNodeList)path.evaluate("//policyReport/failedChecks/check", document, XPathConstants.NODESET));
+        for (int i = 0; i < list.getLength(); i++) {
+            DeferredElementImpl check = (DeferredElementImpl)list.item(i);
+            String test = check.getAttribute("test");
+            String messageValue = getProperty(check, "message").getTextContent();
+            DeferredElementImpl node = (DeferredElementImpl)path.evaluate(check.getAttribute("location"), document, XPathConstants.NODE);
+            failedChecks.add(new FailedPolicyCheck(node, messageValue, test));
+        }
+        return failedChecks;
+    }
+
     public static void applyPolicy(File policyFile, File tempMrrFile, File tempResultFile) throws IOException, VeraPDFException {
         File tempPolicyResult = File.createTempFile("policyResult", "veraPDF");
         try (InputStream mrrIs = new FileInputStream(tempMrrFile);
-             OutputStream policyResultOs = new FileOutputStream(tempPolicyResult);
-             OutputStream mrrReport = new FileOutputStream(tempResultFile)) {
+             OutputStream policyResultOs = new FileOutputStream(tempPolicyResult)) {
             PolicyChecker.applyPolicy(policyFile, mrrIs, policyResultOs);
+        }
+        try (OutputStream mrrReport = new FileOutputStream(tempResultFile)) {
             PolicyChecker.insertPolicyReport(tempPolicyResult, tempMrrFile, mrrReport);
         }
 
         if (!tempPolicyResult.delete()) {
             tempPolicyResult.deleteOnExit();
         }
+    }
+
+    private static Node getProperty(Node parent, String propertyName) {
+        if (parent == null) {
+            return null;
+        }
+        NodeList childNodes = parent.getChildNodes();
+        for (int i = 0; i < childNodes.getLength(); i++) {
+            Node item = childNodes.item(i);
+            if (propertyName.equals(item.getNodeName())){
+                return item;
+            }
+        }
+        return null;
     }
 }

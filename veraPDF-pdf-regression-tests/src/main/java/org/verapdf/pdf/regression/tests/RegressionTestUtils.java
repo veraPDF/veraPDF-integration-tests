@@ -2,6 +2,7 @@ package org.verapdf.pdf.regression.tests;
 
 import org.junit.Assert;
 import org.verapdf.pdfa.flavours.PDFAFlavour;
+import org.verapdf.pdfa.qa.FailedPolicyCheck;
 import org.verapdf.pdfa.qa.RegressionTestingHelper;
 
 import javax.xml.bind.JAXBException;
@@ -32,11 +33,12 @@ public class RegressionTestUtils {
                     filesByFlavour.put(flavour, toAdd);
                 }
             }
-            List<String> failedFiles = new ArrayList<>();
+            Map<String, List<FailedPolicyCheck>> failedFiles = new HashMap<>();
             for (PDFAFlavour flavour : flavours) {
-                failedFiles.addAll(helper.getFailedPolicyComplianceFiles(flavour, null, filesByFlavour.get(flavour)));
+                helper.getFailedPolicyComplianceFiles(failedFiles, flavour, null, filesByFlavour.get(flavour));
             }
-            Assert.assertFalse(RegressionTestingHelper.totalFailedPolicyJobsCount(failedFiles) > 0);
+            RegressionTestingHelper.printResult(failedFiles);
+            Assert.assertEquals(0, failedFiles.size());
         } catch (IOException | JAXBException e) {
             Assert.fail("Some tests are fallen due to an error");
             e.printStackTrace();

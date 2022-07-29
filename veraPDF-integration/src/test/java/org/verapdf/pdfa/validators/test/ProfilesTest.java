@@ -36,7 +36,7 @@ import static org.junit.Assert.assertSame;
  */
 @SuppressWarnings("static-method")
 public class ProfilesTest {
-    private static final org.verapdf.pdfa.validation.profiles.ProfileDirectory INTEGRATION_PROFILES = GitHubBackedProfileDirectory.fromBranch("integration");
+    private static final org.verapdf.pdfa.validation.profiles.ProfileDirectory rc/1.22_PROFILES = GitHubBackedProfileDirectory.fromBranch("rc/1.22");
 
     /**
      * Test method for {@link org.verapdf.pdfa.validation.profiles.ValidationProfileImpl#getPDFAFlavour()}.

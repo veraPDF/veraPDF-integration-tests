@@ -33,7 +33,7 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
 public class RegressionTestingHelper {
-    private static final String testFilesZipUrl = "https://github.com/veraPDF/veraPDF-regression-tests/archive/refs/heads/integration.zip";
+    private static final String testFilesZipUrl = "https://github.com/veraPDF/veraPDF-regression-tests/archive/refs/heads/rc/1.22.zip";
 
     private final ZipFile zipSource;
     private final Map<String, ZipEntry> pdfMap;

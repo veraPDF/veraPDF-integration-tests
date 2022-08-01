@@ -1,14 +1,14 @@
 package org.verapdf.pdfa.qa;
 
-import com.sun.org.apache.xerces.internal.dom.DeferredElementImpl;
+import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
 
 public class FailedPolicyCheck {
-	private final DeferredElementImpl node;
+	private final Element node;
 	private final String errorMessage;
 	private final String test;
 
-	public FailedPolicyCheck(DeferredElementImpl node, String errorMessage, String test) {
+	public FailedPolicyCheck(Element node, String errorMessage, String test) {
 		this.node = node;
 		this.errorMessage = errorMessage;
 		this.test = test;

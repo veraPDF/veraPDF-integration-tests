@@ -1,7 +1,5 @@
 package org.verapdf.pdfa.qa;
 
-import com.sun.org.apache.xerces.internal.dom.DeferredElementImpl;
-import com.sun.org.apache.xml.internal.dtm.ref.DTMNodeList;
 import org.verapdf.core.VeraPDFException;
 import org.verapdf.metadata.fixer.FixerFactory;
 import org.verapdf.metadata.fixer.MetadataFixerConfig;
@@ -13,6 +11,7 @@ import org.verapdf.pdfa.validation.validators.ValidatorFactory;
 import org.verapdf.policy.PolicyChecker;
 import org.verapdf.processor.*;
 import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
@@ -168,12 +167,12 @@ public class RegressionTestingHelper {
         Document document = documentBuilder.parse(xmlReport);
         XPath path = XPathFactory.newInstance().newXPath();
         List<FailedPolicyCheck> failedChecks = new LinkedList<>();
-        DTMNodeList list = ((DTMNodeList)path.evaluate("//policyReport/failedChecks/check", document, XPathConstants.NODESET));
+        NodeList list = ((NodeList)path.evaluate("//policyReport/failedChecks/check", document, XPathConstants.NODESET));
         for (int i = 0; i < list.getLength(); i++) {
-            DeferredElementImpl check = (DeferredElementImpl)list.item(i);
+            Element check = (Element)list.item(i);
             String test = check.getAttribute("test");
             String messageValue = getProperty(check, "message").getTextContent();
-            DeferredElementImpl node = (DeferredElementImpl)path.evaluate(check.getAttribute("location"), document, XPathConstants.NODE);
+            Element node = (Element)path.evaluate(check.getAttribute("location"), document, XPathConstants.NODE);
             failedChecks.add(new FailedPolicyCheck(node, messageValue, test));
         }
         return failedChecks;

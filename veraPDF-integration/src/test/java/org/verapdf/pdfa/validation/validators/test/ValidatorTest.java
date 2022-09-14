@@ -60,7 +60,7 @@ import static org.junit.Assert.*;
  */
 @SuppressWarnings("static-method")
 public class ValidatorTest {
-    private static final ProfileDirectory PROFILES = GitHubBackedProfileDirectory.fromBranch("rc/1.22");
+    private static final ProfileDirectory PROFILES = GitHubBackedProfileDirectory.fromBranch("rel/1.22");
 
     @BeforeClass
     public static final void SetUp() {

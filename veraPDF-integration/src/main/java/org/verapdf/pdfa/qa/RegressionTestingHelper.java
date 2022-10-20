@@ -40,6 +40,7 @@ public class RegressionTestingHelper {
 
     public RegressionTestingHelper(boolean isWcag) throws IOException {
         VeraGreenfieldFoundryProvider.initialise();
+        System.setProperty("jdk.xml.xpathExprOpLimit", "100");
         File zipFile;
         try {
             zipFile = AbstractTestCorpus.createTempFileFromCorpus(new URL(testFilesZipUrl), "regression");
@@ -108,9 +109,11 @@ public class RegressionTestingHelper {
             System.out.println("Some files is not compliant with policy: ");
             for (Map.Entry<String, List<FailedPolicyCheck>> entry : failedFiles.entrySet()) {
                 System.out.println(entry.getKey());
-                System.out.println(entry.getValue());
+                for (FailedPolicyCheck check : entry.getValue()) {
+                    System.out.println(check);
+                }
+                System.out.println();
             }
-            System.out.println();
         } else {
             System.out.println("Files are compliant with policies");
         }

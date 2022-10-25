@@ -17,7 +17,7 @@ jobs:
       - name: Set up
         run: mvn -B -DskipTests=true clean package --file pom.xml
       - name: Run wcag regression tests
-        run: java -Djdk.xml.xpathExprGrpLimit=0 -cp "/home/runner/work/veraPDF-integration-tests/veraPDF-integration-tests/veraPDF-wcag-regression-tests/target"/'*' org.verapdf.wcag.regression.tests.RegressionTestUtils
+        run: java -Djdk.xml.xpathTotalOpLimit=0 -Djdk.xml.xpathExprGrpLimit=0 -cp "/home/runner/work/veraPDF-integration-tests/veraPDF-integration-tests/veraPDF-wcag-regression-tests/target"/'*' org.verapdf.wcag.regression.tests.RegressionTestUtils
 
       - name: Notify slack tests succeded
         if: success()

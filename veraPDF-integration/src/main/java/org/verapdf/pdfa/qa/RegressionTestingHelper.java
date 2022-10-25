@@ -40,7 +40,6 @@ public class RegressionTestingHelper {
 
     public RegressionTestingHelper(boolean isWcag) throws IOException {
         VeraGreenfieldFoundryProvider.initialise();
-        System.setProperty("jdk.xml.xpathExprOpLimit", "100");
         File zipFile;
         try {
             zipFile = AbstractTestCorpus.createTempFileFromCorpus(new URL(testFilesZipUrl), "regression");
@@ -78,12 +77,14 @@ public class RegressionTestingHelper {
         files.add(tempPdfFile);
 
         for (String pdfName : fileNames) {
+            System.out.println(pdfName);
             try (OutputStream reportStream = new FileOutputStream(tempMrrFile)) {
                 copyInputStreamToFile(this.getPdfStream(pdfName), tempPdfFile);
                 processor.process(files, ProcessorFactory.getHandler(FormatOption.MRR, false, reportStream, false));
                 reportStream.flush();
             } catch (IOException | VeraPDFException e) {
                 failedFiles.put(pdfName, Collections.singletonList(new FailedPolicyCheck(e.getMessage())));
+                e.printStackTrace();
             }
             try {
                 String schName = pdfName.substring(0, pdfName.length() - 3) + "sch";
@@ -95,6 +96,7 @@ public class RegressionTestingHelper {
                 }
             } catch (Exception e) {
                 failedFiles.put(pdfName, Collections.singletonList(new FailedPolicyCheck(e.getMessage())));
+                e.printStackTrace();
             }
         }
 

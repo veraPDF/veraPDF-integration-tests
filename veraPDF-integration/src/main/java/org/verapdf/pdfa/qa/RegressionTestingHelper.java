@@ -61,11 +61,11 @@ public class RegressionTestingHelper {
         ProcessorConfig processorConfig = customProfile == null ?
                 ProcessorFactory.fromValues(ValidatorFactory.createConfig(flavour, PDFAFlavour.NO_FLAVOUR,
                         true, 0, false, true, Level.WARNING,
-                        BaseValidator.DEFAULT_MAX_NUMBER_OF_DISPLAYED_FAILED_CHECKS, false, ""),
+                        BaseValidator.DEFAULT_MAX_NUMBER_OF_DISPLAYED_FAILED_CHECKS, false, "", false),
                         null, null, fixConf, EnumSet.of(TaskType.VALIDATE), (String) null) :
                 ProcessorFactory.fromValues(ValidatorFactory.createConfig(PDFAFlavour.NO_FLAVOUR, PDFAFlavour.NO_FLAVOUR,
                         true, 0, false, true, Level.WARNING,
-                        BaseValidator.DEFAULT_MAX_NUMBER_OF_DISPLAYED_FAILED_CHECKS, false, ""),
+                        BaseValidator.DEFAULT_MAX_NUMBER_OF_DISPLAYED_FAILED_CHECKS, false, "", false),
                         null, null, fixConf, EnumSet.of(TaskType.VALIDATE), customProfile, null);
         BatchProcessor processor = ProcessorFactory.fileBatchProcessor(processorConfig);
 

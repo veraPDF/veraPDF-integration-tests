@@ -145,7 +145,7 @@ public class ValidatorTest {
                 int failedMax = result.getTestAssertions().size() + 1;
                 // Set up a loop to restrict failures
                 for (int index = failedMax; index > 0; index--) {
-                    PDFAValidator fastFailValidator = Foundries.defaultInstance().createFailFastValidator(profile, index);
+                    PDFAValidator fastFailValidator = Foundries.defaultInstance().createFailFastValidator(profile, index, false);
                     ValidationResult failFastResult = ValidationResults
                             .defaultResult();
                     try (ModelParser parser = ModelParser.createModelWithFlavour(

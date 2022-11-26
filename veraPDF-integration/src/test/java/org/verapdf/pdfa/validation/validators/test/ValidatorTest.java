@@ -32,6 +32,7 @@ import org.verapdf.model.ModelParser;
 import org.verapdf.pdfa.Foundries;
 import org.verapdf.pdfa.PDFAParser;
 import org.verapdf.pdfa.PDFAValidator;
+import org.verapdf.pdfa.validation.validators.ValidatorBuilder;
 import org.verapdf.pdfbox.foundry.PdfBoxFoundryProvider;
 import org.verapdf.pdfa.flavours.PDFAFlavour;
 import org.verapdf.pdfa.qa.AbstractTestCorpus.Corpus;
@@ -145,9 +146,8 @@ public class ValidatorTest {
                 int failedMax = result.getTestAssertions().size() + 1;
                 // Set up a loop to restrict failures
                 for (int index = failedMax; index > 0; index--) {
-                    PDFAValidator fastFailValidator = Foundries.defaultInstance().createFailFastValidator(profile, index, false);
-                    ValidationResult failFastResult = ValidationResults
-                            .defaultResult();
+                    PDFAValidator fastFailValidator = new ValidatorBuilder().profile(profile).maxFails(index).build();
+                    ValidationResult failFastResult = ValidationResults.defaultResult();
                     try (ModelParser parser = ModelParser.createModelWithFlavour(
                             veraCorpus.getItemStream(itemName), profile.getPDFAFlavour())) {
                         failFastResult = fastFailValidator.validate(parser);

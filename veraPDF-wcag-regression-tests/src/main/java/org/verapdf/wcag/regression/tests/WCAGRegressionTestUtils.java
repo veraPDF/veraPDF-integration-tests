@@ -14,7 +14,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class RegressionTestUtils {
+public class WCAGRegressionTestUtils {
     private static final String wcagProfileUrl = "https://github.com/veraPDF/veraPDF-validation-profiles/raw/integration/PDF_UA/WCAG-21-Complete.xml";
 
     public static void main(String[] args) {

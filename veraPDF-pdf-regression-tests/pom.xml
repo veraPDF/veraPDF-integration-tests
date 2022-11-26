@@ -46,7 +46,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>org.verapdf.pdf.regression.tests.RegressionTestUtils</mainClass>
+                            <mainClass>org.verapdf.pdf.regression.tests.PDFRegressionTestUtils</mainClass>
                         </manifest>
                     </archive>
                     <descriptorRefs>

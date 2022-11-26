@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
 
 import static org.verapdf.pdfa.qa.ZipBackedTestCorpus.checkFlavour;
 
-public class RegressionTestUtils {
+public class PDFRegressionTestUtils {
     private static final EnumSet<PDFAFlavour> flavours = EnumSet.of(PDFAFlavour.PDFA_1_A, PDFAFlavour.PDFA_1_B,
             PDFAFlavour.PDFA_2_A, PDFAFlavour.PDFA_2_B, PDFAFlavour.PDFA_2_U,
             PDFAFlavour.PDFA_3_A, PDFAFlavour.PDFA_3_B, PDFAFlavour.PDFA_3_U,

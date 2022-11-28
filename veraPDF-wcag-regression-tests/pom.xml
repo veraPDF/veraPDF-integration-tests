@@ -43,7 +43,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>org.verapdf.wcag.regression.tests.RegressionTestUtils</mainClass>
+                            <mainClass>org.verapdf.wcag.regression.tests.WCAGRegressionTestUtils</mainClass>
                         </manifest>
                     </archive>
                     <descriptorRefs>

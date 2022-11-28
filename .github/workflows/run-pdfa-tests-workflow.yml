@@ -17,7 +17,7 @@ jobs:
       - name: Set up
         run: mvn -B -DskipTests=true clean package --file pom.xml
       - name: Run pdf/a and pdf/ua regression tests
-        run: java -Djdk.xml.xpathTotalOpLimit=0 -Djdk.xml.xpathExprOpLimit=0 -Djdk.xml.xpathExprGrpLimit=0 -cp "/home/runner/work/veraPDF-integration-tests/veraPDF-integration-tests/veraPDF-pdf-regression-tests/target"/'*' org.verapdf.pdf.regression.tests.RegressionTestUtils
+        run: java -Djdk.xml.xpathTotalOpLimit=0 -Djdk.xml.xpathExprOpLimit=0 -Djdk.xml.xpathExprGrpLimit=0 -cp "/home/runner/work/veraPDF-integration-tests/veraPDF-integration-tests/veraPDF-pdf-regression-tests/target"/'*' org.verapdf.pdf.regression.tests.PDFRegressionTestUtils
 
       - name: Notify slack tests succeded
         if: success()

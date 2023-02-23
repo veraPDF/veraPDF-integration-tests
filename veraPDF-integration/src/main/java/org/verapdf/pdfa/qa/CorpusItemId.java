@@ -83,7 +83,7 @@ public interface CorpusItemId {
             return this.id;
         }
 
-        public final static TestType fromId(final String id) {
+        public static final TestType fromId(final String id) {
             for (TestType type : TestType.values()) {
                 if (id.equalsIgnoreCase(type.id)) {
                     return type;

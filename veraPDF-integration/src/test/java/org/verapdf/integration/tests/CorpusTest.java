@@ -14,26 +14,44 @@
  */
 package org.verapdf.integration.tests;
 
-import com.github.mustachejava.DefaultMustacheFactory;
-import com.github.mustachejava.Mustache;
-import com.github.mustachejava.MustacheFactory;
+import static org.hamcrest.Matchers.equalTo;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.Writer;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.LinkedList;
+import java.util.Map;
+import java.util.SortedMap;
+import java.util.TreeMap;
+import java.util.Comparator;
+
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ErrorCollector;
 import org.verapdf.component.ComponentDetails;
+import org.verapdf.gf.foundry.VeraGreenfieldFoundryProvider;
 import org.verapdf.pdfa.Foundries;
 import org.verapdf.pdfa.PDFAValidator;
 import org.verapdf.pdfa.results.ValidationResult;
 import org.verapdf.pdfa.validation.profiles.RuleId;
-import org.verapdf.pdfbox.foundry.PdfBoxFoundryProvider;
-import org.verapdf.gf.foundry.VeraGreenfieldFoundryProvider;
 import org.verapdf.pdfa.flavours.PDFAFlavour;
-import org.verapdf.pdfa.qa.*;
+import org.verapdf.pdfa.qa.CorpusManager;
+import org.verapdf.pdfa.qa.ResultSet;
+import org.verapdf.pdfa.qa.ResultSetDetailsImpl;
+import org.verapdf.pdfa.qa.ResultSetImpl;
+import org.verapdf.pdfa.qa.TestCorpus;
+import org.verapdf.pdfbox.foundry.PdfBoxFoundryProvider;
 
-import java.io.*;
-import java.util.*;
-
-import static org.junit.Assert.assertFalse;
+import com.github.mustachejava.DefaultMustacheFactory;
+import com.github.mustachejava.Mustache;
+import com.github.mustachejava.MustacheFactory;
 
 @SuppressWarnings({ "javadoc" })
 public class CorpusTest {
@@ -50,7 +68,6 @@ public class CorpusTest {
 		try {
 			CorpusManager.initialise();
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			throw e;
 		}
@@ -61,13 +78,19 @@ public class CorpusTest {
 		writeResults();
 	}
 
+	@Rule
+	public ErrorCollector collector = new ErrorCollector();
+
 //	@Test
 	public void testPdfBox() {
 		PdfBoxFoundryProvider.initialise();
 		pdfBoxDetails = Foundries.defaultInstance().getDetails();
 		testCorpora(pdfBoxResults);
-		assertFalse(countExceptions(pdfBoxResults) > 0);
-	}
+		for (ResultSet set : pdfBoxResults) {
+			testResults(set);
+		}
+		collector.checkThat("Exceptions thrown during PDF Box testing.", countExceptions(pdfBoxResults), equalTo(0));
+}
 
 	@Test
 	public void testGreenfield() {
@@ -75,7 +98,10 @@ public class CorpusTest {
 		gfDetails = Foundries.defaultInstance().getDetails();
 		testCorpora(gfResults);
 		printStatistic(gfResults);
-		assertFalse(countExceptions(gfResults) > 0);
+		for (ResultSet set : gfResults) {
+			testResults(set);
+		}
+		collector.checkThat("Exceptions thrown during greenfield testing.", countExceptions(gfResults), equalTo(0));
 	}
 
 	private static void printStatistic(final List<ResultSet> resultSets) {
@@ -188,6 +214,16 @@ public class CorpusTest {
 					resultSets.add(results);
 				}
 			}
+		}
+	}
+
+	private void testResults(final ResultSet results) {
+		for (ResultSet.Result result : results.getResults()) {
+			collector
+					.checkThat(
+							String.format("Unexpected result for corpus %s, item %s",
+									results.getCorpusDetails().getName(), result.getCorpusItemName()),
+							result.isExpectedResult(), equalTo(true));
 		}
 	}
 

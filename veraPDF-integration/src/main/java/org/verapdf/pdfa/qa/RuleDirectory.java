@@ -29,7 +29,7 @@ import org.verapdf.core.Registry;
 import org.verapdf.pdfa.flavours.PDFAFlavour;
 import org.verapdf.pdfa.validation.profiles.*;
 
-import javax.xml.bind.JAXBException;
+import jakarta.xml.bind.JAXBException;
 import java.io.*;
 import java.util.Collection;
 import java.util.Collections;

@@ -29,7 +29,7 @@ import org.verapdf.pdfa.qa.CorpusItemIdImpl.CorpusItemIdComparator;
 import org.verapdf.pdfa.results.ValidationResult;
 import org.verapdf.pdfa.validation.profiles.ValidationProfile;
 
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import jakarta.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.util.Comparator;
 import java.util.Set;
 

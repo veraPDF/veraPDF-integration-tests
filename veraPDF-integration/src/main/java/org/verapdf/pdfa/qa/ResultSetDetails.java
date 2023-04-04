@@ -26,7 +26,7 @@ package org.verapdf.pdfa.qa;
 import org.verapdf.ReleaseDetails;
 import org.verapdf.component.ComponentDetails;
 
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import jakarta.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.util.Date;
 import java.util.Set;
 

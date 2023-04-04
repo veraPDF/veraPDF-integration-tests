@@ -25,7 +25,7 @@ package org.verapdf.pdfa.qa;
 
 import org.verapdf.component.AuditDuration;
 
-import javax.xml.bind.annotation.adapters.XmlAdapter;
+import jakarta.xml.bind.annotation.adapters.XmlAdapter;
 import java.util.Set;
 
 /**

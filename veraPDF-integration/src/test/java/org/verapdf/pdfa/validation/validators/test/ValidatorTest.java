@@ -47,7 +47,7 @@ import org.verapdf.pdfa.results.ValidationResults;
 import org.verapdf.pdfa.validation.profiles.ProfileDirectory;
 import org.verapdf.pdfa.validation.profiles.ValidationProfile;
 
-import javax.xml.bind.JAXBException;
+import jakarta.xml.bind.JAXBException;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.util.HashSet;

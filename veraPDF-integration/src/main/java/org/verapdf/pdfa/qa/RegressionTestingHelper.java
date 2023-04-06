@@ -6,8 +6,7 @@ import org.verapdf.metadata.fixer.MetadataFixerConfig;
 import org.verapdf.gf.foundry.VeraGreenfieldFoundryProvider;
 import org.verapdf.pdfa.flavours.PDFAFlavour;
 import org.verapdf.pdfa.validation.profiles.ValidationProfile;
-import org.verapdf.pdfa.validation.validators.BaseValidator;
-import org.verapdf.pdfa.validation.validators.ValidatorFactory;
+import org.verapdf.pdfa.validation.validators.ValidatorConfigBuilder;
 import org.verapdf.policy.PolicyChecker;
 import org.verapdf.processor.*;
 import org.w3c.dom.Document;
@@ -59,13 +58,13 @@ public class RegressionTestingHelper {
     public void getFailedPolicyComplianceFiles(Map<String, List<FailedPolicyCheck>> failedFiles, PDFAFlavour flavour, ValidationProfile customProfile, Set<String> fileNames) throws JAXBException, IOException {
         MetadataFixerConfig fixConf = FixerFactory.configFromValues("test", true);
         ProcessorConfig processorConfig = customProfile == null ?
-                ProcessorFactory.fromValues(ValidatorFactory.createConfig(flavour, PDFAFlavour.NO_FLAVOUR,
-                        true, 0, false, true, Level.WARNING,
-                        BaseValidator.DEFAULT_MAX_NUMBER_OF_DISPLAYED_FAILED_CHECKS, false, "", false),
+                ProcessorFactory.fromValues(new ValidatorConfigBuilder().flavour(flavour)
+                                .defaultFlavour(PDFAFlavour.NO_FLAVOUR).recordPasses(true).maxFails(0)
+                                .isLogsEnabled(true).showErrorMessages(false).build(),
                         null, null, fixConf, EnumSet.of(TaskType.VALIDATE), (String) null) :
-                ProcessorFactory.fromValues(ValidatorFactory.createConfig(PDFAFlavour.NO_FLAVOUR, PDFAFlavour.NO_FLAVOUR,
-                        true, 0, false, true, Level.WARNING,
-                        BaseValidator.DEFAULT_MAX_NUMBER_OF_DISPLAYED_FAILED_CHECKS, false, "", false),
+                ProcessorFactory.fromValues(new ValidatorConfigBuilder()
+                                .defaultFlavour(PDFAFlavour.NO_FLAVOUR).recordPasses(true).maxFails(0)
+                                .isLogsEnabled(true).showErrorMessages(false).build(),
                         null, null, fixConf, EnumSet.of(TaskType.VALIDATE), customProfile, null);
         BatchProcessor processor = ProcessorFactory.fileBatchProcessor(processorConfig);
 

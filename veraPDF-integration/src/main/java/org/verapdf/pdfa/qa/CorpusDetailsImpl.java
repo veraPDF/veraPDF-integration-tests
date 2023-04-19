@@ -23,8 +23,8 @@
  */
 package org.verapdf.pdfa.qa;
 
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.adapters.XmlAdapter;
+import jakarta.xml.bind.annotation.XmlElement;
+import jakarta.xml.bind.annotation.adapters.XmlAdapter;
 
 /**
  * @author <a href="mailto:carl@openpreservation.org">Carl Wilson</a>

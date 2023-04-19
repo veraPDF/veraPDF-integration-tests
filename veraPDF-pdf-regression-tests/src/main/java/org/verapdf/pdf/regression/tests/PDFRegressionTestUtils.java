@@ -5,7 +5,7 @@ import org.verapdf.pdfa.flavours.PDFAFlavour;
 import org.verapdf.pdfa.qa.FailedPolicyCheck;
 import org.verapdf.pdfa.qa.RegressionTestingHelper;
 
-import javax.xml.bind.JAXBException;
+import jakarta.xml.bind.JAXBException;
 import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;

@@ -26,12 +26,12 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <artifactId>verapdf-integration-tests</artifactId>
+        <artifactId>verapdf-integration-tests-jakarta</artifactId>
         <groupId>org.verapdf</groupId>
         <version>1.23.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>veraPDF-integration</artifactId>
+    <artifactId>veraPDF-integration-jakarta</artifactId>
 
     <name>veraPDF Integration Tests</name>
 

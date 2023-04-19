@@ -25,8 +25,8 @@ package org.verapdf.pdfa.qa;
 
 import org.apache.commons.codec.digest.DigestUtils;
 
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.adapters.XmlAdapter;
+import jakarta.xml.bind.annotation.XmlElement;
+import jakarta.xml.bind.annotation.adapters.XmlAdapter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;

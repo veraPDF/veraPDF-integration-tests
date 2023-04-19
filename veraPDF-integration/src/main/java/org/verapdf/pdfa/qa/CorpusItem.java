@@ -23,7 +23,7 @@
  */
 package org.verapdf.pdfa.qa;
 
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import jakarta.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 /**
  * Interface that encapsulates a basic corpus item.

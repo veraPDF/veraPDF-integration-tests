@@ -90,7 +90,7 @@ public class CorpusTest {
 		for (PDFAFlavour flavour : CorpusManager.testableFlavours()) {
 			for (TestCorpus corpus : CorpusManager.corporaForFlavour(flavour)) {
 				if (flavour != PDFAFlavour.NO_FLAVOUR) {
-					try (PDFAValidator validator = Foundries.defaultInstance().createValidator(flavour, false)) {
+					try (PDFAValidator validator = Foundries.defaultInstance().createValidator(PDFAFlavour.NO_ARLINGTON_FLAVOUR, false)) {
 						ResultSet results = ResultSetImpl.validateCorpus(corpus, validator);
 						resultSets.add(results);
 					} catch (IOException excep) {

@@ -24,13 +24,13 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>verapdf-integration-tests</artifactId>
+        <artifactId>verapdf-integration-tests-arlington</artifactId>
         <groupId>org.verapdf</groupId>
         <version>1.23.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>veraPDF-pdf-regression-tests</artifactId>
+    <artifactId>veraPDF-pdf-regression-tests-arlington</artifactId>
 
     <name>veraPDF PDF Regression Tests</name>
 
@@ -77,7 +77,7 @@
     <dependencies>
         <dependency>
             <groupId>org.verapdf</groupId>
-            <artifactId>veraPDF-integration</artifactId>
+            <artifactId>veraPDF-integration-arlington</artifactId>
             <version>${project.version}</version>
             <scope>compile</scope>
         </dependency>

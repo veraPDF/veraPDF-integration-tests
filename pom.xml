@@ -30,7 +30,7 @@
     <version>1.23.1</version>
   </parent>
 
-  <artifactId>verapdf-integration-tests</artifactId>
+  <artifactId>verapdf-integration-tests-arlington</artifactId>
   <version>1.23.0-SNAPSHOT</version>
   <packaging>pom</packaging>
 
@@ -82,7 +82,7 @@
 
     <dependency>
       <groupId>org.verapdf</groupId>
-      <artifactId>core</artifactId>
+      <artifactId>core-arlington</artifactId>
       <version>${verapdf.library.version}</version>
     </dependency>
 
@@ -119,7 +119,7 @@
 
     <dependency>
       <groupId>org.verapdf</groupId>
-      <artifactId>validation-model</artifactId>
+      <artifactId>validation-model-arlington</artifactId>
       <version>${verapdf.greenfield.version}</version>
     </dependency>
 

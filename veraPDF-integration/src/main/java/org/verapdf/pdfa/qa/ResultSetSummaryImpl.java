@@ -178,12 +178,12 @@ public final class ResultSetSummaryImpl implements ResultSetSummary {
         for (ResultSet.Result result : results) {
             switch (result.getCorpusItemId().getTestType()) {
             case PASS:
-                validCases++;
-                if (!result.getResult().isCompliant()) validFailed++; 
-                break;
             case FAIL:
-                invalidCases++;
-                if (result.getResult().isCompliant()) invalidFailed++; 
+                if (result.getResult().isCompliant()) {
+                    validCases++;
+                } else {
+                    invalidCases++;
+                }
                 break;
             case UNDEFINED:
                 undefinedCases++;

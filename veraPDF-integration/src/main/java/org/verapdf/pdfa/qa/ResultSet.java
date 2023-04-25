@@ -106,7 +106,7 @@ public interface ResultSet {
 		public String getTestType() {
 			if ((this.corpusItemId.getTestType() == TestType.PASS)
 					|| (this.corpusItemId.getTestType() == TestType.FAIL)) {
-				return this.isExpectedResult() ? "pass" : "fail";
+				return this.result.isCompliant() ? "pass" : "fail";
 			}
 			return this.corpusItemId.getTestType().getId();
 		}

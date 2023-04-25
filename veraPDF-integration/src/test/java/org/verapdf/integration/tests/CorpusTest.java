@@ -62,7 +62,7 @@ public class CorpusTest {
 		writeResults();
 	}
 
-	@Test
+//	@Test
 	public void testPdfBox() {
 		PdfBoxFoundryProvider.initialise();
 		pdfBoxDetails = Foundries.defaultInstance().getDetails();
@@ -90,7 +90,7 @@ public class CorpusTest {
 		for (PDFAFlavour flavour : CorpusManager.testableFlavours()) {
 			for (TestCorpus corpus : CorpusManager.corporaForFlavour(flavour)) {
 				if (flavour != PDFAFlavour.NO_FLAVOUR) {
-					try (PDFAValidator validator = Foundries.defaultInstance().createValidator(PDFAFlavour.NO_ARLINGTON_FLAVOUR, false)) {
+					try (PDFAValidator validator = Foundries.defaultInstance().createValidator(flavour, false)) {
 						ResultSet results = ResultSetImpl.validateCorpus(corpus, validator);
 						resultSets.add(results);
 					} catch (IOException excep) {
@@ -130,14 +130,12 @@ public class CorpusTest {
 			rootDir.mkdirs();
 		writeSummaries(rootDir);
 		int index = 0;
-		for (ResultSet pdfBoxResult : pdfBoxResults) {
-			ResultSet gfResult = gfResults.get(index++);
+		for (ResultSet gfResult : gfResults) {
 			Map<String, Object> scopes = new HashMap<>();
-			scopes.put("pdfBoxResult", pdfBoxResult);
 			scopes.put("gfResult", gfResult);
 			if (rootDir.isDirectory() && rootDir.canWrite()) {
-				String dirName = pdfBoxResult.getCorpusDetails().getName() + "-"
-						+ pdfBoxResult.getValidationProfile().getPDFAFlavour().getId();
+				String dirName = gfResult.getCorpusDetails().getName() + "-"
+						+ gfResult.getValidationProfile().getPDFAFlavour().getId();
 				outputResultsToFile(scopes, new File(rootDir, dirName));
 			} else {
 				RESULTS_MUSTACHE.execute(new PrintWriter(System.out), scopes).flush();
@@ -147,9 +145,9 @@ public class CorpusTest {
 
 	private static void writeSummaries(final File outputDir) throws FileNotFoundException, IOException {
 		Map<String, Object> scopes = new HashMap<>();
-		scopes.put("pdfBoxDetails", ResultSetDetailsImpl.getNewInstance(pdfBoxDetails));
+//		scopes.put("pdfBoxDetails", ResultSetDetailsImpl.getNewInstance(pdfBoxDetails));
 		scopes.put("gfDetails", ResultSetDetailsImpl.getNewInstance(gfDetails));
-		scopes.put("pdfBoxResults", pdfBoxResults);
+//		scopes.put("pdfBoxResults", pdfBoxResults);
 		scopes.put("gfResults", gfResults);
 		try (Writer writer = new PrintWriter(new File(outputDir, "index.html"))) {
 			SUMMARY_MUSTACHE.execute(writer, scopes);

@@ -202,11 +202,13 @@ public class ResultSetImpl implements ResultSet {
 			}
 			if (id != null) {
 				try (PDFAParser loader = Foundries.defaultInstance().createParser(corpus.getItemStream(itemName),
-						validator.getProfile().getPDFAFlavour())) {
-					ValidationResult result = validator.validate(loader);
-					long memUsed = (ManagementFactory.getMemoryMXBean().getHeapMemoryUsage().getUsed() / MEGABYTE);
-					maxMemUse = (memUsed > maxMemUse) ? memUsed : maxMemUse;
-					results.add(new Result(id, result, jobTimer.stop(), memUsed));
+						PDFAFlavour.NO_ARLINGTON_FLAVOUR)) {
+					try (PDFAValidator arlingtonValidator = Foundries.defaultInstance().createValidator(loader.getFlavour(), false)) {
+						ValidationResult result = arlingtonValidator.validate(loader);
+						long memUsed = (ManagementFactory.getMemoryMXBean().getHeapMemoryUsage().getUsed() / MEGABYTE);
+						maxMemUse = (memUsed > maxMemUse) ? memUsed : maxMemUse;
+						results.add(new Result(id, result, jobTimer.stop(), memUsed));
+					}
 				} catch (Throwable e) {
 					LOG.log(Level.SEVERE, String.format("Caught throwable testing %s from corpus %s", itemName,
 							corpus.getDetails().getName()));
@@ -228,9 +230,8 @@ public class ResultSetImpl implements ResultSet {
 		for (String itemName : corpus.getItemNames()) {
 			CorpusItemId id = null;
 			Components.Timer jobTimer = Components.Timer.start();
-			try (PDFAParser loader = Foundries.defaultInstance().createParser(corpus.getItemStream(itemName))) {
-				PDFAFlavour flavour = loader.getFlavour();
-				try (PDFAValidator validator = Foundries.defaultInstance().createValidator(flavour, false)) {
+			try (PDFAParser loader = Foundries.defaultInstance().createParser(corpus.getItemStream(itemName), PDFAFlavour.NO_ARLINGTON_FLAVOUR)) {
+				try (PDFAValidator validator = Foundries.defaultInstance().createValidator(loader.getFlavour(), false)) {
 					id = CorpusItemIdImpl.fromFileName(validator.getProfile().getPDFAFlavour().getPart(), itemName, "");
 					ValidationResult result = validator.validate(loader);
 					long memUsed = (ManagementFactory.getMemoryMXBean().getHeapMemoryUsage().getUsed() / MEGABYTE);

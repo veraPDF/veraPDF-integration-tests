@@ -1,10 +1,14 @@
 veraPDF-integration-tests
 =========================
 
-[![Build Status](https://travis-ci.org/veraPDF/veraPDF-integration-tests.svg?branch=integration)](https://travis-ci.org/veraPDF/integration-tests/ "Travis-CI")
-[![Build Status](http://jenkins.openpreservation.org/buildStatus/icon?job=veraPDF-integration-tests)](http://jenkins.openpreservation.org/job/veraPDF-integration-tests/ "OPF Jenkins Release")
+[![Build Status](https://jenkins.openpreservation.org/job/veraPDF/job/1.23/job/integration-tests/badge/icon)](https://jenkins.openpreservation.org/job/veraPDF/job/1.23/job/integration-tests/ "OPF Jenkins")
 [![CodeCov Coverage](https://img.shields.io/codecov/c/github/veraPDF/veraPDF-integration-tests.svg)](https://codecov.io/gh/veraPDF/veraPDF-integration-tests/ "CodeCov coverage")
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/41570ba00d614d4083bf249a1d6c852e)](https://www.codacy.com/app/carlwilson/veraPDF-integration-tests?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=veraPDF/veraPDF-integration-tests&amp;utm_campaign=Badge_Grade)
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/8d54ee7467f14bf5844b91081981f6ee)](https://app.codacy.com/gh/veraPDF/veraPDF-integration-tests/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade "Codacy coverage")
+
+[![GitHub issues](https://img.shields.io/github/issues/veraPDF/veraPDF-library.svg)](https://github.com/veraPDF/veraPDF-library/issues "Open issues on GitHub")
+[![GitHub issues](https://img.shields.io/github/issues-closed/veraPDF/veraPDF-library.svg)](https://github.com/veraPDF/veraPDF-library/issues?q=is%3Aissue+is%3Aclosed "Closed issues on GitHub")
+[![GitHub issues](https://img.shields.io/github/issues-pr/veraPDF/veraPDF-integration-tests.svg)](https://github.com/veraPDF/veraPDF-integration-tests/pulls "Open pull requests on GitHub")
+[![GitHub issues](https://img.shields.io/github/issues-pr-closed/veraPDF/veraPDF-integration-tests.svg)](https://github.com/veraPDF/veraPDF-integration-tests/pulls?q=is%3Apr+is%3Aclosed "Closed pull requests on GitHub")
 
 Licensing
 ---------
@@ -23,7 +27,7 @@ Quick Start
 
 In order to build the library you'll need:
 
- * Java 7, which can be downloaded [from Oracle](http://www.oracle.com/technetwork/java/javase/downloads/index.html), or for Linux users [OpenJDK](http://openjdk.java.net/install/index.html).
+ * Java 8 - 17, which can be downloaded [from Oracle](https://www.oracle.com/technetwork/java/javase/downloads/index.html), or for Linux users [OpenJDK](https://openjdk.java.net/install/index.html).
  * [Maven v3+](https://maven.apache.org/)
 
 Life will be easier if you also use [Git](https://git-scm.com/) to obtain and manage the source.

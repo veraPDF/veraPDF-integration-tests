@@ -23,16 +23,15 @@ import org.junit.Test;
 import org.verapdf.component.ComponentDetails;
 import org.verapdf.pdfa.Foundries;
 import org.verapdf.pdfa.PDFAValidator;
+import org.verapdf.pdfa.results.ValidationResult;
+import org.verapdf.pdfa.validation.profiles.RuleId;
 import org.verapdf.pdfbox.foundry.PdfBoxFoundryProvider;
 import org.verapdf.gf.foundry.VeraGreenfieldFoundryProvider;
 import org.verapdf.pdfa.flavours.PDFAFlavour;
 import org.verapdf.pdfa.qa.*;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static org.junit.Assert.assertFalse;
 
@@ -75,7 +74,76 @@ public class CorpusTest {
 		VeraGreenfieldFoundryProvider.initialise();
 		gfDetails = Foundries.defaultInstance().getDetails();
 		testCorpora(gfResults);
+		printStatistic(gfResults);
 		assertFalse(countExceptions(gfResults) > 0);
+	}
+
+	private static void printStatistic(final List<ResultSet> resultSets) {
+		Map<PDFAFlavour, Map<RuleId, ArlingtonResult>> map = new HashMap<>();
+		for (ResultSet set : resultSets) {
+			for (ResultSet.Result result : set.getResults()) {
+				ValidationResult validationResult = result.getResult();
+				String fileName = set.getCorpusDetails().getName() + set.getValidationProfile().getPDFAFlavour() + " " + result.getCorpusItemName();
+				Map<RuleId, ArlingtonResult> arlingtonResultMap = map.computeIfAbsent(validationResult.getPDFAFlavour(), k -> new HashMap<>());
+				for (RuleId ruleId : validationResult.getFailedChecks().keySet()) {
+					ArlingtonResult arlingtonResult = arlingtonResultMap.get(ruleId);
+					if (arlingtonResult == null) {
+						arlingtonResultMap.put(ruleId, new ArlingtonResult(ruleId, 1, fileName));
+					} else {
+						if (result.getCorpusItemId().getExpectedResult()) {
+							arlingtonResult.setFileName(fileName);
+						}
+						arlingtonResult.setFailedTestNumber(arlingtonResult.getFailedTestNumber() + 1);
+					}
+				}
+			}
+		}
+		System.out.println("Tests result:");
+		for (Map.Entry<PDFAFlavour, Map<RuleId, ArlingtonResult>> entry : map.entrySet()) {
+			System.out.println(entry.getKey());
+			for (ArlingtonResult result : entry.getValue().values()) {
+				System.out.println(result.getRuleId() + " failed tests: " + result.getFailedTestNumber() + " file example: " + result.getFileName());
+			}
+		}
+	}
+
+	static class ArlingtonResult {
+		private RuleId ruleId;
+		private int failedTestNumber;
+		private String fileName;
+
+		public ArlingtonResult() {
+		}
+
+		public ArlingtonResult(RuleId ruleId, int failedTestNumber, String fileName) {
+			this.ruleId = ruleId;
+			this.failedTestNumber = failedTestNumber;
+			this.fileName = fileName;
+		}
+
+		public RuleId getRuleId() {
+			return ruleId;
+		}
+
+		public void setRuleId(RuleId ruleId) {
+			this.ruleId = ruleId;
+		}
+
+		public int getFailedTestNumber() {
+			return failedTestNumber;
+		}
+
+		public void setFailedTestNumber(int failedTestNumber) {
+			this.failedTestNumber = failedTestNumber;
+		}
+
+		public String getFileName() {
+			return fileName;
+		}
+
+		public void setFileName(String fileName) {
+			this.fileName = fileName;
+		}
 	}
 	
 	private static int countExceptions(final List<ResultSet> resultSets) {

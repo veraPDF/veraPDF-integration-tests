@@ -91,7 +91,7 @@ public class CorpusTest {
 						arlingtonResultMap.put(ruleId, new ArlingtonResult(ruleId, 1, fileName));
 					} else {
 						if (result.getCorpusItemId().getExpectedResult()) {
-							arlingtonResult.setFileName(fileName);
+							arlingtonResult.addFileName(fileName);
 						}
 						arlingtonResult.setFailedTestNumber(arlingtonResult.getFailedTestNumber() + 1);
 					}
@@ -102,7 +102,9 @@ public class CorpusTest {
 		for (Map.Entry<PDFAFlavour, Map<RuleId, ArlingtonResult>> entry : map.entrySet()) {
 			System.out.println(entry.getKey());
 			for (ArlingtonResult result : entry.getValue().values()) {
-				System.out.println(result.getRuleId() + " failed tests: " + result.getFailedTestNumber() + " file example: " + result.getFileName());
+				System.out.println(result.getRuleId() + " failed tests: " + result.getFailedTestNumber() + " file examples: ");
+				System.out.println(result.getFileNames());
+				System.out.println();
 			}
 		}
 	}
@@ -110,7 +112,7 @@ public class CorpusTest {
 	static class ArlingtonResult {
 		private RuleId ruleId;
 		private int failedTestNumber;
-		private String fileName;
+		private List<String> fileNames = new LinkedList<>();
 
 		public ArlingtonResult() {
 		}
@@ -118,7 +120,7 @@ public class CorpusTest {
 		public ArlingtonResult(RuleId ruleId, int failedTestNumber, String fileName) {
 			this.ruleId = ruleId;
 			this.failedTestNumber = failedTestNumber;
-			this.fileName = fileName;
+			this.fileNames.add(fileName);
 		}
 
 		public RuleId getRuleId() {
@@ -137,12 +139,12 @@ public class CorpusTest {
 			this.failedTestNumber = failedTestNumber;
 		}
 
-		public String getFileName() {
-			return fileName;
+		public List<String> getFileNames() {
+			return fileNames;
 		}
 
-		public void setFileName(String fileName) {
-			this.fileName = fileName;
+		public void addFileName(String fileName) {
+			this.fileNames.add(fileName);
 		}
 	}
 	

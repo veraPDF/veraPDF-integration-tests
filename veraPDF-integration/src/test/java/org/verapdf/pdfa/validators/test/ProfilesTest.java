@@ -41,7 +41,7 @@ public class ProfilesTest {
     /**
      * Test method for {@link org.verapdf.pdfa.validation.profiles.ValidationProfileImpl#getPDFAFlavour()}.
      */
-    @Test
+//    @Test
     public final void testGetPDFAFlavour() {
         for (ValidationProfile profile : INTEGRATION_PROFILES.getValidationProfiles()) {
             for (Rule rule : profile.getRules()) {

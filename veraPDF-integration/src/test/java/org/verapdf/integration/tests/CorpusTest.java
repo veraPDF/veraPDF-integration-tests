@@ -79,12 +79,13 @@ public class CorpusTest {
 	}
 
 	private static void printStatistic(final List<ResultSet> resultSets) {
-		Map<PDFAFlavour, Map<RuleId, ArlingtonResult>> map = new HashMap<>();
+		SortedMap<PDFAFlavour, SortedMap<RuleId, ArlingtonResult>> map = new TreeMap<>();
 		for (ResultSet set : resultSets) {
 			for (ResultSet.Result result : set.getResults()) {
 				ValidationResult validationResult = result.getResult();
 				String fileName = set.getCorpusDetails().getName() + set.getValidationProfile().getPDFAFlavour() + " " + result.getCorpusItemName();
-				Map<RuleId, ArlingtonResult> arlingtonResultMap = map.computeIfAbsent(validationResult.getPDFAFlavour(), k -> new HashMap<>());
+				SortedMap<RuleId, ArlingtonResult> arlingtonResultMap = map.computeIfAbsent(validationResult.getPDFAFlavour(),
+						k -> new TreeMap<>(new RuleIdComparator()));
 				for (RuleId ruleId : validationResult.getFailedChecks().keySet()) {
 					ArlingtonResult arlingtonResult = arlingtonResultMap.get(ruleId);
 					if (arlingtonResult == null) {
@@ -99,13 +100,28 @@ public class CorpusTest {
 			}
 		}
 		System.out.println("Tests result:");
-		for (Map.Entry<PDFAFlavour, Map<RuleId, ArlingtonResult>> entry : map.entrySet()) {
+		for (Map.Entry<PDFAFlavour, SortedMap<RuleId, ArlingtonResult>> entry : map.entrySet()) {
 			System.out.println(entry.getKey());
 			for (ArlingtonResult result : entry.getValue().values()) {
 				System.out.println(result.getRuleId() + " failed tests: " + result.getFailedTestNumber() + " file examples: ");
 				System.out.println(result.getFileNames());
 				System.out.println();
 			}
+		}
+	}
+
+	static class RuleIdComparator implements Comparator<RuleId>{
+
+		public int compare(RuleId a, RuleId b){
+			int result = a.getSpecification().compareTo(b.getSpecification());
+			if (result != 0) {
+				return result;
+			}
+			result = a.getClause().compareTo(b.getClause());
+			if (result != 0) {
+				return result;
+			}
+			return a.getTestNumber() - b.getTestNumber();
 		}
 	}
 

@@ -31,7 +31,7 @@
   </parent>
 
   <artifactId>verapdf-integration-tests-jakarta</artifactId>
-  <version>1.24.0-RC1</version>
+  <version>1.24.0</version>
   <packaging>pom</packaging>
 
   <name>veraPDF Quality Assurance</name>
@@ -72,9 +72,9 @@
 
   <properties>
     <jacoco.version>0.8.1</jacoco.version>
-    <verapdf.greenfield.version>[1.24.0-RC,1.25.0)</verapdf.greenfield.version>
-    <verapdf.pdfbox.version>[1.24.0-RC,1.25.0)</verapdf.pdfbox.version>
-    <verapdf.library.version>[1.24.0-RC,1.25.0)</verapdf.library.version>
+    <verapdf.greenfield.version>[1.24.0,1.25.0)</verapdf.greenfield.version>
+    <verapdf.pdfbox.version>[1.24.0,1.25.0)</verapdf.pdfbox.version>
+    <verapdf.library.version>[1.24.0,1.25.0)</verapdf.library.version>
     <org.bouncycastle.version>1.67</org.bouncycastle.version>
   </properties>
 

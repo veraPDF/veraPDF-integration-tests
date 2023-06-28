@@ -23,15 +23,17 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
+
   <parent>
     <artifactId>verapdf-parent</artifactId>
     <groupId>org.verapdf</groupId>
-    <version>1.12.2</version>
+    <version>1.24.1</version>
   </parent>
 
-  <groupId>org.verapdf</groupId>
   <artifactId>verapdf-integration-tests</artifactId>
-  <version>1.12.0</version>
+  <version>1.24.0</version>
+  <packaging>pom</packaging>
+
   <name>veraPDF Quality Assurance</name>
   <description>Test and QA utilities for the veraPDF Library.</description>
 
@@ -48,7 +50,7 @@
       </snapshots>
       <id>vera-dev</id>
       <name>Vera development</name>
-      <url>http://artifactory.openpreservation.org/artifactory/vera-dev</url>
+      <url>https://artifactory.openpreservation.org/artifactory/vera-dev</url>
     </repository>
   </repositories>
   <pluginRepositories>
@@ -58,91 +60,107 @@
       </snapshots>
       <id>vera-dev</id>
       <name>Vera development</name>
-      <url>http://artifactory.openpreservation.org/artifactory/vera-dev</url>
+      <url>https://artifactory.openpreservation.org/artifactory/vera-dev</url>
     </pluginRepository>
   </pluginRepositories>
 
+  <modules>
+    <module>veraPDF-wcag-regression-tests</module>
+    <module>veraPDF-pdf-regression-tests</module>
+    <module>veraPDF-integration</module>
+  </modules>
+
   <properties>
     <jacoco.version>0.8.1</jacoco.version>
-    <verapdf.version>[1.12.0,1.13.0)</verapdf.version>
+    <verapdf.greenfield.version>[1.24.0,1.25.0)</verapdf.greenfield.version>
+    <verapdf.pdfbox.version>[1.24.0,1.25.0)</verapdf.pdfbox.version>
+    <verapdf.library.version>[1.24.0,1.25.0)</verapdf.library.version>
+    <org.bouncycastle.version>1.67</org.bouncycastle.version>
   </properties>
 
   <dependencies>
+
     <dependency>
       <groupId>org.verapdf</groupId>
       <artifactId>core</artifactId>
-      <version>${verapdf.version}</version>
+      <version>${verapdf.library.version}</version>
     </dependency>
+
     <dependency>
       <groupId>org.verapdf</groupId>
       <artifactId>pdfbox-validation-model</artifactId>
-      <version>${verapdf.version}</version>
+      <version>${verapdf.pdfbox.version}</version>
     </dependency>
+
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
-      <version>4.12</version>
-      <scope>test</scope>
+      <version>4.13.2</version>
+      <scope>compile</scope>
     </dependency>
+
     <dependency>
       <groupId>commons-codec</groupId>
       <artifactId>commons-codec</artifactId>
-      <version>1.11</version>
+      <version>1.12</version>
     </dependency>
+
     <dependency>
       <groupId>org.bouncycastle</groupId>
       <artifactId>bcprov-jdk15on</artifactId>
-      <version>1.58</version>
+      <version>${org.bouncycastle.version}</version>
     </dependency>
+
     <dependency>
       <groupId>com.github.spullara.mustache.java</groupId>
       <artifactId>compiler</artifactId>
-      <version>0.9.5</version>
+      <version>0.9.6</version>
     </dependency>
+
     <dependency>
       <groupId>org.verapdf</groupId>
       <artifactId>validation-model</artifactId>
-      <version>${verapdf.version}</version>
+      <version>${verapdf.greenfield.version}</version>
     </dependency>
+
+    <dependency>
+      <groupId>javax.xml.bind</groupId>
+      <artifactId>jaxb-api</artifactId>
+      <version>2.3.1</version>
+    </dependency>
+
+    <dependency>
+      <groupId>com.sun.xml.bind</groupId>
+      <artifactId>jaxb-impl</artifactId>
+      <version>2.3.2</version>
+    </dependency>
+
+    <dependency>
+      <groupId>com.sun.xml.bind</groupId>
+      <artifactId>jaxb-core</artifactId>
+      <version>2.3.0.1</version>
+    </dependency>
+
   </dependencies>
 
   <build>
-
     <plugins>
-
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
       </plugin>
-      <plugin>
-         <groupId>org.apache.maven.plugins</groupId>
-         <artifactId>maven-dependency-plugin</artifactId>
-         <version>3.0.2</version>
-         <executions>
-           <execution>
-             <id>unpack</id>
-             <phase>test</phase>
-             <goals>
-               <goal>unpack-dependencies</goal>
-             </goals>
-             <configuration>
-               <overWrite>true</overWrite>
-               <outputDirectory>${project.build.directory}/classes</outputDirectory>
-               <overWriteReleases>false</overWriteReleases>
-               <overWriteSnapshots>true</overWriteSnapshots>
-             </configuration>
-           </execution>
-         </executions>
-       </plugin>
 
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
+        <configuration>
+          <forkCount>0</forkCount>
+        </configuration>
       </plugin>
+
       <plugin>
         <groupId>org.jacoco</groupId>
         <artifactId>jacoco-maven-plugin</artifactId>
-        <version>${jacoco.version}</version>
         <configuration>
           <sessionId>${project.artifactId}</sessionId>
           <includes>
@@ -164,7 +182,55 @@
           </execution>
         </executions>
       </plugin>
+
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>versions-maven-plugin</artifactId>
+      </plugin>
     </plugins>
   </build>
+
+  <reporting>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-project-info-reports-plugin</artifactId>
+        <configuration>
+          <dependencyDetailsEnabled>false</dependencyDetailsEnabled>
+        </configuration>
+        <reportSets>
+          <reportSet>
+            <reports>
+              <report>index</report>
+              <report>dependencies</report>
+              <report>project-team</report>
+              <report>mailing-list</report>
+              <report>cim</report>
+              <report>issue-tracking</report>
+              <report>license</report>
+              <report>scm</report>
+            </reports>
+          </reportSet>
+        </reportSets>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-javadoc-plugin</artifactId>
+        <configuration>
+          <failOnError>false</failOnError>
+          <dependencySourceExcludes>
+            <!-- exclude ONLY commons-cli artifacts -->
+            <dependencySourceExclude>junit:*</dependencySourceExclude>
+            <dependencySourceExclude>org.apache:*</dependencySourceExclude>
+            <dependencySourceExclude>org.junit:*</dependencySourceExclude>
+            <dependencySourceExclude>org.hamcrest.*</dependencySourceExclude>
+            <dependencySourceExclude>org.log4j.*</dependencySourceExclude>
+          </dependencySourceExcludes>
+          <includeDependencySources>true</includeDependencySources>
+          <show>public</show>
+        </configuration>
+      </plugin>
+    </plugins>
+  </reporting>
 
 </project>

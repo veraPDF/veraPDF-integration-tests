@@ -75,7 +75,7 @@ public class ValidatorTest {
     public final void testGetProfile() {
         for (ValidationProfile profile : PROFILES.getValidationProfiles()) {
             PDFAValidator validator = Foundries.defaultInstance().createValidator(profile, false);
-            assertTrue(profile.equals(validator.getProfile()));
+            assertEquals(validator.getProfile(), profile);
         }
     }
 

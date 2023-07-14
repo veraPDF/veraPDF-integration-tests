@@ -15,6 +15,8 @@
 package org.verapdf.integration.tests;
 
 import static org.hamcrest.Matchers.equalTo;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -84,17 +86,19 @@ public class CorpusTest {
 //	@Test
 	public void testPdfBox() {
 		PdfBoxFoundryProvider.initialise();
+		assertTrue(Foundries.defaultParserIsPDFBox());
 		pdfBoxDetails = Foundries.defaultInstance().getDetails();
 		testCorpora(pdfBoxResults);
 		for (ResultSet set : pdfBoxResults) {
 			testResults(set);
 		}
 		collector.checkThat("Exceptions thrown during PDF Box testing.", countExceptions(pdfBoxResults), equalTo(0));
-}
+	}
 
 	@Test
 	public void testGreenfield() {
 		VeraGreenfieldFoundryProvider.initialise();
+		assertFalse(Foundries.defaultParserIsPDFBox());
 		gfDetails = Foundries.defaultInstance().getDetails();
 		testCorpora(gfResults);
 		printStatistic(gfResults);
@@ -189,7 +193,7 @@ public class CorpusTest {
 			this.fileNames.add(fileName);
 		}
 	}
-	
+
 	private static int countExceptions(final List<ResultSet> resultSets) {
 		int exceptionCount = 0;
 		for (ResultSet set : resultSets) {
@@ -233,10 +237,11 @@ public class CorpusTest {
 	 * {@code filters}.
 	 * 
 	 * @param parseForMatches
-	 *            string to test for flavour matches
+	 *                        string to test for flavour matches
 	 * @param filters
-	 *            {@code List} of {@link PDFAFlavour}s to test against for
-	 *            matches
+	 *                        {@code List} of {@link PDFAFlavour}s to test against
+	 *                        for
+	 *                        matches
 	 * @return true of {@code PDFAFlavour} parsed from {@code parseForMatches}
 	 *         is contained in {@code filters}.
 	 */
@@ -255,6 +260,7 @@ public class CorpusTest {
 		for (ResultSet gfResult : gfResults) {
 			Map<String, Object> scopes = new HashMap<>();
 			scopes.put("gfResult", gfResult);
+			scopes.put("profile", gfResult.getValidationProfile().getPDFAFlavour().getId());
 			if (rootDir.isDirectory() && rootDir.canWrite()) {
 				String dirName = gfResult.getCorpusDetails().getName() + "-"
 						+ gfResult.getValidationProfile().getPDFAFlavour().getId();

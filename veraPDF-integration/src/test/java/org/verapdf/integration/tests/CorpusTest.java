@@ -15,6 +15,8 @@
 package org.verapdf.integration.tests;
 
 import static org.hamcrest.Matchers.equalTo;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -78,6 +80,7 @@ public class CorpusTest {
     @Test
     public void testPdfBox() {
         PdfBoxFoundryProvider.initialise();
+        assertTrue(Foundries.defaultParserIsPDFBox());
         pdfBoxDetails = Foundries.defaultInstance().getDetails();
         testCorpora(pdfBoxResults);
         for (ResultSet set : pdfBoxResults) {
@@ -89,6 +92,7 @@ public class CorpusTest {
     @Test
     public void testGreenfield() {
         VeraGreenfieldFoundryProvider.initialise();
+        assertFalse(Foundries.defaultParserIsPDFBox());
         gfDetails = Foundries.defaultInstance().getDetails();
         testCorpora(gfResults);
         for (ResultSet set : gfResults) {
@@ -165,6 +169,7 @@ public class CorpusTest {
             Map<String, Object> scopes = new HashMap<>();
             scopes.put("pdfBoxResult", pdfBoxResult);
             scopes.put("gfResult", gfResult);
+            scopes.put("profile", pdfBoxResult.getValidationProfile().getPDFAFlavour().getId());
             if (rootDir.isDirectory() && rootDir.canWrite()) {
                 String dirName = pdfBoxResult.getCorpusDetails().getName() + "-"
                         + pdfBoxResult.getValidationProfile().getPDFAFlavour().getId();

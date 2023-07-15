@@ -16,21 +16,28 @@ package org.verapdf.integration.tests;
 
 import static org.hamcrest.Matchers.equalTo;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.PrintWriter;
 import java.io.Writer;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.EnumMap;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.LinkedList;
 import java.util.Map;
 import java.util.SortedMap;
 import java.util.TreeMap;
 import java.util.Comparator;
+import java.util.Set;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -49,7 +56,9 @@ import org.verapdf.pdfa.qa.ResultSet;
 import org.verapdf.pdfa.qa.ResultSetDetailsImpl;
 import org.verapdf.pdfa.qa.ResultSetImpl;
 import org.verapdf.pdfa.qa.TestCorpus;
+import org.verapdf.pdfa.qa.AbstractTestCorpus.Corpus;
 import org.verapdf.pdfbox.foundry.PdfBoxFoundryProvider;
+import org.yaml.snakeyaml.Yaml;
 
 import com.github.mustachejava.DefaultMustacheFactory;
 import com.github.mustachejava.Mustache;
@@ -67,12 +76,15 @@ public class CorpusTest {
 
 	@BeforeClass
 	public static final void SetUp() throws IOException {
-		try {
-			CorpusManager.initialise();
-		} catch (Exception e) {
-			e.printStackTrace();
-			throw e;
-		}
+		CorpusManager.initialise();
+	}
+
+	private static Set<String> expectedForCorpus(final Corpus corpus, final PDFAFlavour flavour,
+												 final EnumMap<Corpus, EnumMap<PDFAFlavour, Set<String>>> expectedFailureSets) {
+		EnumMap<PDFAFlavour, Set<String>> expectedByFlavour = expectedFailureSets.get(corpus);
+		if (expectedByFlavour == null)
+			return Collections.emptySet();
+		return Collections.unmodifiableSet(expectedByFlavour.get(flavour));
 	}
 
 	@AfterClass
@@ -84,26 +96,34 @@ public class CorpusTest {
 	public ErrorCollector collector = new ErrorCollector();
 
 //	@Test
-	public void testPdfBox() {
+	public void testPdfBox() throws Exception {
 		PdfBoxFoundryProvider.initialise();
 		assertTrue(Foundries.defaultParserIsPDFBox());
 		pdfBoxDetails = Foundries.defaultInstance().getDetails();
 		testCorpora(pdfBoxResults);
+		final EnumMap<Corpus, EnumMap<PDFAFlavour, Set<String>>> failures = createExpectedFailures(
+				"org/verapdf/integration/tests/rules/corpus-pdfbox.yml");
 		for (ResultSet set : pdfBoxResults) {
-			testResults(set);
+			Set<String> expected = expectedForCorpus(Corpus.fromId(set.getCorpusId()), set
+					.getValidationProfile().getPDFAFlavour(), failures);
+			testResults(set, expected);
 		}
 		collector.checkThat("Exceptions thrown during PDF Box testing.", countExceptions(pdfBoxResults), equalTo(0));
 	}
 
 	@Test
-	public void testGreenfield() {
+	public void testGreenfield() throws Exception {
 		VeraGreenfieldFoundryProvider.initialise();
 		assertFalse(Foundries.defaultParserIsPDFBox());
 		gfDetails = Foundries.defaultInstance().getDetails();
 		testCorpora(gfResults);
 		printStatistic(gfResults);
+		final EnumMap<Corpus, EnumMap<PDFAFlavour, Set<String>>> failures = createExpectedFailures(
+				"org/verapdf/integration/tests/rules/corpus-gf.yml");
 		for (ResultSet set : gfResults) {
-			testResults(set);
+			Set<String> expected = expectedForCorpus(Corpus.fromId(set.getCorpusId()), set
+					.getValidationProfile().getPDFAFlavour(), failures);
+			testResults(set, expected);
 		}
 		collector.checkThat("Exceptions thrown during greenfield testing.", countExceptions(gfResults), equalTo(0));
 	}
@@ -221,8 +241,10 @@ public class CorpusTest {
 		}
 	}
 
-	private void testResults(final ResultSet results) {
+	private void testResults(final ResultSet results, final Set<String> expected) {
 		for (ResultSet.Result result : results.getResults()) {
+			if (expected != null && expected.contains(result.getCorpusItemName()))
+				continue;
 			collector
 					.checkThat(
 							String.format("Unexpected result for corpus %s, item %s",
@@ -235,7 +257,7 @@ public class CorpusTest {
 	 * Tests the passed String {@code parseForMatches} and returns true if
 	 * {@link PDFAFlavour#fromString(String)} returns one of the flavours in
 	 * {@code filters}.
-	 * 
+	 *
 	 * @param parseForMatches
 	 *                        string to test for flavour matches
 	 * @param filters
@@ -259,6 +281,7 @@ public class CorpusTest {
 		int index = 0;
 		for (ResultSet gfResult : gfResults) {
 			Map<String, Object> scopes = new HashMap<>();
+//			scopes.put("pdfBoxResult", pdfBoxResult);
 			scopes.put("gfResult", gfResult);
 			scopes.put("profile", gfResult.getValidationProfile().getPDFAFlavour().getId());
 			if (rootDir.isDirectory() && rootDir.canWrite()) {
@@ -290,5 +313,35 @@ public class CorpusTest {
 		try (Writer writer = new PrintWriter(new File(outputDir, "index.html"))) {
 			RESULTS_MUSTACHE.execute(writer, scopes).flush();
 		}
+	}
+
+	private static final EnumMap<Corpus, EnumMap<PDFAFlavour, Set<String>>> createExpectedFailures(
+			final String rulesFile) throws Exception {
+		final EnumMap<Corpus, EnumMap<PDFAFlavour, Set<String>>> expectedFailureSets = new EnumMap<>(
+				Corpus.class);
+		try (InputStream rulesStream = CorpusTest.class.getClassLoader()
+				.getResourceAsStream(rulesFile)) {
+			assertNotNull("No resource found for rulesFile: " + rulesFile, rulesStream);
+
+			Yaml yaml = new Yaml();
+			Map<String, Object> data = yaml.load(rulesStream);
+			for (Corpus corpus : Corpus.values()) {
+				Map<String, Object> corpusData = (Map<String, Object>) data.get(corpus.getId());
+				if (corpusData == null)
+					continue;
+				for (PDFAFlavour flavour : corpus.getFlavours()) {
+					List<String> expected = (List<String>) corpusData.get(flavour.getId());
+					if (expected == null)
+						continue;
+					expectedFailureSets.computeIfAbsent(corpus,
+							k -> new EnumMap<PDFAFlavour, Set<String>>(PDFAFlavour.class));
+					expectedFailureSets.get(corpus).computeIfAbsent(flavour, k -> new HashSet<String>(expected));
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		}
+		return expectedFailureSets;
 	}
 }

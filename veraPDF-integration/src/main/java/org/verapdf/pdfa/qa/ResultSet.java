@@ -23,15 +23,17 @@
  */
 package org.verapdf.pdfa.qa;
 
+import java.util.Comparator;
+import java.util.Set;
+
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+
 import org.verapdf.component.AuditDuration;
+import org.verapdf.pdfa.qa.AbstractTestCorpus.Corpus;
 import org.verapdf.pdfa.qa.CorpusItemId.TestType;
 import org.verapdf.pdfa.qa.CorpusItemIdImpl.CorpusItemIdComparator;
 import org.verapdf.pdfa.results.ValidationResult;
 import org.verapdf.pdfa.validation.profiles.ValidationProfile;
-
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
-import java.util.Comparator;
-import java.util.Set;
 
 /**
  * @author <a href="mailto:carl@openpreservation.org">Carl Wilson</a>
@@ -47,6 +49,11 @@ public interface ResultSet {
      * @return the {@link CorpusDetails} for the instance
      */
     public CorpusDetails getCorpusDetails();
+
+    /**
+     * @return the Corpus ID for the result set
+     */
+    public String getCorpusId();
 
     /**
      * @return the {@link ValidationProfile} used to generate the result set

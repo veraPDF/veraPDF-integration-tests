@@ -1,19 +1,23 @@
 package org.verapdf.pdfa.qa;
 
-import org.verapdf.core.VeraPDFException;
-import org.verapdf.metadata.fixer.FixerFactory;
-import org.verapdf.metadata.fixer.MetadataFixerConfig;
-import org.verapdf.gf.foundry.VeraGreenfieldFoundryProvider;
-import org.verapdf.pdfa.flavours.PDFAFlavour;
-import org.verapdf.pdfa.validation.profiles.ValidationProfile;
-import org.verapdf.pdfa.validation.validators.ValidatorConfigBuilder;
-import org.verapdf.policy.PolicyChecker;
-import org.verapdf.processor.*;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-import org.xml.sax.SAXException;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.EnumSet;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipFile;
 
 import javax.xml.bind.JAXBException;
 import javax.xml.parsers.DocumentBuilder;
@@ -23,12 +27,25 @@ import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
-import java.io.*;
-import java.net.URL;
-import java.util.*;
-import java.util.logging.Level;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipFile;
+
+import org.verapdf.core.VeraPDFException;
+import org.verapdf.gf.foundry.VeraGreenfieldFoundryProvider;
+import org.verapdf.metadata.fixer.FixerFactory;
+import org.verapdf.metadata.fixer.MetadataFixerConfig;
+import org.verapdf.pdfa.flavours.PDFAFlavour;
+import org.verapdf.pdfa.validation.profiles.ValidationProfile;
+import org.verapdf.pdfa.validation.validators.ValidatorConfigBuilder;
+import org.verapdf.policy.PolicyChecker;
+import org.verapdf.processor.BatchProcessor;
+import org.verapdf.processor.FormatOption;
+import org.verapdf.processor.ProcessorConfig;
+import org.verapdf.processor.ProcessorFactory;
+import org.verapdf.processor.TaskType;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
 
 public class RegressionTestingHelper {
     private static final String testFilesZipUrl = "https://github.com/veraPDF/veraPDF-regression-tests/archive/refs/heads/integration.zip";
@@ -55,16 +72,17 @@ public class RegressionTestingHelper {
         return pdfMap.keySet();
     }
 
-    public void getFailedPolicyComplianceFiles(Map<String, List<FailedPolicyCheck>> failedFiles, PDFAFlavour flavour, ValidationProfile customProfile, Set<String> fileNames) throws JAXBException, IOException {
+    public void getFailedPolicyComplianceFiles(Map<String, List<FailedPolicyCheck>> failedFiles, PDFAFlavour flavour,
+            ValidationProfile customProfile, Set<String> fileNames) throws JAXBException, IOException {
         MetadataFixerConfig fixConf = FixerFactory.configFromValues("test", true);
-        ProcessorConfig processorConfig = customProfile == null ?
-                ProcessorFactory.fromValues(new ValidatorConfigBuilder().flavour(flavour)
-                                .defaultFlavour(PDFAFlavour.NO_FLAVOUR).recordPasses(true).maxFails(0)
-                                .isLogsEnabled(true).showErrorMessages(false).build(),
-                        null, null, fixConf, EnumSet.of(TaskType.VALIDATE), (String) null) :
-                ProcessorFactory.fromValues(new ValidatorConfigBuilder()
-                                .defaultFlavour(PDFAFlavour.NO_FLAVOUR).recordPasses(true).maxFails(0)
-                                .isLogsEnabled(true).showErrorMessages(false).build(),
+        ProcessorConfig processorConfig = customProfile == null
+                ? ProcessorFactory.fromValues(new ValidatorConfigBuilder().flavour(flavour)
+                        .defaultFlavour(PDFAFlavour.NO_FLAVOUR).recordPasses(true).maxFails(0)
+                        .isLogsEnabled(true).showErrorMessages(false).build(),
+                        null, null, fixConf, EnumSet.of(TaskType.VALIDATE), (String) null)
+                : ProcessorFactory.fromValues(new ValidatorConfigBuilder()
+                        .defaultFlavour(PDFAFlavour.NO_FLAVOUR).recordPasses(true).maxFails(0)
+                        .isLogsEnabled(true).showErrorMessages(false).build(),
                         null, null, fixConf, EnumSet.of(TaskType.VALIDATE), customProfile, null);
         BatchProcessor processor = ProcessorFactory.fileBatchProcessor(processorConfig);
 
@@ -159,33 +177,38 @@ public class RegressionTestingHelper {
         }
     }
 
-    public static int countFailedPolicyJobs(File xmlReport) throws IOException, SAXException, ParserConfigurationException, XPathExpressionException {
+    public static int countFailedPolicyJobs(File xmlReport)
+            throws IOException, SAXException, ParserConfigurationException, XPathExpressionException {
         DocumentBuilder documentBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
         Document document = documentBuilder.parse(xmlReport);
         XPath path = XPathFactory.newInstance().newXPath();
-        return ((Number) path.evaluate("count(//policyReport[@failedChecks > 0])", document, XPathConstants.NUMBER)).intValue();
+        return ((Number) path.evaluate("count(//policyReport[@failedChecks > 0])", document, XPathConstants.NUMBER))
+                .intValue();
     }
 
-    public static List<FailedPolicyCheck> getFailedChecks(File xmlReport) throws IOException, SAXException, ParserConfigurationException, XPathExpressionException {
+    public static List<FailedPolicyCheck> getFailedChecks(File xmlReport)
+            throws IOException, SAXException, ParserConfigurationException, XPathExpressionException {
         DocumentBuilder documentBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
         Document document = documentBuilder.parse(xmlReport);
         XPath path = XPathFactory.newInstance().newXPath();
         List<FailedPolicyCheck> failedChecks = new LinkedList<>();
-        NodeList list = ((NodeList)path.evaluate("//policyReport/failedChecks/check", document, XPathConstants.NODESET));
+        NodeList list = ((NodeList) path.evaluate("//policyReport/failedChecks/check", document,
+                XPathConstants.NODESET));
         for (int i = 0; i < list.getLength(); i++) {
-            Element check = (Element)list.item(i);
+            Element check = (Element) list.item(i);
             String test = check.getAttribute("test");
             String messageValue = getProperty(check, "message").getTextContent();
-            Element node = (Element)path.evaluate(check.getAttribute("location"), document, XPathConstants.NODE);
+            Element node = (Element) path.evaluate(check.getAttribute("location"), document, XPathConstants.NODE);
             failedChecks.add(new FailedPolicyCheck(node, messageValue, test));
         }
         return failedChecks;
     }
 
-    public static void applyPolicy(File policyFile, File tempMrrFile, File tempResultFile) throws IOException, VeraPDFException {
+    public static void applyPolicy(File policyFile, File tempMrrFile, File tempResultFile)
+            throws IOException, VeraPDFException {
         File tempPolicyResult = File.createTempFile("policyResult", "veraPDF");
         try (InputStream mrrIs = new FileInputStream(tempMrrFile);
-             OutputStream policyResultOs = new FileOutputStream(tempPolicyResult)) {
+                OutputStream policyResultOs = new FileOutputStream(tempPolicyResult)) {
             PolicyChecker.applyPolicy(policyFile, mrrIs, policyResultOs);
         }
         try (OutputStream mrrReport = new FileOutputStream(tempResultFile)) {
@@ -204,7 +227,7 @@ public class RegressionTestingHelper {
         NodeList childNodes = parent.getChildNodes();
         for (int i = 0; i < childNodes.getLength(); i++) {
             Node item = childNodes.item(i);
-            if (propertyName.equals(item.getNodeName())){
+            if (propertyName.equals(item.getNodeName())) {
                 return item;
             }
         }

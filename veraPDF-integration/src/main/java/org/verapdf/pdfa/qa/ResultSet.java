@@ -29,7 +29,6 @@ import java.util.Set;
 import jakarta.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import org.verapdf.component.AuditDuration;
-import org.verapdf.pdfa.qa.AbstractTestCorpus.Corpus;
 import org.verapdf.pdfa.qa.CorpusItemId.TestType;
 import org.verapdf.pdfa.qa.CorpusItemIdImpl.CorpusItemIdComparator;
 import org.verapdf.pdfa.results.ValidationResult;

@@ -49,6 +49,8 @@ public class ResultSetImpl implements ResultSet {
 			.getNewInstance(Foundries.defaultInstance().getDetails());
 	@XmlElement(name = "corpusDetails")
 	private final CorpusDetails corpusDetails;
+    @XmlElement(name = "corpusId")
+    private final String corpusId;
 	@XmlElement(name = "profile")
 	private final ValidationProfile profile;
 	@XmlElement(name = "summary")
@@ -60,9 +62,10 @@ public class ResultSetImpl implements ResultSet {
 	@XmlElement(name = "exception")
 	private final Set<Incomplete> exceptions;
 
-	private ResultSetImpl(final CorpusDetails corpusDetails, final ValidationProfile profile, final Set<Result> results,
+	private ResultSetImpl(final CorpusDetails corpusDetails, final String corpusId, final ValidationProfile profile, final Set<Result> results,
 			final Set<Incomplete> exceptions, final AuditDuration duration, final long memoryUsed) {
 		this.corpusDetails = corpusDetails;
+        this.corpusId = corpusId;
 		this.profile = profile;
 		this.results = new TreeSet<>(new ResultComparator());
 		this.results.addAll(results);
@@ -84,6 +87,14 @@ public class ResultSetImpl implements ResultSet {
 	@Override
 	public CorpusDetails getCorpusDetails() {
 		return this.corpusDetails;
+	}
+
+	/**
+	 * { @inheritDoc }
+	 */
+	@Override
+	public String getCorpusId() {
+		return this.corpusId;
 	}
 
 	/**
@@ -216,7 +227,7 @@ public class ResultSetImpl implements ResultSet {
 				}
 			}
 		}
-		return new ResultSetImpl(corpus.getDetails(), validator.getProfile(), results, exceptions, batchTimer.stop(),
+		return new ResultSetImpl(corpus.getDetails(), corpus.getType().getId(), validator.getProfile(), results, exceptions, batchTimer.stop(),
 				maxMemUse);
 	}
 
@@ -245,7 +256,7 @@ public class ResultSetImpl implements ResultSet {
 				exceptions.add(new Incomplete(id, e));
 			}
 		}
-		return new ResultSetImpl(corpus.getDetails(), Profiles.defaultProfile(), results, exceptions, batchTimer.stop(),
+		return new ResultSetImpl(corpus.getDetails(), corpus.getType().getId(), Profiles.defaultProfile(), results, exceptions, batchTimer.stop(),
 				maxMemUse);
 	}
 

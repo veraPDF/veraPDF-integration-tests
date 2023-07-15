@@ -73,6 +73,9 @@ public class CorpusTest {
 	private static final Mustache RESULTS_MUSTACHE = MF.compile("corpus-results.mustache");
 	private static final Mustache SUMMARY_MUSTACHE = MF.compile("test-summary.mustache");
 
+	@Rule
+	public ErrorCollector collector = new ErrorCollector();
+
 	@BeforeClass
 	public static final void SetUp() throws IOException {
 		CorpusManager.initialise();
@@ -90,9 +93,6 @@ public class CorpusTest {
 	public static void outputResults() throws IOException {
 		writeResults();
 	}
-
-	@Rule
-	public ErrorCollector collector = new ErrorCollector();
 
 //	@Test
 	public void testPdfBox() throws Exception {

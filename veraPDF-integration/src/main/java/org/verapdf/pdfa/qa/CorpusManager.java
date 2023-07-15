@@ -24,18 +24,13 @@
 package org.verapdf.pdfa.qa;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.EnumMap;
 import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import org.verapdf.pdfa.flavours.PDFAFlavour;
 import org.verapdf.pdfa.qa.AbstractTestCorpus.Corpus;
-import org.yaml.snakeyaml.Yaml;
 
 /**
  * @author <a href="mailto:carl@openpreservation.org">Carl Wilson</a>

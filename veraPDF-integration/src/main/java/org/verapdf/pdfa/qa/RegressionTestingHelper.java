@@ -33,7 +33,9 @@ import org.verapdf.gf.foundry.VeraGreenfieldFoundryProvider;
 import org.verapdf.metadata.fixer.FixerFactory;
 import org.verapdf.metadata.fixer.MetadataFixerConfig;
 import org.verapdf.pdfa.flavours.PDFAFlavour;
+import org.verapdf.pdfa.validation.profiles.Profiles;
 import org.verapdf.pdfa.validation.profiles.ValidationProfile;
+import org.verapdf.pdfa.validation.validators.ValidatorConfig;
 import org.verapdf.pdfa.validation.validators.ValidatorConfigBuilder;
 import org.verapdf.policy.PolicyChecker;
 import org.verapdf.processor.BatchProcessor;
@@ -75,15 +77,12 @@ public class RegressionTestingHelper {
     public void getFailedPolicyComplianceFiles(Map<String, List<FailedPolicyCheck>> failedFiles, PDFAFlavour flavour,
             ValidationProfile customProfile, Set<String> fileNames) throws JAXBException, IOException {
         MetadataFixerConfig fixConf = FixerFactory.configFromValues("test", true);
-        ProcessorConfig processorConfig = customProfile == null
-                ? ProcessorFactory.fromValues(new ValidatorConfigBuilder().flavour(flavour)
-                        .defaultFlavour(PDFAFlavour.NO_FLAVOUR).recordPasses(true).maxFails(0)
-                        .isLogsEnabled(true).showErrorMessages(false).build(),
-                        null, null, fixConf, EnumSet.of(TaskType.VALIDATE), (String) null)
-                : ProcessorFactory.fromValues(new ValidatorConfigBuilder()
-                        .defaultFlavour(PDFAFlavour.NO_FLAVOUR).recordPasses(true).maxFails(0)
-                        .isLogsEnabled(true).showErrorMessages(false).build(),
-                        null, null, fixConf, EnumSet.of(TaskType.VALIDATE), customProfile, null);
+        ValidatorConfig validatorConfig = new ValidatorConfigBuilder().flavour(flavour)
+                .defaultFlavour(PDFAFlavour.NO_FLAVOUR).recordPasses(true).maxFails(0)
+                .isLogsEnabled(true).showErrorMessages(false).build();
+        ProcessorConfig processorConfig = ProcessorFactory.fromValues(validatorConfig, null,
+                null, fixConf, EnumSet.of(TaskType.VALIDATE),
+                customProfile == null ? Profiles.defaultProfile() : customProfile, null);
         BatchProcessor processor = ProcessorFactory.fileBatchProcessor(processorConfig);
 
         File tempSchFile = File.createTempFile("veraPDF", ".sch");

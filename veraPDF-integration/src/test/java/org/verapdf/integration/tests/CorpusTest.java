@@ -93,15 +93,8 @@ public class CorpusTest {
         PdfBoxFoundryProvider.initialise();
         assertTrue(Foundries.defaultParserIsPDFBox());
         pdfBoxDetails = Foundries.defaultInstance().getDetails();
-        testCorpora(pdfBoxResults);
-        final EnumMap<Corpus, EnumMap<PDFAFlavour, Set<String>>> failures = createExpectedFailures(
-                "org/verapdf/integration/tests/rules/corpus-pdfbox.yml");
-        for (ResultSet set : pdfBoxResults) {
-            Set<String> expected = expectedForCorpus(Corpus.fromId(set.getCorpusId()), set
-                    .getValidationProfile().getPDFAFlavour(), failures);
-            testResults(set, expected);
-        }
-        collector.checkThat("Exceptions thrown during PDF Box testing.", countExceptions(pdfBoxResults), equalTo(0));
+        test(pdfBoxResults, "org/verapdf/integration/tests/rules/corpus-pdfbox.yml");
+        collector.checkThat("Exceptions thrown during PDFBox testing.", countExceptions(pdfBoxResults), equalTo(0));
     }
 
     @Test
@@ -109,15 +102,18 @@ public class CorpusTest {
         VeraGreenfieldFoundryProvider.initialise();
         assertFalse(Foundries.defaultParserIsPDFBox());
         gfDetails = Foundries.defaultInstance().getDetails();
-        testCorpora(gfResults);
-        final EnumMap<Corpus, EnumMap<PDFAFlavour, Set<String>>> failures = createExpectedFailures(
-                "org/verapdf/integration/tests/rules/corpus-gf.yml");
-        for (ResultSet set : gfResults) {
+        test(gfResults, "org/verapdf/integration/tests/rules/corpus-gf.yml");
+        collector.checkThat("Exceptions thrown during Greenfield testing.", countExceptions(gfResults), equalTo(0));
+    }
+
+    private void test(List<ResultSet> results, String ymlPath) throws Exception {
+        testCorpora(results);
+        final EnumMap<Corpus, EnumMap<PDFAFlavour, Set<String>>> failures = createExpectedFailures(ymlPath);
+        for (ResultSet set : results) {
             Set<String> expected = expectedForCorpus(Corpus.fromId(set.getCorpusId()), set
                     .getValidationProfile().getPDFAFlavour(), failures);
             testResults(set, expected);
         }
-        collector.checkThat("Exceptions thrown during greenfield testing.", countExceptions(gfResults), equalTo(0));
     }
 
     private static int countExceptions(final List<ResultSet> resultSets) {
@@ -148,14 +144,16 @@ public class CorpusTest {
     }
 
     private void testResults(final ResultSet results, final Set<String> expected) {
+        if (expected == null) {
+            return;
+        }
         for (ResultSet.Result result : results.getResults()) {
-            if (expected != null && expected.contains(result.getCorpusItemName()))
-                continue;
             collector
                     .checkThat(
-                            String.format("Unexpected result for corpus %s, item %s",
-                                    results.getCorpusDetails().getName(), result.getCorpusItemName()),
-                            result.isExpectedResult(), equalTo(true));
+                            String.format("Unexpected result for corpus %s-%s, item %s",
+                                    results.getCorpusDetails().getName(), results.getValidationProfile().getPDFAFlavour(),
+                                    result.getCorpusItemName()),
+                            result.isExpectedResult(), equalTo(!expected.contains(result.getCorpusItemName())));
         }
     }
 

@@ -84,7 +84,8 @@ public class ProfilesMerger {
         Set<Rule> res = new HashSet<>(rules.size());
         for (Rule r : rules) {
             RuleId id = Profiles.ruleIdFromValues(flavour.getPart(), r.getRuleId().getClause(), r.getRuleId().getTestNumber());
-            res.add(Profiles.ruleFromValues(id, r.getObject(), r.getDeferred(), r.getDescription(), r.getTest(), r.getError(), r.getReferences()));
+            res.add(Profiles.ruleFromValues(id, r.getObject(), r.getDeferred(), r.getTags(), r.getDescription(), r.getTest(),
+                    r.getError(), r.getReferences()));
         }
         return res;
     }

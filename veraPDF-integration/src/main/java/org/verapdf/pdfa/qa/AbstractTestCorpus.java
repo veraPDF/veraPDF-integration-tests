@@ -154,6 +154,7 @@ public abstract class AbstractTestCorpus<L> implements TestCorpus {
                 URI.create(VERA_URL), "veraCorp-"),
         ISARTOR("Isartor", EnumSet.of(PDFAFlavour.PDFA_1_B), URI.create(ISARTOR_URL), "isartCorp-"),
         BFO("BFO", EnumSet.of(PDFAFlavour.PDFA_2_B), URI.create(BFO_URL), "bfoCorp-"),
+        ISO("ISO32000", EnumSet.of(PDFAFlavour.NO_FLAVOUR), VERA.getZipFile().toURI(), "ISO 32000-"),
         TWG("TWG", EnumSet.of(PDFAFlavour.NO_FLAVOUR), VERA.getZipFile().toURI(), "twgCorp-");
 
         private static final String desc = "Synthetic test files for PDF/A validation.";

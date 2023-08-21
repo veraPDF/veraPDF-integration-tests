@@ -104,6 +104,8 @@ public class ZipBackedTestCorpus extends AbstractTestCorpus<ZipEntry> {
 				String entryName = entry.getName();
 				if (type == Corpus.TWG && entryName.contains("TWG")) {
 					itemMap.put(entryName, entry);
+				} else if (type == Corpus.ISO_32000 && entryName.contains("ISO 32000-")) {
+					itemMap.put(entryName, entry);
 				} else if (flavour == null || type == Corpus.BFO) {
 					itemMap.put(entryName, entry);
 				} else if (checkFlavour(entryName, flavour)) {

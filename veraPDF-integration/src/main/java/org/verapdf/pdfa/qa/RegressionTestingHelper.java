@@ -28,10 +28,12 @@ import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 
+import org.verapdf.ReleaseDetails;
 import org.verapdf.core.VeraPDFException;
 import org.verapdf.gf.foundry.VeraGreenfieldFoundryProvider;
 import org.verapdf.metadata.fixer.FixerFactory;
 import org.verapdf.metadata.fixer.MetadataFixerConfig;
+import org.verapdf.pdfa.Foundries;
 import org.verapdf.pdfa.flavours.PDFAFlavour;
 import org.verapdf.pdfa.validation.profiles.Profiles;
 import org.verapdf.pdfa.validation.profiles.ValidationProfile;
@@ -58,6 +60,7 @@ public class RegressionTestingHelper {
 
     public RegressionTestingHelper(boolean isWcag) throws IOException {
         VeraGreenfieldFoundryProvider.initialise();
+        printDependencies();
         File zipFile;
         try {
             zipFile = AbstractTestCorpus.createTempFileFromCorpus(new URL(testFilesZipUrl), "regression");
@@ -232,4 +235,14 @@ public class RegressionTestingHelper {
         }
         return null;
     }
+
+    public static void printDependencies() {
+        System.out.println("Dependencies");
+        Foundries.defaultInstance().getDetails();
+        for (ReleaseDetails details : ReleaseDetails.getDetails()) {
+            System.out.println(details.getId() + " " + details.getVersion() + " " + details.getBuildDate());
+        }
+        System.out.println();
+    }
+
 }

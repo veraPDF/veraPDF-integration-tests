@@ -45,12 +45,8 @@ import org.verapdf.gf.foundry.VeraGreenfieldFoundryProvider;
 import org.verapdf.pdfa.Foundries;
 import org.verapdf.pdfa.PDFAValidator;
 import org.verapdf.pdfa.flavours.PDFAFlavour;
+import org.verapdf.pdfa.qa.*;
 import org.verapdf.pdfa.qa.AbstractTestCorpus.Corpus;
-import org.verapdf.pdfa.qa.CorpusManager;
-import org.verapdf.pdfa.qa.ResultSet;
-import org.verapdf.pdfa.qa.ResultSetDetailsImpl;
-import org.verapdf.pdfa.qa.ResultSetImpl;
-import org.verapdf.pdfa.qa.TestCorpus;
 import org.verapdf.pdfbox.foundry.PdfBoxFoundryProvider;
 import org.yaml.snakeyaml.Yaml;
 
@@ -92,6 +88,8 @@ public class CorpusTest {
     @Test
     public void testPdfBox() throws Exception {
         PdfBoxFoundryProvider.initialise();
+        RegressionTestingHelper.printDependencies();
+        assertTrue(Foundries.defaultParserIsPDFBox());
         pdfBoxDetails = Foundries.defaultInstance().getDetails();
         test(pdfBoxResults, "org/verapdf/integration/tests/rules/corpus-pdfbox.yml");
         collector.checkThat("Exceptions thrown during PDFBox testing.", countExceptions(pdfBoxResults), equalTo(0));
@@ -100,6 +98,8 @@ public class CorpusTest {
     @Test
     public void testGreenfield() throws Exception {
         VeraGreenfieldFoundryProvider.initialise();
+        RegressionTestingHelper.printDependencies();
+        assertFalse(Foundries.defaultParserIsPDFBox());
         gfDetails = Foundries.defaultInstance().getDetails();
         test(gfResults, "org/verapdf/integration/tests/rules/corpus-gf.yml");
         collector.checkThat("Exceptions thrown during Greenfield testing.", countExceptions(gfResults), equalTo(0));

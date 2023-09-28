@@ -79,7 +79,7 @@ public class RegressionTestingHelper {
 
     public void getFailedPolicyComplianceFiles(Map<String, List<FailedPolicyCheck>> failedFiles, PDFAFlavour flavour,
             ValidationProfile customProfile, Set<String> fileNames) throws JAXBException, IOException {
-        MetadataFixerConfig fixConf = FixerFactory.configFromValues("test", true);
+        MetadataFixerConfig fixConf = FixerFactory.configFromValues("test");
         ValidatorConfig validatorConfig = new ValidatorConfigBuilder().flavour(flavour)
                 .defaultFlavour(PDFAFlavour.NO_FLAVOUR).recordPasses(true).maxFails(0)
                 .isLogsEnabled(true).showErrorMessages(false).build();

@@ -111,7 +111,7 @@ public class RegressionTestingHelper {
                 applyPolicy(tempSchFile, tempMrrFile, tempResultFile);
                 int failedPolicyJobsCount = countFailedPolicyJobs(tempResultFile);
                 if (failedPolicyJobsCount > 0) {
-                    failedFiles.put(pdfName, getFailedChecks(tempResultFile));
+                    failedFiles.put(pdfName, getFailedChecks(tempResultFile, tempMrrFile));
                 }
             } catch (Exception e) {
                 failedFiles.put(pdfName, Collections.singletonList(new FailedPolicyCheck(e.getMessage())));
@@ -183,24 +183,22 @@ public class RegressionTestingHelper {
             throws IOException, SAXException, ParserConfigurationException, XPathExpressionException {
         DocumentBuilder documentBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
         Document document = documentBuilder.parse(xmlReport);
-        XPath path = XPathFactory.newInstance().newXPath();
-        return ((Number) path.evaluate("count(//policyReport[@failedChecks > 0])", document, XPathConstants.NUMBER))
-                .intValue();
+        return document.getElementsByTagName("svrl:failed-assert").getLength();
     }
 
-    public static List<FailedPolicyCheck> getFailedChecks(File xmlReport)
+    public static List<FailedPolicyCheck> getFailedChecks(File xmlReport, File tempMrrFile)
             throws IOException, SAXException, ParserConfigurationException, XPathExpressionException {
         DocumentBuilder documentBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
         Document document = documentBuilder.parse(xmlReport);
+        Document mrrDocument = documentBuilder.parse(tempMrrFile);
         XPath path = XPathFactory.newInstance().newXPath();
         List<FailedPolicyCheck> failedChecks = new LinkedList<>();
-        NodeList list = ((NodeList) path.evaluate("//policyReport/failedChecks/check", document,
-                XPathConstants.NODESET));
+        NodeList list = document.getElementsByTagName("svrl:failed-assert");
         for (int i = 0; i < list.getLength(); i++) {
             Element check = (Element) list.item(i);
             String test = check.getAttribute("test");
-            String messageValue = getProperty(check, "message").getTextContent();
-            Element node = (Element) path.evaluate(check.getAttribute("location"), document, XPathConstants.NODE);
+            String messageValue = getProperty(check, "svrl:text").getTextContent();
+            Element node = (Element) path.evaluate(check.getAttribute("location"), mrrDocument, XPathConstants.NODE);
             failedChecks.add(new FailedPolicyCheck(node, messageValue, test));
         }
         return failedChecks;
@@ -208,17 +206,9 @@ public class RegressionTestingHelper {
 
     public static void applyPolicy(File policyFile, File tempMrrFile, File tempResultFile)
             throws IOException, VeraPDFException {
-        File tempPolicyResult = File.createTempFile("policyResult", "veraPDF");
         try (InputStream mrrIs = new FileInputStream(tempMrrFile);
-                OutputStream policyResultOs = new FileOutputStream(tempPolicyResult)) {
+                OutputStream policyResultOs = new FileOutputStream(tempResultFile)) {
             PolicyChecker.applyPolicy(policyFile, mrrIs, policyResultOs);
-        }
-        try (OutputStream mrrReport = new FileOutputStream(tempResultFile)) {
-            PolicyChecker.insertPolicyReport(tempPolicyResult, tempMrrFile, mrrReport);
-        }
-
-        if (!tempPolicyResult.delete()) {
-            tempPolicyResult.deleteOnExit();
         }
     }
 

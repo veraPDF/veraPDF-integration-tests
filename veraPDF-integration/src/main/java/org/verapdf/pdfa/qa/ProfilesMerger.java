@@ -63,7 +63,7 @@ public class ProfilesMerger {
                                            final String description,
                                            final String creator) throws IOException, JAXBException {
         SortedSet<Rule> rules = new TreeSet<>(new RuleComparator());
-        Set<Variable> variables = new HashSet<>();
+        SortedSet<Variable> variables = new TreeSet<>(Comparator.comparing(Variable::getName));
         PDFAFlavour flavour = null;
 
         for (File dir : root) {

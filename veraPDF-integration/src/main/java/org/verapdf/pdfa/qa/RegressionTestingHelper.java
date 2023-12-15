@@ -146,7 +146,7 @@ public class RegressionTestingHelper {
             while (entries.hasMoreElements()) {
                 ZipEntry entry = entries.nextElement();
                 String entryName = entry.getName();
-                if ((isWcag == entryName.contains("WCAG-21")) && !entry.isDirectory()) {
+                if ((isWcag == entryName.contains("WCAG_2_2")) && !entry.isDirectory()) {
                     if (entryName.endsWith(".pdf")) {
                         this.pdfMap.put(entryName, entry);
                     } else if (entryName.endsWith(".sch")) {

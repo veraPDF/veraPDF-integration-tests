@@ -120,6 +120,9 @@ public class ZipBackedTestCorpus extends AbstractTestCorpus<ZipEntry> {
 		if (flavour == PDFAFlavour.PDFUA_1) {
 			return item.contains("PDF_UA-1");
 		}
+		if (flavour == PDFAFlavour.PDFUA_2) {
+			return item.contains("PDF_UA-2");
+		}
 		if (flavour == PDFAFlavour.PDFA_4) {
 			return item.contains("PDF_A-4") && !matchFlavour(item, PDFAFlavour.PDFA_4_E) && !matchFlavour(item, PDFAFlavour.PDFA_4_F);
 		}

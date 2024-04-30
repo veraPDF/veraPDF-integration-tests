@@ -25,18 +25,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
 import java.io.Writer;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.EnumMap;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.LinkedList;
-import java.util.Map;
-import java.util.SortedMap;
-import java.util.TreeMap;
-import java.util.Comparator;
-import java.util.Set;
+import java.util.*;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -90,11 +79,11 @@ public class CorpusTest {
 		writeResults();
 	}
 
-//	@Test
+	//	@Test
 	public void testPdfBox() throws Exception {
 		PdfBoxFoundryProvider.initialise();
-        RegressionTestingHelper.printDependencies();
-        assertTrue(Foundries.defaultParserIsPDFBox());
+		RegressionTestingHelper.printDependencies();
+		assertTrue(Foundries.defaultParserIsPDFBox());
 		pdfBoxDetails = Foundries.defaultInstance().getDetails();
 		test(pdfBoxResults, "org/verapdf/integration/tests/rules/corpus-pdfbox.yml");
 		collector.checkThat("Exceptions thrown during PDFBox testing.", countExceptions(pdfBoxResults), equalTo(0));
@@ -104,7 +93,7 @@ public class CorpusTest {
 	public void testGreenfield() throws Exception {
 		VeraGreenfieldFoundryProvider.initialise();
 		RegressionTestingHelper.printDependencies();
-        assertFalse(Foundries.defaultParserIsPDFBox());
+		assertFalse(Foundries.defaultParserIsPDFBox());
 		gfDetails = Foundries.defaultInstance().getDetails();
 		testCorpora(gfResults);
 //		test(gfResults, "org/verapdf/integration/tests/rules/corpus-gf.yml");
@@ -218,18 +207,8 @@ public class CorpusTest {
 	private static void testCorpora(final List<ResultSet> resultSets) {
 		for (PDFAFlavour flavour : CorpusManager.testableFlavours()) {
 			for (TestCorpus corpus : CorpusManager.corporaForFlavour(flavour)) {
-				if (flavour != PDFAFlavour.NO_FLAVOUR) {
-					try (PDFAValidator validator = Foundries.defaultInstance().createValidator(flavour, false)) {
-						ResultSet results = ResultSetImpl.validateCorpus(corpus, validator);
-						resultSets.add(results);
-					} catch (IOException excep) {
-						// Just exception closing validator
-						excep.printStackTrace();
-					}
-				} else {
-					ResultSet results = ResultSetImpl.validateCorpus(corpus);
-					resultSets.add(results);
-				}
+				ResultSet results = ResultSetImpl.validateCorpus(corpus, null, PDFAFlavour.NO_ARLINGTON_FLAVOUR);
+				resultSets.add(results);
 			}
 		}
 	}

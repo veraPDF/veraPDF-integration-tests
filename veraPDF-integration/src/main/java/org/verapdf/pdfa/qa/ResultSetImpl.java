@@ -198,56 +198,27 @@ public class ResultSetImpl implements ResultSet {
 	 * @param validator
 	 * @return
 	 */
-	public static ResultSet validateCorpus(final TestCorpus corpus, final PDFAValidator validator) {
+	public static ResultSet validateCorpus(final TestCorpus corpus, final PDFAValidator validator, final PDFAFlavour flavour) {
 		Set<Result> results = new HashSet<>();
 		Set<Incomplete> exceptions = new HashSet<>();
 		Components.Timer batchTimer = Components.Timer.start();
 		long maxMemUse = 0;
 		for (String itemName : corpus.getItemNames()) {
+			System.out.println(itemName);
 			CorpusItemId id = null;
 			Components.Timer jobTimer = Components.Timer.start();
-			try {
-				id = CorpusItemIdImpl.fromFileName(validator.getProfile().getPDFAFlavour().getPart(), itemName, "");
-			} catch (IllegalArgumentException excep) {
-				LOG.log(Level.FINE, "Problem generating ID for corpus item:" + itemName, excep);
-			}
-			if (id != null) {
-				try (PDFAParser loader = Foundries.defaultInstance().createParser(corpus.getItemStream(itemName),
-						validator.getProfile().getPDFAFlavour())) {
-					ValidationResult result = validator.validate(loader);
-					long memUsed = (ManagementFactory.getMemoryMXBean().getHeapMemoryUsage().getUsed() / MEGABYTE);
-					maxMemUse = (memUsed > maxMemUse) ? memUsed : maxMemUse;
-					results.add(new Result(id, result, jobTimer.stop(), memUsed));
-				} catch (Throwable e) {
-					LOG.log(Level.SEVERE, String.format("Caught throwable testing %s from corpus %s", itemName,
-							corpus.getDetails().getName()));
-					LOG.log(Level.SEVERE, e.getClass().getName());
-					LOG.log(Level.SEVERE, e.getMessage());
-					exceptions.add(new Incomplete(id, e));
+			try (PDFAParser loader = Foundries.defaultInstance().createParser(corpus.getItemStream(itemName), flavour);
+				 PDFAValidator newValidator = flavour != PDFAFlavour.NO_FLAVOUR ? null : Foundries.defaultInstance().createValidator(loader.getFlavour(), false)) {
+				PDFAValidator currentValidator = flavour != PDFAFlavour.NO_FLAVOUR ? validator : newValidator;
+				try {
+					id = CorpusItemIdImpl.fromFileName(currentValidator.getProfile().getPDFAFlavour().getPart(), itemName, "");
+				} catch (IllegalArgumentException excep) {
+					LOG.log(Level.FINE, "Problem generating ID for corpus item:" + itemName, excep);
 				}
-			}
-		}
-		return new ResultSetImpl(corpus.getDetails(), corpus.getType().getId(), validator.getProfile(), results, exceptions, batchTimer.stop(),
-				maxMemUse);
-	}
-
-	public static ResultSet validateCorpus(final TestCorpus corpus) {
-		Set<Result> results = new HashSet<>();
-		Set<Incomplete> exceptions = new HashSet<>();
-		Components.Timer batchTimer = Components.Timer.start();
-		long maxMemUse = 0;
-		for (String itemName : corpus.getItemNames()) {
-			CorpusItemId id = null;
-			Components.Timer jobTimer = Components.Timer.start();
-			try (PDFAParser loader = Foundries.defaultInstance().createParser(corpus.getItemStream(itemName))) {
-				PDFAFlavour flavour = loader.getFlavour();
-				try (PDFAValidator validator = Foundries.defaultInstance().createValidator(flavour, false)) {
-					id = CorpusItemIdImpl.fromFileName(validator.getProfile().getPDFAFlavour().getPart(), itemName, "");
-					ValidationResult result = validator.validate(loader);
-					long memUsed = (ManagementFactory.getMemoryMXBean().getHeapMemoryUsage().getUsed() / MEGABYTE);
-					maxMemUse = (memUsed > maxMemUse) ? memUsed : maxMemUse;
-					results.add(new Result(id, result, jobTimer.stop(), memUsed));
-				}
+				ValidationResult result = currentValidator.validate(loader);
+				long memUsed = (ManagementFactory.getMemoryMXBean().getHeapMemoryUsage().getUsed() / MEGABYTE);
+				maxMemUse = (memUsed > maxMemUse) ? memUsed : maxMemUse;
+				results.add(new Result(id, result, jobTimer.stop(), memUsed));
 			} catch (Throwable e) {
 				LOG.log(Level.SEVERE, String.format("Caught throwable testing %s from corpus %s", itemName,
 						corpus.getDetails().getName()));
@@ -256,7 +227,8 @@ public class ResultSetImpl implements ResultSet {
 				exceptions.add(new Incomplete(id, e));
 			}
 		}
-		return new ResultSetImpl(corpus.getDetails(), corpus.getType().getId(), Profiles.defaultProfile(), results, exceptions, batchTimer.stop(),
+		return new ResultSetImpl(corpus.getDetails(), corpus.getType().getId(), flavour != PDFAFlavour.NO_FLAVOUR ? 
+				validator.getProfile() : Profiles.defaultProfile(), results, exceptions, batchTimer.stop(),
 				maxMemUse);
 	}
 

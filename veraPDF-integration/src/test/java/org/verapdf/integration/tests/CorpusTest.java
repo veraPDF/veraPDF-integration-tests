@@ -25,14 +25,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
 import java.io.Writer;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.EnumMap;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -127,14 +120,14 @@ public class CorpusTest {
             for (TestCorpus corpus : CorpusManager.corporaForFlavour(flavour)) {
                 if (flavour != PDFAFlavour.NO_FLAVOUR) {
                     try (PDFAValidator validator = Foundries.defaultInstance().createValidator(flavour, false)) {
-                        ResultSet results = ResultSetImpl.validateCorpus(corpus, validator);
+                        ResultSet results = ResultSetImpl.validateCorpus(corpus, validator, flavour);
                         resultSets.add(results);
                     } catch (IOException excep) {
                         // Just exception closing validator
                         excep.printStackTrace();
                     }
                 } else {
-                    ResultSet results = ResultSetImpl.validateCorpus(corpus);
+                    ResultSet results = ResultSetImpl.validateCorpus(corpus, null, flavour);
                     resultSets.add(results);
                 }
             }

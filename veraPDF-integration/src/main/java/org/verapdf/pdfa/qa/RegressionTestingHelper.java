@@ -52,7 +52,7 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 public class RegressionTestingHelper {
-    private static final String testFilesZipUrl = "https://github.com/veraPDF/veraPDF-regression-tests/archive/refs/heads/rc/1.26.zip";
+    private static final String testFilesZipUrl = "https://github.com/veraPDF/veraPDF-regression-tests/archive/refs/heads/rel/1.26.zip";
 
     private final ZipFile zipSource;
     private final Map<String, ZipEntry> pdfMap;

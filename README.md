@@ -1,7 +1,7 @@
 veraPDF-integration-tests
 =========================
 
-[![Build Status](https://jenkins.openpreservation.org/job/veraPDF/job/1.24/job/integration-tests/badge/icon)](https://jenkins.openpreservation.org/job/veraPDF/job/1.24/job/integration-tests/ "OPF Jenkins")
+[![Build Status](https://jenkins.openpreservation.org/job/veraPDF/job/1.26/job/integration-tests/badge/icon)](https://jenkins.openpreservation.org/job/veraPDF/job/1.26/job/integration-tests/ "OPF Jenkins")
 [![CodeCov Coverage](https://img.shields.io/codecov/c/github/veraPDF/veraPDF-integration-tests.svg)](https://codecov.io/gh/veraPDF/veraPDF-integration-tests/ "CodeCov coverage")
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/8d54ee7467f14bf5844b91081981f6ee)](https://app.codacy.com/gh/veraPDF/veraPDF-integration-tests/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade "Codacy coverage")
 
@@ -27,7 +27,7 @@ Quick Start
 
 In order to build the library you'll need:
 
- * Java 8 - 17, which can be downloaded [from Oracle](https://www.oracle.com/technetwork/java/javase/downloads/index.html), or for Linux users [OpenJDK](https://openjdk.java.net/install/index.html).
+ * Java 8 - 21, which can be downloaded [from Oracle](https://www.oracle.com/technetwork/java/javase/downloads/index.html), or for Linux users [OpenJDK](https://openjdk.java.net/install/index.html).
  * [Maven v3+](https://maven.apache.org/)
 
 Life will be easier if you also use [Git](https://git-scm.com/) to obtain and manage the source.

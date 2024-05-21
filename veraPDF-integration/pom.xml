@@ -28,7 +28,7 @@
     <parent>
         <artifactId>verapdf-integration-tests</artifactId>
         <groupId>org.verapdf</groupId>
-        <version>1.24.0</version>
+        <version>1.26.0</version>
     </parent>
 
     <artifactId>veraPDF-integration</artifactId>

@@ -61,7 +61,7 @@ import static org.junit.Assert.*;
  */
 @SuppressWarnings("static-method")
 public class ValidatorTest {
-    private static final ProfileDirectory PROFILES = GitHubBackedProfileDirectory.fromBranch("rel/1.24");
+    private static final ProfileDirectory PROFILES = GitHubBackedProfileDirectory.fromBranch("rel/1.26");
 
     @BeforeClass
     public static final void SetUp() {
@@ -75,7 +75,7 @@ public class ValidatorTest {
     public final void testGetProfile() {
         for (ValidationProfile profile : PROFILES.getValidationProfiles()) {
             PDFAValidator validator = Foundries.defaultInstance().createValidator(profile, false);
-            assertTrue(profile.equals(validator.getProfile()));
+            assertEquals(validator.getProfile(), profile);
         }
     }
 

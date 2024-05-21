@@ -17,7 +17,7 @@ public class PDFRegressionTestUtils {
             PDFAFlavour.PDFA_2_A, PDFAFlavour.PDFA_2_B, PDFAFlavour.PDFA_2_U,
             PDFAFlavour.PDFA_3_A, PDFAFlavour.PDFA_3_B, PDFAFlavour.PDFA_3_U,
             PDFAFlavour.PDFA_4, PDFAFlavour.PDFA_4_F, PDFAFlavour.PDFA_4_E,
-            PDFAFlavour.PDFUA_1);
+            PDFAFlavour.PDFUA_1, PDFAFlavour.PDFUA_2);
     private static final EnumMap<PDFAFlavour, Set<String>> filesByFlavour = new EnumMap<>(PDFAFlavour.class);
 
     public static void main(String[] args) {

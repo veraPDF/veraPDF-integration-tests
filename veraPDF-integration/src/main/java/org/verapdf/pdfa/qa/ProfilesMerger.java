@@ -63,7 +63,7 @@ public class ProfilesMerger {
                                            final String description,
                                            final String creator) throws IOException, JAXBException {
         SortedSet<Rule> rules = new TreeSet<>(new RuleComparator());
-        Set<Variable> variables = new HashSet<>();
+        SortedSet<Variable> variables = new TreeSet<>(Comparator.comparing(Variable::getName));
         PDFAFlavour flavour = null;
 
         for (File dir : root) {
@@ -84,7 +84,8 @@ public class ProfilesMerger {
         Set<Rule> res = new HashSet<>(rules.size());
         for (Rule r : rules) {
             RuleId id = Profiles.ruleIdFromValues(flavour.getPart(), r.getRuleId().getClause(), r.getRuleId().getTestNumber());
-            res.add(Profiles.ruleFromValues(id, r.getObject(), r.getDeferred(), r.getDescription(), r.getTest(), r.getError(), r.getReferences()));
+            res.add(Profiles.ruleFromValues(id, r.getObject(), r.getDeferred(), r.getTags(), r.getDescription(), r.getTest(),
+                    r.getError(), r.getReferences()));
         }
         return res;
     }

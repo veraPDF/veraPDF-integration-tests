@@ -73,8 +73,8 @@
   <properties>
     <jacoco.version>0.8.1</jacoco.version>
     <verapdf.greenfield.version>[1.27.0,1.28.0-RC)</verapdf.greenfield.version>
-    <verapdf.pdfbox.version>[1.27.0,1.27.0-RC)</verapdf.pdfbox.version>
-    <verapdf.library.version>[1.27.0,1.27.0-RC)</verapdf.library.version>
+    <verapdf.pdfbox.version>[1.27.0,1.28.0-RC)</verapdf.pdfbox.version>
+    <verapdf.library.version>[1.27.0,1.28.0-RC)</verapdf.library.version>
     <org.bouncycastle.version>1.70</org.bouncycastle.version>
   </properties>
 

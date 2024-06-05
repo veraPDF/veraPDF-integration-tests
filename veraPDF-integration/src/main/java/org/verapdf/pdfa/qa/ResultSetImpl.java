@@ -23,6 +23,7 @@ import org.verapdf.pdfa.Foundries;
 import org.verapdf.pdfa.PDFAParser;
 import org.verapdf.pdfa.PDFAValidator;
 import org.verapdf.pdfa.flavours.PDFAFlavour;
+import org.verapdf.pdfa.flavours.PDFFlavours;
 import org.verapdf.pdfa.results.ValidationResult;
 import org.verapdf.pdfa.validation.profiles.Profiles;
 import org.verapdf.pdfa.validation.profiles.ValidationProfile;
@@ -31,10 +32,7 @@ import jakarta.xml.bind.annotation.XmlElement;
 import jakarta.xml.bind.annotation.XmlElementWrapper;
 import jakarta.xml.bind.annotation.adapters.XmlAdapter;
 import java.lang.management.ManagementFactory;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.SortedSet;
-import java.util.TreeSet;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -199,6 +197,10 @@ public class ResultSetImpl implements ResultSet {
 	 * @return
 	 */
 	public static ResultSet validateCorpus(final TestCorpus corpus, final PDFAValidator validator, final PDFAFlavour flavour) {
+		if (Foundries.defaultParserIsPDFBox() && PDFFlavours.isWTPDFFlavour(flavour)) {
+			return new ResultSetImpl(corpus.getDetails(), corpus.getType().getId(), validator.getProfile(), 
+					Collections.emptySet(), Collections.emptySet(), null, 0);
+		}
 		Set<Result> results = new HashSet<>();
 		Set<Incomplete> exceptions = new HashSet<>();
 		Components.Timer batchTimer = Components.Timer.start();

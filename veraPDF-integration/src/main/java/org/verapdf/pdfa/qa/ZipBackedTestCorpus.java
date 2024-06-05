@@ -25,6 +25,7 @@ package org.verapdf.pdfa.qa;
 
 import org.apache.commons.codec.digest.DigestUtils;
 import org.verapdf.pdfa.flavours.PDFAFlavour;
+import org.verapdf.pdfa.flavours.PDFFlavours;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -117,6 +118,9 @@ public class ZipBackedTestCorpus extends AbstractTestCorpus<ZipEntry> {
 	public static boolean checkFlavour(final String item, final PDFAFlavour flavour) {
 		if (flavour == PDFAFlavour.PDFUA_1) {
 			return item.contains("PDF_UA-1");
+		}
+		if (PDFFlavours.isWTPDFFlavour(flavour)) {
+			return item.contains("PDF_UA-2");
 		}
 		if (flavour == PDFAFlavour.PDFUA_2) {
 			return item.contains("PDF_UA-2");

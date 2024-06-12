@@ -35,8 +35,8 @@ import org.junit.rules.ErrorCollector;
 import org.verapdf.component.ComponentDetails;
 import org.verapdf.gf.foundry.VeraGreenfieldFoundryProvider;
 import org.verapdf.pdfa.Foundries;
-import org.verapdf.pdfa.PDFAValidator;
 import org.verapdf.pdfa.results.ValidationResult;
+import org.verapdf.pdfa.validation.profiles.Profiles;
 import org.verapdf.pdfa.validation.profiles.RuleId;
 import org.verapdf.pdfa.flavours.PDFAFlavour;
 import org.verapdf.pdfa.qa.*;
@@ -207,7 +207,7 @@ public class CorpusTest {
 	private static void testCorpora(final List<ResultSet> resultSets) {
 		for (PDFAFlavour flavour : CorpusManager.testableFlavours()) {
 			for (TestCorpus corpus : CorpusManager.corporaForFlavour(flavour)) {
-				ResultSet results = ResultSetImpl.validateCorpus(corpus, null, PDFAFlavour.NO_ARLINGTON_FLAVOUR);
+				ResultSet results = ResultSetImpl.validateCorpus(corpus, flavour != PDFAFlavour.NO_FLAVOUR ? Profiles.getVeraProfileDirectory().getValidationProfileByFlavour(flavour) : Profiles.defaultProfile());
 				resultSets.add(results);
 			}
 		}

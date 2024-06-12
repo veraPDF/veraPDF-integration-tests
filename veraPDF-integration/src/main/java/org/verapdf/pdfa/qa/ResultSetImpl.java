@@ -198,7 +198,7 @@ public class ResultSetImpl implements ResultSet {
 	 * @param validator
 	 * @return
 	 */
-	public static ResultSet validateCorpus(final TestCorpus corpus, final PDFAValidator validator, final PDFAFlavour flavour) {
+	public static ResultSet validateCorpus(final TestCorpus corpus, final ValidationProfile corpusProfile) {
 		Set<Result> results = new HashSet<>();
 		Set<Incomplete> exceptions = new HashSet<>();
 		Components.Timer batchTimer = Components.Timer.start();
@@ -207,16 +207,14 @@ public class ResultSetImpl implements ResultSet {
 			System.out.println(itemName);
 			CorpusItemId id = null;
 			Components.Timer jobTimer = Components.Timer.start();
-			try (PDFAParser loader = Foundries.defaultInstance().createParser(corpus.getItemStream(itemName), flavour);
-				 PDFAValidator newValidator = flavour != PDFAFlavour.NO_ARLINGTON_FLAVOUR ? null :
-						 Foundries.defaultInstance().createValidator(loader.getFlavour(), false)) {
-				PDFAValidator currentValidator = flavour != PDFAFlavour.NO_ARLINGTON_FLAVOUR ? validator : newValidator;
+			try (PDFAParser loader = Foundries.defaultInstance().createParser(corpus.getItemStream(itemName), PDFAFlavour.NO_ARLINGTON_FLAVOUR);
+				 PDFAValidator validator = Foundries.defaultInstance().createValidator(loader.getFlavour(), false)) {
 				try {
-					id = CorpusItemIdImpl.fromFileName(currentValidator.getProfile().getPDFAFlavour().getPart(), itemName, "");
+					id = CorpusItemIdImpl.fromFileName(validator.getProfile().getPDFAFlavour().getPart(), itemName, "");
 				} catch (IllegalArgumentException excep) {
 					LOG.log(Level.FINE, "Problem generating ID for corpus item:" + itemName, excep);
 				}
-				ValidationResult result = currentValidator.validate(loader);
+				ValidationResult result = validator.validate(loader);
 				long memUsed = (ManagementFactory.getMemoryMXBean().getHeapMemoryUsage().getUsed() / MEGABYTE);
 				maxMemUse = (memUsed > maxMemUse) ? memUsed : maxMemUse;
 				results.add(new Result(id, result, jobTimer.stop(), memUsed));
@@ -228,8 +226,7 @@ public class ResultSetImpl implements ResultSet {
 				exceptions.add(new Incomplete(id, e));
 			}
 		}
-		return new ResultSetImpl(corpus.getDetails(), corpus.getType().getId(), flavour != PDFAFlavour.NO_ARLINGTON_FLAVOUR ?
-				validator.getProfile() : Profiles.defaultProfile(), results, exceptions, batchTimer.stop(),
+		return new ResultSetImpl(corpus.getDetails(), corpus.getType().getId(), corpusProfile, results, exceptions, batchTimer.stop(),
 				maxMemUse);
 	}
 

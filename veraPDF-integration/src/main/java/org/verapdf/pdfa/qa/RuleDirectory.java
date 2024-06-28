@@ -42,7 +42,7 @@ import java.util.Set;
 public final class RuleDirectory implements Directory<RuleId, Rule> {
 
     private final Registry<RuleId, Rule> rules = new MapBackedRegistry<>(
-            Collections.<RuleId, Rule>emptyMap());
+            Collections.emptyMap());
     private final Set<Variable> variables = new HashSet<>();
     private final PDFAFlavour flavour;
 

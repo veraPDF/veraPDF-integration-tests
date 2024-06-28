@@ -156,22 +156,20 @@ public class ValidatorTest {
                         continue;
                     }
                     if (index == failedMax) {
-                        assertTrue(resultsComparisonMessage(veraCorpus
+                        assertEquals(resultsComparisonMessage(veraCorpus
                                         .getDetails().getName(), itemName,
-                                        profile.getPDFAFlavour().toString(),
-                                        result, failFastResult),
-                                result.equals(failFastResult));
+                                profile.getPDFAFlavour().toString(),
+                                result, failFastResult), result, failFastResult);
                     } else if ((index == (failedMax -1)) && (getMaxFailureOrdinal(result) == result.getTotalAssertions())) {
-                        assertTrue(resultsComparisonMessage(veraCorpus
-                                .getDetails().getName(), itemName,
+                        assertEquals(resultsComparisonMessage(veraCorpus
+                                        .getDetails().getName(), itemName,
                                 profile.getPDFAFlavour().toString(),
-                                result, failFastResult),
-                        result.equals(failFastResult));
+                                result, failFastResult), result, failFastResult);
                     } else if (index < failedMax) {
-                        assertFalse(resultsComparisonMessage(veraCorpus
-                                .getDetails().getName(), itemName,
+                        assertNotEquals(resultsComparisonMessage(veraCorpus
+                                        .getDetails().getName(), itemName,
                                 profile.getPDFAFlavour().toString(),
-                                result, failFastResult), result.equals(failFastResult));
+                                result, failFastResult), result, failFastResult);
 
                     }
                 }
@@ -215,22 +213,18 @@ public class ValidatorTest {
 
                     // The results of the two separate validators should be the
                     // same (this works)
-                    assertTrue(
-                            resultsComparisonMessage(veraCorpus.getDetails()
+                    assertEquals(resultsComparisonMessage(veraCorpus.getDetails()
                                     .getName(), itemName, profile
                                     .getPDFAFlavour().toString(), firstResult,
-                                    secondResult),
-                            checkResult.equals(secondResult));
+                            secondResult), checkResult, secondResult);
                     // The results of the same validator should be the same
                     // (this doesn't)
                     // The act of validation changes something in the
                     // model......
-                    assertTrue(
-                            resultsComparisonMessage(veraCorpus.getDetails()
+                    assertEquals(resultsComparisonMessage(veraCorpus.getDetails()
                                     .getName(), itemName, profile
                                     .getPDFAFlavour().toString(), firstResult,
-                                    secondResult),
-                            firstResult.equals(secondResult));
+                            secondResult), firstResult, secondResult);
                 }
             }
         }
@@ -260,7 +254,7 @@ public class ValidatorTest {
         writer.write("\nSet<ValidationResults>.size()=" + results.size()
                 + "\nResults:\n");
 
-        if (results.size() > 0) {
+        if (!results.isEmpty()) {
             for (ValidationResult result : results) {
             	XmlSerialiser.toXml(result, writer, true, true);
             }

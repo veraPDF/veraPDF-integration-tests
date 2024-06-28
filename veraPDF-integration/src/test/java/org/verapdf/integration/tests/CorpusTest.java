@@ -230,8 +230,8 @@ public class CorpusTest {
                     if (expected == null)
                         continue;
                     expectedFailureSets.computeIfAbsent(corpus,
-                            k -> new EnumMap<PDFAFlavour, Set<String>>(PDFAFlavour.class));
-                    expectedFailureSets.get(corpus).computeIfAbsent(flavour, k -> new HashSet<String>(expected));
+                            k -> new EnumMap<>(PDFAFlavour.class));
+                    expectedFailureSets.get(corpus).computeIfAbsent(flavour, k -> new HashSet<>(expected));
                 }
             }
         } catch (Exception e) {

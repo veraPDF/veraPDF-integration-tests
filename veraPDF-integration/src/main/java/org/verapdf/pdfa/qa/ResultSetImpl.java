@@ -216,7 +216,7 @@ public class ResultSetImpl implements ResultSet {
 				}
 				ValidationResult result = validator.validate(loader);
 				long memUsed = (ManagementFactory.getMemoryMXBean().getHeapMemoryUsage().getUsed() / MEGABYTE);
-				maxMemUse = (memUsed > maxMemUse) ? memUsed : maxMemUse;
+					maxMemUse = Math.max(memUsed, maxMemUse);
 				results.add(new Result(id, result, jobTimer.stop(), memUsed));
 			} catch (Throwable e) {
 				LOG.log(Level.SEVERE, String.format("Caught throwable testing %s from corpus %s", itemName,

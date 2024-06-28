@@ -173,7 +173,7 @@ public class FeatureTest {
 
         for (Map.Entry<String, String> entry : node1Attrs.entrySet()) {
             String key = entry.getKey();
-            if (!key.equals("id")) {
+            if (!"id".equals(key)) {
                 if (!entry.getValue().equals(node2Attrs.get(key))) {
                     failMessages.push("Different value of attribute " + key +
                             " in nodes: " + node1 + " " + node2);

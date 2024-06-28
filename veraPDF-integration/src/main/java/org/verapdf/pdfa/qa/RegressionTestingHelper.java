@@ -126,7 +126,7 @@ public class RegressionTestingHelper {
     }
 
     public static void printResult(Map<String, List<FailedPolicyCheck>> failedFiles) {
-        if (failedFiles.size() > 0) {
+        if (!failedFiles.isEmpty()) {
             System.out.println("Some files is not compliant with policy: ");
             for (Map.Entry<String, List<FailedPolicyCheck>> entry : failedFiles.entrySet()) {
                 System.out.println(entry.getKey());

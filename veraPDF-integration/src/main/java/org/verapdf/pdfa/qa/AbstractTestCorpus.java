@@ -41,7 +41,7 @@ import java.util.*;
  */
 @XmlRootElement(namespace = "http://www.verapdf.org/corpus", name = "corpus")
 public abstract class AbstractTestCorpus<L> implements TestCorpus {
-    private static final String VERA_URL = "https://github.com/veraPDF/veraPDF-corpus/archive/staging.zip";
+    private static final String VERA_URL = "https://github.com/veraPDF/veraPDF-corpus/archive/rel/1.26.zip";
     private static final String ISARTOR_URL = "https://corpora.openpreservation.org/veraPDF/isartor-pdfa-2008-08-13.zip";
     private static final String BFO_URL = "https://github.com/bfosupport/pdfa-testsuite/archive/master.zip";
 

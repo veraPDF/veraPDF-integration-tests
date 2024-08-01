@@ -116,6 +116,9 @@ public class ZipBackedTestCorpus extends AbstractTestCorpus<ZipEntry> {
 	}
 
 	public static boolean checkFlavour(final String item, final PDFAFlavour flavour) {
+		if (flavour == PDFAFlavour.NO_FLAVOUR) {
+			return item.contains("Autodetect");
+		}
 		if (flavour == PDFAFlavour.PDFUA_1) {
 			return item.contains("PDF_UA-1");
 		}

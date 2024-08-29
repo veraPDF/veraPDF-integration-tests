@@ -24,11 +24,14 @@
 package org.verapdf.pdfa.validators.test;
 
 import org.junit.Test;
+import org.verapdf.pdfa.flavours.PDFAFlavour;
+import org.verapdf.pdfa.flavours.PDFFlavours;
 import org.verapdf.pdfa.qa.GitHubBackedProfileDirectory;
 import org.verapdf.pdfa.validation.profiles.Rule;
 import org.verapdf.pdfa.validation.profiles.ValidationProfile;
 
 import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
 
 /**
  * @author <a href="mailto:carl@openpreservation.org">Carl Wilson</a>
@@ -44,8 +47,16 @@ public class ProfilesTest {
     @Test
     public final void testGetPDFAFlavour() {
         for (ValidationProfile profile : INTEGRATION_PROFILES.getValidationProfiles()) {
-            for (Rule rule : profile.getRules()) {
-                assertSame("Profile=" + profile.getPDFAFlavour().getPart() + ", rule=" + rule.getRuleId().getSpecification(), rule.getRuleId().getSpecification(), profile.getPDFAFlavour().getPart());
+            if (PDFFlavours.isWTPDFFlavour(profile.getPDFAFlavour())) {
+                for (Rule rule : profile.getRules()) {
+                    assertTrue("Profile=" + profile.getPDFAFlavour().getPart() + ", rule=" + rule.getRuleId().getSpecification(), 
+                            rule.getRuleId().getSpecification() == profile.getPDFAFlavour().getPart() || 
+                                    rule.getRuleId().getSpecification() == PDFAFlavour.Specification.ISO_32005);
+                }
+            } else {
+                for (Rule rule : profile.getRules()) {
+                    assertSame("Profile=" + profile.getPDFAFlavour().getPart() + ", rule=" + rule.getRuleId().getSpecification(), rule.getRuleId().getSpecification(), profile.getPDFAFlavour().getPart());
+                }
             }
         }
     }

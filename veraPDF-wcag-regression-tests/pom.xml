@@ -33,7 +33,7 @@
     <artifactId>veraPDF-wcag-regression-tests-arlington</artifactId>
     <version>1.27.0-SNAPSHOT</version>
 
-    <name>veraPDF WCAG Regression Tests</name>
+    <name>veraPDF WCAG Regression Tests for Arlington PDF Model</name>
 
     <build>
         <plugins>

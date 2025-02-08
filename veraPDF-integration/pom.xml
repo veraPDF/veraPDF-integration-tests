@@ -33,7 +33,7 @@
 
     <artifactId>veraPDF-integration-arlington</artifactId>
 
-    <name>veraPDF Integration Tests</name>
+    <name>veraPDF Integration Tests for Arlington PDF Model</name>
 
     <build>
         <resources>

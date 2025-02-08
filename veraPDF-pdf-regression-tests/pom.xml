@@ -32,7 +32,7 @@
 
     <artifactId>veraPDF-pdf-regression-tests-arlington</artifactId>
 
-    <name>veraPDF PDF Regression Tests</name>
+    <name>veraPDF PDF Regression Tests for Arlington PDF Model</name>
 
     <build>
         <plugins>

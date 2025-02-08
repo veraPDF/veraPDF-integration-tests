@@ -34,8 +34,8 @@
   <version>1.27.0-SNAPSHOT</version>
   <packaging>pom</packaging>
 
-  <name>veraPDF Quality Assurance</name>
-  <description>Test and QA utilities for the veraPDF Library.</description>
+  <name>veraPDF Quality Assurance for Jakarta EE</name>
+  <description>Test and QA utilities for the veraPDF Library for Jakarta EE</description>
 
   <scm>
     <url>https://github.com/veraPDF/veraPDF-integration-tests/</url>

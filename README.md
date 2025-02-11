@@ -1,7 +1,7 @@
 veraPDF-integration-tests
 =========================
 
-[![Build Status](https://jenkins.openpreservation.org/job/veraPDF/job/1.27/job/integration-tests-arlington/badge/icon)](https://jenkins.openpreservation.org/job/veraPDF/job/1.27/job/integration-tests-arlington/ "OPF Jenkins")
+[![Build Status](https://jenkins.openpreservation.org/job/veraPDF/job/1.29/job/integration-tests-arlington/badge/icon)](https://jenkins.openpreservation.org/job/veraPDF/job/1.29/job/integration-tests-arlington/ "OPF Jenkins")
 [![CodeCov Coverage](https://img.shields.io/codecov/c/github/veraPDF/veraPDF-integration-tests.svg)](https://codecov.io/gh/veraPDF/veraPDF-integration-tests/ "CodeCov coverage")
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/8d54ee7467f14bf5844b91081981f6ee)](https://app.codacy.com/gh/veraPDF/veraPDF-integration-tests/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade "Codacy coverage")
 

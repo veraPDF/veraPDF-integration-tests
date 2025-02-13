@@ -17,7 +17,6 @@ package org.verapdf.integration.tests;
 import static org.hamcrest.Matchers.equalTo;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -39,7 +38,6 @@ import org.verapdf.pdfa.PDFAValidator;
 import org.verapdf.pdfa.flavours.PDFAFlavour;
 import org.verapdf.pdfa.qa.*;
 import org.verapdf.pdfa.qa.AbstractTestCorpus.Corpus;
-import org.verapdf.pdfbox.foundry.PdfBoxFoundryProvider;
 import org.yaml.snakeyaml.Yaml;
 
 import com.github.mustachejava.DefaultMustacheFactory;
@@ -75,16 +73,6 @@ public class CorpusTest {
     @AfterClass
     public static void outputResults() throws IOException {
         writeResults();
-    }
-
-    @Test
-    public void testPdfBox() throws Exception {
-        PdfBoxFoundryProvider.initialise();
-        RegressionTestingHelper.printDependencies();
-        assertTrue(Foundries.defaultParserIsPDFBox());
-        pdfBoxDetails = Foundries.defaultInstance().getDetails();
-        test(pdfBoxResults, "org/verapdf/integration/tests/rules/corpus-pdfbox.yml");
-        collector.checkThat("Exceptions thrown during PDFBox testing.", countExceptions(pdfBoxResults), equalTo(0));
     }
 
     @Test

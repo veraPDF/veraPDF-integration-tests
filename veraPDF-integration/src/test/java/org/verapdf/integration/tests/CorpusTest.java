@@ -161,16 +161,13 @@ public class CorpusTest {
         if (!rootDir.exists())
             rootDir.mkdirs();
         writeSummaries(rootDir);
-        int index = 0;
-        for (ResultSet pdfBoxResult : pdfBoxResults) {
-            ResultSet gfResult = gfResults.get(index++);
+        for (ResultSet gfResult : gfResults) {
             Map<String, Object> scopes = new HashMap<>();
-            scopes.put("pdfBoxResult", pdfBoxResult);
             scopes.put("gfResult", gfResult);
-            scopes.put("profile", pdfBoxResult.getValidationProfile().getPDFAFlavour().getId());
+            scopes.put("profile", gfResult.getValidationProfile().getPDFAFlavour().getId());
             if (rootDir.isDirectory() && rootDir.canWrite()) {
-                String dirName = pdfBoxResult.getCorpusDetails().getName() + "-"
-                        + pdfBoxResult.getValidationProfile().getPDFAFlavour().getId();
+                String dirName = gfResult.getCorpusDetails().getName() + "-"
+                        + gfResult.getValidationProfile().getPDFAFlavour().getId();
                 outputResultsToFile(scopes, new File(rootDir, dirName));
             } else {
                 RESULTS_MUSTACHE.execute(new PrintWriter(System.out), scopes).flush();

@@ -180,9 +180,7 @@ public class CorpusTest {
 
     private static void writeSummaries(final File outputDir) throws FileNotFoundException, IOException {
         Map<String, Object> scopes = new HashMap<>();
-        scopes.put("pdfBoxDetails", ResultSetDetailsImpl.getNewInstance(pdfBoxDetails));
         scopes.put("gfDetails", ResultSetDetailsImpl.getNewInstance(gfDetails));
-        scopes.put("pdfBoxResults", pdfBoxResults);
         scopes.put("gfResults", gfResults);
         try (Writer writer = new PrintWriter(new File(outputDir, "index.html"))) {
             SUMMARY_MUSTACHE.execute(writer, scopes);

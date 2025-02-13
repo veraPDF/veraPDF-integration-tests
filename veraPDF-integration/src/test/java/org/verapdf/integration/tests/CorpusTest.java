@@ -47,9 +47,7 @@ import com.github.mustachejava.MustacheFactory;
 @SuppressWarnings({ "javadoc" })
 public class CorpusTest {
     private static ComponentDetails gfDetails;
-    private static ComponentDetails pdfBoxDetails;
     private static final List<ResultSet> gfResults = new ArrayList<>();
-    private static final List<ResultSet> pdfBoxResults = new ArrayList<>();
     private static final MustacheFactory MF = new DefaultMustacheFactory("org/verapdf/integration/templates");
     private static final Mustache RESULTS_MUSTACHE = MF.compile("corpus-results.mustache");
     private static final Mustache SUMMARY_MUSTACHE = MF.compile("test-summary.mustache");

@@ -28,12 +28,12 @@ import org.verapdf.core.EncryptedPdfException;
 import org.verapdf.core.ModelParsingException;
 import org.verapdf.core.ValidationException;
 import org.verapdf.core.XmlSerialiser;
+import org.verapdf.gf.foundry.VeraGreenfieldFoundryProvider;
 import org.verapdf.model.ModelParser;
 import org.verapdf.pdfa.Foundries;
 import org.verapdf.pdfa.PDFAParser;
 import org.verapdf.pdfa.PDFAValidator;
 import org.verapdf.pdfa.validation.validators.ValidatorBuilder;
-import org.verapdf.pdfbox.foundry.PdfBoxFoundryProvider;
 import org.verapdf.pdfa.flavours.PDFAFlavour;
 import org.verapdf.pdfa.qa.AbstractTestCorpus.Corpus;
 import org.verapdf.pdfa.qa.CorpusManager;
@@ -65,7 +65,7 @@ public class ValidatorTest {
 
     @BeforeClass
     public static final void SetUp() {
-    	PdfBoxFoundryProvider.initialise();
+        VeraGreenfieldFoundryProvider.initialise();
     }
     /**
      * Test method for

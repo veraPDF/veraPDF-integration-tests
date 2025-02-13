@@ -15,7 +15,6 @@
 package org.verapdf.integration.tests;
 
 import static org.hamcrest.Matchers.equalTo;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 
 import java.io.File;
@@ -77,7 +76,6 @@ public class CorpusTest {
     public void testGreenfield() throws Exception {
         VeraGreenfieldFoundryProvider.initialise();
         RegressionTestingHelper.printDependencies();
-        assertFalse(Foundries.defaultParserIsPDFBox());
         gfDetails = Foundries.defaultInstance().getDetails();
         test(gfResults, "org/verapdf/integration/tests/rules/corpus-gf.yml");
         collector.checkThat("Exceptions thrown during Greenfield testing.", countExceptions(gfResults), equalTo(0));

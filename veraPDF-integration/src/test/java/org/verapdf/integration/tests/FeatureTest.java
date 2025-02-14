@@ -35,7 +35,6 @@ public class FeatureTest {
             "org/verapdf/integration/templates");
     private static final Mustache SUMMARY_MUSTACHE = MF.compile("features-summary.mustache");
     private static ComponentDetails gfDetails;
-    private static ComponentDetails pdfBoxDetails;
     private static final File outputDir = new File("target/features-test-results");
 
     private static Stack<String> failMessages = new Stack<>();

@@ -14,7 +14,6 @@ import org.verapdf.features.FeatureObjectType;
 import org.verapdf.features.tools.FeatureTreeNode;
 import org.verapdf.gf.model.GFModelParser;
 import org.verapdf.pdfa.Foundries;
-import org.verapdf.pdfbox.foundry.PdfBoxFoundryProvider;
 import org.verapdf.gf.foundry.VeraGreenfieldFoundryProvider;
 import org.verapdf.pdfa.flavours.PDFAFlavour;
 import org.verapdf.pdfa.qa.FeatureTestResult;
@@ -182,13 +181,6 @@ public class FeatureTest {
         VeraGreenfieldFoundryProvider.initialise();
         if (gfDetails == null) {
             gfDetails = Foundries.defaultInstance().getDetails();
-        }
-    }
-
-    private static void initPdfboxFoundry() {
-        PdfBoxFoundryProvider.initialise();
-        if (pdfBoxDetails == null) {
-            pdfBoxDetails = Foundries.defaultInstance().getDetails();
         }
     }
 

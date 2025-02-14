@@ -73,7 +73,6 @@
   <properties>
     <jacoco.version>0.8.1</jacoco.version>
     <verapdf.greenfield.version>[1.29.0,1.30.0-RC)</verapdf.greenfield.version>
-    <verapdf.pdfbox.version>[1.27.0,1.28.0-RC)</verapdf.pdfbox.version>
     <verapdf.library.version>[1.29.0,1.30.0-RC)</verapdf.library.version>
     <org.bouncycastle.version>1.70</org.bouncycastle.version>
   </properties>
@@ -84,12 +83,6 @@
       <groupId>org.verapdf</groupId>
       <artifactId>core</artifactId>
       <version>${verapdf.library.version}</version>
-    </dependency>
-
-    <dependency>
-      <groupId>org.verapdf</groupId>
-      <artifactId>pdfbox-validation-model</artifactId>
-      <version>${verapdf.pdfbox.version}</version>
     </dependency>
 
     <dependency>

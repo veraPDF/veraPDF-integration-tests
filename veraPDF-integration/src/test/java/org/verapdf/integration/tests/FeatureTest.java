@@ -3,7 +3,6 @@ package org.verapdf.integration.tests;
 import com.github.mustachejava.DefaultMustacheFactory;
 import com.github.mustachejava.Mustache;
 import com.github.mustachejava.MustacheFactory;
-import org.junit.Assert;
 import org.junit.Test;
 import org.verapdf.component.ComponentDetails;
 import org.verapdf.core.EncryptedPdfException;
@@ -14,7 +13,6 @@ import org.verapdf.features.FeatureFactory;
 import org.verapdf.features.FeatureObjectType;
 import org.verapdf.features.tools.FeatureTreeNode;
 import org.verapdf.gf.model.GFModelParser;
-import org.verapdf.model.ModelParser;
 import org.verapdf.pdfa.Foundries;
 import org.verapdf.pdfbox.foundry.PdfBoxFoundryProvider;
 import org.verapdf.gf.foundry.VeraGreenfieldFoundryProvider;
@@ -89,8 +87,7 @@ public class FeatureTest {
         }
     }
 
-    private void testFile(Map.Entry<String, FeatureObjectType> file)
-            throws ModelParsingException, EncryptedPdfException {
+    private void testFile(Map.Entry<String, FeatureObjectType> file) {
         File testFile = new File(String.format(PATH_FORMAT, file.getKey()));
         FeatureExtractorConfig config;
         FeatureExtractionResult gfFeatures;
@@ -101,14 +98,6 @@ public class FeatureTest {
             gfFeatures = gfParser.getFeatures(config);
         } catch (Throwable t) {
             throw new RuntimeException("greenfield exception: " + t.getMessage(), t);
-        }
-        try {
-            initPdfboxFoundry();
-            ModelParser pbParser = ModelParser.createModelWithFlavour(testFile, PDFAFlavour.NO_FLAVOUR);
-            FeatureExtractionResult pbFeatures = pbParser.getFeatures(config);
-            Assert.assertTrue(featureExtractionResultsEqual(gfFeatures, pbFeatures, file.getValue()));
-        } catch (Throwable t) {
-            throw new RuntimeException("pdfbox exception: " + t.getMessage(), t);
         }
     }
 

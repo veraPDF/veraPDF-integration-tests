@@ -81,7 +81,6 @@ public class FeatureTest {
             rootDir.mkdirs();
         }
         Map<String, Object> scopes = new HashMap<>();
-        scopes.put("pdfBoxDetails", ResultSetDetailsImpl.getNewInstance(pdfBoxDetails));
         scopes.put("gfDetails", ResultSetDetailsImpl.getNewInstance(gfDetails));
         scopes.put("results", results);
 

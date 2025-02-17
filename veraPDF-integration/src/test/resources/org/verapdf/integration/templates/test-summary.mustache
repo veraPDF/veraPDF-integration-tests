@@ -30,21 +30,12 @@
 <body>
 
   <div id="content">
-    <h1>verPDF Corpus Integration Tests : {{pdfBoxDetails.dateCreated}}</h1>
+    <h1>verPDF Corpus Integration Tests : {{gfDetails.dateCreated}}</h1>
 
     <div id="wrapper">
       <table id="layout">
       <!-- Header Row -->
         <tr>
-          <th>
-          {{#pdfBoxDetails}}
-            <h2>{{foundryDetails.name}} v{{foundryDetails.version}}</h2>
-            <h3>Dependencies</h3>
-            {{#dependencies}}
-            <p>{{id}} v{{version}}-{{buildDate}}</p>
-            {{/dependencies}}
-          {{/pdfBoxDetails}}
-          </th>
           <th>
           {{#gfDetails}}
             <h2>{{foundryDetails.name}} v{{foundryDetails.version}}</h2>
@@ -58,17 +49,6 @@
 
         <!-- Summaries Row -->
         <tr>
-          <td>
-          {{#pdfBoxResults}}
-            <h2 class="{{summary.passed}}"><a href="{{corpusDetails.name}}-{{validationProfile.PDFAFlavour.id}}/index.html" title="">{{corpusDetails.name}}-{{validationProfile.PDFAFlavour.id}}</a></h2>
-            <pre>
-Valid Cases: {{summary.validCases}} | passed: {{summary.validCasesPassed}} | failed: {{summary.validCasesFailed}}
-Invalid: {{summary.invalidCases}} | passed: {{summary.invalidCasesPassed}} | failed: {{summary.invalidCasesFailed}}
-Time Taken: {{summary.duration.duration}} | Memory Used: {{summary.memoryUsed}} MB
-Exceptions: {{summary.exceptions}} | Undefined: {{summary.undefinedCases}} | Not Applicable: {{summary.inapplicableCases}}
-            </pre>
-            {{/pdfBoxResults}}
-          </td>
           <td>
             {{#gfResults}}
             <h2 class="{{summary.passed}}"><a href="{{corpusDetails.name}}-{{validationProfile.PDFAFlavour.id}}/index.html" title="">{{corpusDetails.name}}-{{validationProfile.PDFAFlavour.id}}</a></h2>

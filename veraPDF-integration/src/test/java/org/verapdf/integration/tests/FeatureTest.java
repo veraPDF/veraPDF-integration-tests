@@ -3,7 +3,6 @@ package org.verapdf.integration.tests;
 import com.github.mustachejava.DefaultMustacheFactory;
 import com.github.mustachejava.Mustache;
 import com.github.mustachejava.MustacheFactory;
-import org.junit.Assert;
 import org.junit.Test;
 import org.verapdf.component.ComponentDetails;
 import org.verapdf.core.EncryptedPdfException;
@@ -14,9 +13,7 @@ import org.verapdf.features.FeatureFactory;
 import org.verapdf.features.FeatureObjectType;
 import org.verapdf.features.tools.FeatureTreeNode;
 import org.verapdf.gf.model.GFModelParser;
-import org.verapdf.model.ModelParser;
 import org.verapdf.pdfa.Foundries;
-import org.verapdf.pdfbox.foundry.PdfBoxFoundryProvider;
 import org.verapdf.gf.foundry.VeraGreenfieldFoundryProvider;
 import org.verapdf.pdfa.flavours.PDFAFlavour;
 import org.verapdf.pdfa.qa.FeatureTestResult;
@@ -38,7 +35,6 @@ public class FeatureTest {
             "org/verapdf/integration/templates");
     private static final Mustache SUMMARY_MUSTACHE = MF.compile("features-summary.mustache");
     private static ComponentDetails gfDetails;
-    private static ComponentDetails pdfBoxDetails;
     private static final File outputDir = new File("target/features-test-results");
 
     private static Stack<String> failMessages = new Stack<>();
@@ -81,7 +77,6 @@ public class FeatureTest {
             rootDir.mkdirs();
         }
         Map<String, Object> scopes = new HashMap<>();
-        scopes.put("pdfBoxDetails", ResultSetDetailsImpl.getNewInstance(pdfBoxDetails));
         scopes.put("gfDetails", ResultSetDetailsImpl.getNewInstance(gfDetails));
         scopes.put("results", results);
 
@@ -90,8 +85,7 @@ public class FeatureTest {
         }
     }
 
-    private void testFile(Map.Entry<String, FeatureObjectType> file)
-            throws ModelParsingException, EncryptedPdfException {
+    private void testFile(Map.Entry<String, FeatureObjectType> file) {
         File testFile = new File(String.format(PATH_FORMAT, file.getKey()));
         FeatureExtractorConfig config;
         FeatureExtractionResult gfFeatures;
@@ -102,14 +96,6 @@ public class FeatureTest {
             gfFeatures = gfParser.getFeatures(config);
         } catch (Throwable t) {
             throw new RuntimeException("greenfield exception: " + t.getMessage(), t);
-        }
-        try {
-            initPdfboxFoundry();
-            ModelParser pbParser = ModelParser.createModelWithFlavour(testFile, PDFAFlavour.NO_FLAVOUR);
-            FeatureExtractionResult pbFeatures = pbParser.getFeatures(config);
-            Assert.assertTrue(featureExtractionResultsEqual(gfFeatures, pbFeatures, file.getValue()));
-        } catch (Throwable t) {
-            throw new RuntimeException("pdfbox exception: " + t.getMessage(), t);
         }
     }
 
@@ -194,13 +180,6 @@ public class FeatureTest {
         VeraGreenfieldFoundryProvider.initialise();
         if (gfDetails == null) {
             gfDetails = Foundries.defaultInstance().getDetails();
-        }
-    }
-
-    private static void initPdfboxFoundry() {
-        PdfBoxFoundryProvider.initialise();
-        if (pdfBoxDetails == null) {
-            pdfBoxDetails = Foundries.defaultInstance().getDetails();
         }
     }
 

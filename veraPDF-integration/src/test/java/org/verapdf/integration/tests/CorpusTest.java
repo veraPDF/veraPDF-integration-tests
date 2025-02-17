@@ -15,9 +15,7 @@
 package org.verapdf.integration.tests;
 
 import static org.hamcrest.Matchers.equalTo;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -41,7 +39,6 @@ import org.verapdf.pdfa.validation.profiles.RuleId;
 import org.verapdf.pdfa.flavours.PDFAFlavour;
 import org.verapdf.pdfa.qa.*;
 import org.verapdf.pdfa.qa.AbstractTestCorpus.Corpus;
-import org.verapdf.pdfbox.foundry.PdfBoxFoundryProvider;
 import org.yaml.snakeyaml.Yaml;
 
 import com.github.mustachejava.DefaultMustacheFactory;
@@ -51,9 +48,7 @@ import com.github.mustachejava.MustacheFactory;
 @SuppressWarnings({ "javadoc" })
 public class CorpusTest {
 	private static ComponentDetails gfDetails;
-	private static ComponentDetails pdfBoxDetails;
 	private static final List<ResultSet> gfResults = new ArrayList<>();
-	private static final List<ResultSet> pdfBoxResults = new ArrayList<>();
 	private static final MustacheFactory MF = new DefaultMustacheFactory("org/verapdf/integration/templates");
 	private static final Mustache RESULTS_MUSTACHE = MF.compile("corpus-results.mustache");
 	private static final Mustache SUMMARY_MUSTACHE = MF.compile("test-summary.mustache");
@@ -79,21 +74,10 @@ public class CorpusTest {
 		writeResults();
 	}
 
-	//	@Test
-	public void testPdfBox() throws Exception {
-		PdfBoxFoundryProvider.initialise();
-		RegressionTestingHelper.printDependencies();
-		assertTrue(Foundries.defaultParserIsPDFBox());
-		pdfBoxDetails = Foundries.defaultInstance().getDetails();
-		test(pdfBoxResults, "org/verapdf/integration/tests/rules/corpus-pdfbox.yml");
-		collector.checkThat("Exceptions thrown during PDFBox testing.", countExceptions(pdfBoxResults), equalTo(0));
-	}
-
 	@Test
 	public void testGreenfield() throws Exception {
 		VeraGreenfieldFoundryProvider.initialise();
 		RegressionTestingHelper.printDependencies();
-		assertFalse(Foundries.defaultParserIsPDFBox());
 		gfDetails = Foundries.defaultInstance().getDetails();
 		testCorpora(gfResults);
 //		test(gfResults, "org/verapdf/integration/tests/rules/corpus-gf.yml");
@@ -252,10 +236,8 @@ public class CorpusTest {
 		if (!rootDir.exists())
 			rootDir.mkdirs();
 		writeSummaries(rootDir);
-		int index = 0;
 		for (ResultSet gfResult : gfResults) {
 			Map<String, Object> scopes = new HashMap<>();
-//			scopes.put("pdfBoxResult", pdfBoxResult);
 			scopes.put("gfResult", gfResult);
 			scopes.put("profile", gfResult.getValidationProfile().getPDFAFlavour().getId());
 			if (rootDir.isDirectory() && rootDir.canWrite()) {
@@ -268,11 +250,9 @@ public class CorpusTest {
 		}
 	}
 
-	private static void writeSummaries(final File outputDir) throws FileNotFoundException, IOException {
+	private static void writeSummaries(final File outputDir) throws IOException {
 		Map<String, Object> scopes = new HashMap<>();
-//		scopes.put("pdfBoxDetails", ResultSetDetailsImpl.getNewInstance(pdfBoxDetails));
 		scopes.put("gfDetails", ResultSetDetailsImpl.getNewInstance(gfDetails));
-//		scopes.put("pdfBoxResults", pdfBoxResults);
 		scopes.put("gfResults", gfResults);
 		try (Writer writer = new PrintWriter(new File(outputDir, "index.html"))) {
 			SUMMARY_MUSTACHE.execute(writer, scopes);

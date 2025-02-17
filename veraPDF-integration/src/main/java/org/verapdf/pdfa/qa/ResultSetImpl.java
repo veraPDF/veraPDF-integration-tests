@@ -197,10 +197,6 @@ public class ResultSetImpl implements ResultSet {
 	 * @return
 	 */
 	public static ResultSet validateCorpus(final TestCorpus corpus, final PDFAValidator validator, final PDFAFlavour flavour) {
-		if (Foundries.defaultParserIsPDFBox() && PDFFlavours.isWTPDFFlavour(flavour)) {
-			return new ResultSetImpl(corpus.getDetails(), corpus.getType().getId(), validator.getProfile(), 
-					Collections.emptySet(), Collections.emptySet(), null, 0);
-		}
 		Set<Result> results = new HashSet<>();
 		Set<Incomplete> exceptions = new HashSet<>();
 		Components.Timer batchTimer = Components.Timer.start();

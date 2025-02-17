@@ -28,12 +28,12 @@ import org.verapdf.core.EncryptedPdfException;
 import org.verapdf.core.ModelParsingException;
 import org.verapdf.core.ValidationException;
 import org.verapdf.core.XmlSerialiser;
-import org.verapdf.model.ModelParser;
+import org.verapdf.gf.foundry.VeraGreenfieldFoundryProvider;
+import org.verapdf.gf.model.GFModelParser;
 import org.verapdf.pdfa.Foundries;
 import org.verapdf.pdfa.PDFAParser;
 import org.verapdf.pdfa.PDFAValidator;
 import org.verapdf.pdfa.validation.validators.ValidatorBuilder;
-import org.verapdf.pdfbox.foundry.PdfBoxFoundryProvider;
 import org.verapdf.pdfa.flavours.PDFAFlavour;
 import org.verapdf.pdfa.qa.AbstractTestCorpus.Corpus;
 import org.verapdf.pdfa.qa.CorpusManager;
@@ -65,7 +65,7 @@ public class ValidatorTest {
 
     @BeforeClass
     public static final void SetUp() {
-    	PdfBoxFoundryProvider.initialise();
+        VeraGreenfieldFoundryProvider.initialise();
     }
     /**
      * Test method for
@@ -104,7 +104,7 @@ public class ValidatorTest {
                 Set<ValidationResult> results = new HashSet<>();
                 // Validate a fresh model instance and add the result to the set
                 for (int index = 0; index < 2; index++) {
-                    try (PDFAParser parser = ModelParser.createModelWithFlavour(
+                    try (PDFAParser parser = GFModelParser.createModelWithFlavour(
                             veraCorpus.getItemStream(itemName), profile.getPDFAFlavour())) {
                         ValidationResult result = validator.validate(parser);
                         results.add(result);
@@ -136,7 +136,7 @@ public class ValidatorTest {
                         false);
                 ValidationResult result = ValidationResults.defaultResult();
                 // Validate a fresh model instance and add the result to the set
-                try (PDFAParser parser = ModelParser.createModelWithFlavour(
+                try (PDFAParser parser = GFModelParser.createModelWithFlavour(
                         veraCorpus.getItemStream(itemName), profile.getPDFAFlavour())) {
                     result = validator.validate(parser);
                 } catch (ValidationException e) {
@@ -148,7 +148,7 @@ public class ValidatorTest {
                 for (int index = failedMax; index > 0; index--) {
                     PDFAValidator fastFailValidator = new ValidatorBuilder().profile(profile).maxFails(index).build();
                     ValidationResult failFastResult = ValidationResults.defaultResult();
-                    try (ModelParser parser = ModelParser.createModelWithFlavour(
+                    try (GFModelParser parser = GFModelParser.createModelWithFlavour(
                             veraCorpus.getItemStream(itemName), profile.getPDFAFlavour())) {
                         failFastResult = fastFailValidator.validate(parser);
                     } catch (ValidationException e) {
@@ -201,7 +201,7 @@ public class ValidatorTest {
                 PDFAValidator checkValidator = Foundries.defaultInstance().createValidator(
                         profile, false);
                 // Create a new model parser instance
-                try (PDFAParser parser = ModelParser.createModelWithFlavour(
+                try (PDFAParser parser = GFModelParser.createModelWithFlavour(
                         veraCorpus.getItemStream(itemName), profile.getPDFAFlavour())) {
                     // Validate model with fresh validator
                     ValidationResult firstResult = validator.validate(parser);

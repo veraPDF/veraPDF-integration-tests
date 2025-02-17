@@ -36,24 +36,13 @@
 <body>
 
   <div id="content">
-  <h1>veraPDF Corpus Test Results : {{pdfBoxResult.details.dateCreated}}</h1>
-  <h2>{{pdfBoxResult.corpusDetails.name}} - {{pdfBoxResult.valdiationProfile.details.name}}</h2>
+  <h1>{{gfResult.corpusDetails.name}}-{{profile}} Corpus Results : {{gfResult.details.dateCreated}}</h1>
 
     <div id="wrapper">
       <table id="layout">
 
         <!-- Header Row -->
         <tr>
-          <th>
-          {{#pdfBoxResult}}
-            <h2>{{details.foundryDetails.name}} v{{details.foundryDetails.version}}</h2>
-            <h3>Dependencies</h3>
-            {{#details.dependencies}}
-            <p>{{id}} v{{version}}-{{buildDate}}</p>
-            {{/details.dependencies}}
-          {{/pdfBoxResult}}
-          </th>
-
           <th>
           {{#gfResult}}
             <h2>{{details.foundryDetails.name}} v{{details.foundryDetails.version}}</h2>
@@ -67,42 +56,6 @@
 
         <!-- Content Row -->
         <tr>
-          <td>
-          
-            <table id="pdfbox-results">
-              {{#pdfBoxResult.exceptions}}
-              <tr>
-                <td class="fail">{{corpusItemId.name}}</td>
-              </tr>
-              <tr>
-                <td class="trace">
-                  <pre>
-{{cause.message}}
-{{#cause.stackTrace}}
-{{className}}.{{methodName}}({{fileName}}:{{lineNumber}})
-{{/cause.stackTrace}}
-                 </pre>
-               </td>
-             </tr>
-             {{/pdfBoxResult.exceptions}}
-
-		     {{#pdfBoxResult.results}}
-             {{#result}}
-		     <tr>
-		         <td class="{{testType}}">{{corpusItemName}}</td>
-		     </tr>
-		     <tr>
-		       <td>
-                 <pre>
-Duration: {{duration}}
-Memory: {{memoryUsed}} MB
-                 </pre>
-               </td>
-		     </tr>
-             {{/result}}
-		     {{/pdfBoxResult.results}}
-            </table>
-          </td>
           <td>
 
             <table id="gf-results">

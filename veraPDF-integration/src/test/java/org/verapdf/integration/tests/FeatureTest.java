@@ -26,11 +26,15 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.Writer;
 import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * @author Sergey Shemyakov
  */
 public class FeatureTest {
+
+    private static final Logger LOGGER = Logger.getLogger(FeatureTest.class.getCanonicalName());
 
     private static final MustacheFactory MF = new DefaultMustacheFactory(
             "org/verapdf/integration/templates");
@@ -102,6 +106,7 @@ public class FeatureTest {
             GFModelParser gfParser = GFModelParser.createModelWithFlavour(testFile, PDFAFlavour.NO_FLAVOUR);
             gfFeatures = gfParser.getFeatures(config);
         } catch (Throwable t) {
+            LOGGER.log(Level.WARNING, "Exception during feature processing " + t.getMessage());
             throw new RuntimeException("greenfield exception: " + t.getMessage(), t);
         }
         try {

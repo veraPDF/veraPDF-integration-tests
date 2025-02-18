@@ -3,10 +3,9 @@ package org.verapdf.integration.tests;
 import com.github.mustachejava.DefaultMustacheFactory;
 import com.github.mustachejava.Mustache;
 import com.github.mustachejava.MustacheFactory;
+import junit.framework.Assert;
 import org.junit.Test;
 import org.verapdf.component.ComponentDetails;
-import org.verapdf.core.EncryptedPdfException;
-import org.verapdf.core.ModelParsingException;
 import org.verapdf.features.FeatureExtractionResult;
 import org.verapdf.features.FeatureExtractorConfig;
 import org.verapdf.features.FeatureFactory;
@@ -57,18 +56,21 @@ public class FeatureTest {
     }
 
     @Test
-    public void testFeatures() throws ModelParsingException, EncryptedPdfException, IOException {
+    public void testFeatures() throws IOException {
+        int exceptionsCount = 0;
         for (Map.Entry<String, FeatureObjectType> entry : FILES_FEATURES_MAP.entrySet()) {
             try {
                 testFile(entry);
                 results.add(new FeatureTestResultImpl(null, entry.getKey(),
                         entry.getValue()));
             } catch (Throwable e) {
+                exceptionsCount++;
                 results.add(new FeatureTestResultImpl(e, entry.getKey(),
                         entry.getValue()));
             }
         }
         outputResults();
+        Assert.assertEquals("Exceptions during feature detection", 0, exceptionsCount);
     }
 
     public static void outputResults() throws IOException {

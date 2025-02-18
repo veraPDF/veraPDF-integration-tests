@@ -6,6 +6,8 @@ import com.github.mustachejava.MustacheFactory;
 import org.junit.Assert;
 import org.junit.Test;
 import org.verapdf.component.ComponentDetails;
+import org.verapdf.core.EncryptedPdfException;
+import org.verapdf.core.ModelParsingException;
 import org.verapdf.features.FeatureExtractionResult;
 import org.verapdf.features.FeatureExtractorConfig;
 import org.verapdf.features.FeatureFactory;

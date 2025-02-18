@@ -44,7 +44,7 @@ public class FeatureTest {
     private static Stack<String> failMessages = new Stack<>();
     private static final Map<String, FeatureObjectType> FILES_FEATURES_MAP = new HashMap<>();
     private static final List<FeatureTestResult> results;
-    private static final String PATH_FORMAT = "src/test/resources/test-resources/feature-tests/%s.pdf";
+    private static final String PATH_FORMAT = "test-resources/feature-tests/%s.pdf";
 
     static {
         FILES_FEATURES_MAP.put("Annotations", FeatureObjectType.ANNOTATION);
@@ -75,7 +75,7 @@ public class FeatureTest {
             }
         }
         outputResults();
-//        Assert.assertEquals("Exceptions during feature detection", 0, exceptionsCount);
+        Assert.assertEquals("Exceptions during feature detection", 0, exceptionsCount);
     }
 
     public static void outputResults() throws IOException {
@@ -93,7 +93,8 @@ public class FeatureTest {
     }
 
     private void testFile(Map.Entry<String, FeatureObjectType> file) {
-        File testFile = new File(String.format(PATH_FORMAT, file.getKey()));
+        File testFile = new File(this.getClass().getResource(String.format(PATH_FORMAT, file.getKey())).getFile());
+        System.out.println(testFile.getName());
         FeatureExtractorConfig config;
         FeatureExtractionResult gfFeatures;
         try {
@@ -102,7 +103,7 @@ public class FeatureTest {
             GFModelParser gfParser = GFModelParser.createModelWithFlavour(testFile, PDFAFlavour.NO_FLAVOUR);
             gfFeatures = gfParser.getFeatures(config);
         } catch (Throwable t) {
-            LOGGER.log(Level.WARNING, "Exception during feature processing " + t.getMessage());
+            LOGGER.log(Level.WARNING, "Exception during feature processing " + t.getMessage(), t);
             throw new RuntimeException("greenfield exception: " + t.getMessage(), t);
         }
     }

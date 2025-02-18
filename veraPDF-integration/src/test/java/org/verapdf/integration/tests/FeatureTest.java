@@ -3,7 +3,7 @@ package org.verapdf.integration.tests;
 import com.github.mustachejava.DefaultMustacheFactory;
 import com.github.mustachejava.Mustache;
 import com.github.mustachejava.MustacheFactory;
-import junit.framework.Assert;
+import org.junit.Assert;
 import org.junit.Test;
 import org.verapdf.component.ComponentDetails;
 import org.verapdf.features.FeatureExtractionResult;

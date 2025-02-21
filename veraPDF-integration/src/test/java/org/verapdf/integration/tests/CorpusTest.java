@@ -34,6 +34,7 @@ import org.verapdf.component.ComponentDetails;
 import org.verapdf.gf.foundry.VeraGreenfieldFoundryProvider;
 import org.verapdf.pdfa.Foundries;
 import org.verapdf.pdfa.results.ValidationResult;
+import org.verapdf.pdfa.validation.profiles.ProfileDirectory;
 import org.verapdf.pdfa.validation.profiles.Profiles;
 import org.verapdf.pdfa.validation.profiles.RuleId;
 import org.verapdf.pdfa.flavours.PDFAFlavour;
@@ -189,9 +190,10 @@ public class CorpusTest {
 	}
 
 	private static void testCorpora(final List<ResultSet> resultSets) {
+		ProfileDirectory directory = GitHubBackedProfileDirectory.fromBranch("integration");
 		for (PDFAFlavour flavour : CorpusManager.testableFlavours()) {
 			for (TestCorpus corpus : CorpusManager.corporaForFlavour(flavour)) {
-				ResultSet results = ResultSetImpl.validateCorpus(corpus, flavour != PDFAFlavour.NO_FLAVOUR ? Profiles.getVeraProfileDirectory().getValidationProfileByFlavour(flavour) : Profiles.defaultProfile());
+				ResultSet results = ResultSetImpl.validateCorpus(corpus, flavour != PDFAFlavour.NO_FLAVOUR ? directory.getValidationProfileByFlavour(flavour) : Profiles.defaultProfile());
 				resultSets.add(results);
 			}
 		}

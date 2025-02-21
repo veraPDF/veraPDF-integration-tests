@@ -30,21 +30,20 @@
 <body>
 
   <div id="content" align="center">
-    <h1>Feature extraction tests: {{pdfBoxDetails.dateCreated}}</h1>
-    <h2>Check if greenfield results are equal to pdfbox result</h2>
+    <h1>Feature extraction tests: {{gfDetails.dateCreated}}</h1>
 
     <div id="wrapper">
       <table id="layout">
       <!-- Header Row -->
         <tr>
           <th>
-          {{#pdfBoxDetails}}
+          {{#gfDetails}}
             <h2>{{foundryDetails.name}} v{{foundryDetails.version}}</h2>
             <h3>Dependencies</h3>
             {{#dependencies}}
             <p>{{id}} v{{version}}-{{buildDate}}</p>
             {{/dependencies}}
-          {{/pdfBoxDetails}}
+          {{/gfDetails}}
           </th>
         </tr>
 

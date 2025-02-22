@@ -24,6 +24,7 @@
 package org.verapdf.pdfa.validation.validators.test;
 
 import org.junit.BeforeClass;
+import org.junit.Test;
 import org.verapdf.core.EncryptedPdfException;
 import org.verapdf.core.ModelParsingException;
 import org.verapdf.core.ValidationException;
@@ -64,14 +65,15 @@ public class ValidatorTest {
     private static final ProfileDirectory PROFILES = GitHubBackedProfileDirectory.fromBranch("integration");
 
     @BeforeClass
-    public static final void SetUp() {
+    public static final void SetUp() throws IOException {
         VeraGreenfieldFoundryProvider.initialise();
+        CorpusManager.initialise();
     }
     /**
      * Test method for
      * {@link org.verapdf.pdfa.validators.BaseValidator#getProfile()}.
      */
-//    @Test
+    @Test
     public final void testGetProfile() {
         for (ValidationProfile profile : PROFILES.getValidationProfiles()) {
             PDFAValidator validator = Foundries.defaultInstance().createValidator(profile, false);
@@ -88,7 +90,7 @@ public class ValidatorTest {
      * @throws JAXBException
      * @throws ModelParsingException 
      */
- //   @Test
+    @Test
     public final void testValidateValidationConsistency() throws IOException,
             JAXBException, ModelParsingException, EncryptedPdfException {
         // Grab a random sample of 20 corpus files
@@ -121,7 +123,7 @@ public class ValidatorTest {
     }
 
     @SuppressWarnings("javadoc")
-   // @Test
+    @Test
     public void testFailFastValidator() throws IOException, JAXBException, ModelParsingException, EncryptedPdfException {
         // Grab a random sample of 20 corpus files
         TestCorpus veraCorpus = CorpusManager.corpusByFlavourAndType(PDFAFlavour.PDFA_1_B, Corpus.VERA);
@@ -133,7 +135,7 @@ public class ValidatorTest {
                 // Create a validator for the profile and get a result with no
                 // failures
                 PDFAValidator validator = Foundries.defaultInstance().createValidator(profile,
-                        false);
+                        100, false, true, false);
                 ValidationResult result = ValidationResults.defaultResult();
                 // Validate a fresh model instance and add the result to the set
                 try (PDFAParser parser = GFModelParser.createModelWithFlavour(
@@ -197,9 +199,9 @@ public class ValidatorTest {
             for (String itemName : sample) {
                 // Create fresh validators for each sample item
                 PDFAValidator validator = Foundries.defaultInstance().createValidator(profile,
-                        false);
+                        true);
                 PDFAValidator checkValidator = Foundries.defaultInstance().createValidator(
-                        profile, false);
+                        profile, true);
                 // Create a new model parser instance
                 try (PDFAParser parser = GFModelParser.createModelWithFlavour(
                         veraCorpus.getItemStream(itemName), profile.getPDFAFlavour())) {

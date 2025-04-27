@@ -25,6 +25,7 @@ package org.verapdf.pdfa.qa;
 
 import org.apache.commons.codec.digest.DigestUtils;
 import org.verapdf.pdfa.flavours.PDFAFlavour;
+import org.verapdf.pdfa.flavours.PDFFlavours;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -41,7 +42,7 @@ import java.util.zip.ZipFile;
  * @author <a href="mailto:carl@openpreservation.org">Carl Wilson</a>
  */
 public class ZipBackedTestCorpus extends AbstractTestCorpus<ZipEntry> {
-	private final static String PDF_SUFFIX = ".pdf";
+	private static final String PDF_SUFFIX = ".pdf";
 	private final ZipFile zipSource;
 
 	private ZipBackedTestCorpus(final CorpusDetails details, final Corpus type, final File zipSource,
@@ -115,8 +116,14 @@ public class ZipBackedTestCorpus extends AbstractTestCorpus<ZipEntry> {
 	}
 
 	public static boolean checkFlavour(final String item, final PDFAFlavour flavour) {
+		if (flavour == PDFAFlavour.NO_FLAVOUR) {
+			return item.contains("Autodetect");
+		}
 		if (flavour == PDFAFlavour.PDFUA_1) {
 			return item.contains("PDF_UA-1");
+		}
+		if (PDFFlavours.isWTPDFFlavour(flavour)) {
+			return item.contains("PDF_UA-2");
 		}
 		if (flavour == PDFAFlavour.PDFUA_2) {
 			return item.contains("PDF_UA-2");

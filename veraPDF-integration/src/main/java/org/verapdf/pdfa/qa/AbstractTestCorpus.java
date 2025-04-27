@@ -41,7 +41,7 @@ import java.util.*;
  */
 @XmlRootElement(namespace = "http://www.verapdf.org/corpus", name = "corpus")
 public abstract class AbstractTestCorpus<L> implements TestCorpus {
-    private static final String VERA_URL = "https://github.com/veraPDF/veraPDF-corpus/archive/rel/1.26.zip";
+    private static final String VERA_URL = "https://github.com/veraPDF/veraPDF-corpus/archive/rel/1.28.zip";
     private static final String ISARTOR_URL = "https://corpora.openpreservation.org/veraPDF/isartor-pdfa-2008-08-13.zip";
     private static final String BFO_URL = "https://github.com/bfosupport/pdfa-testsuite/archive/master.zip";
 
@@ -106,7 +106,7 @@ public abstract class AbstractTestCorpus<L> implements TestCorpus {
         return getStreamFromReference(this.itemMap.get(itemName));
     }
 
-    abstract protected InputStream getStreamFromReference(final L reference) throws IOException;
+    protected abstract InputStream getStreamFromReference(final L reference) throws IOException;
 
     /**
      * { @inheritDoc }
@@ -148,9 +148,9 @@ public abstract class AbstractTestCorpus<L> implements TestCorpus {
     public enum Corpus {
         VERA("veraPDF",
                 EnumSet.of(PDFAFlavour.PDFA_1_A, PDFAFlavour.PDFA_1_B, PDFAFlavour.PDFA_2_A, PDFAFlavour.PDFA_2_B,
-                        PDFAFlavour.PDFA_2_U,
-                        PDFAFlavour.PDFA_3_B, PDFAFlavour.PDFA_4, PDFAFlavour.PDFA_4_F, PDFAFlavour.PDFA_4_E,
-                        PDFAFlavour.PDFUA_1, PDFAFlavour.PDFUA_2),
+                        PDFAFlavour.PDFA_2_U, PDFAFlavour.PDFA_3_B, PDFAFlavour.PDFA_4, PDFAFlavour.PDFA_4_F, 
+                        PDFAFlavour.PDFA_4_E, PDFAFlavour.PDFUA_1, PDFAFlavour.PDFUA_2,
+                        PDFAFlavour.WTPDF_1_0_REUSE, PDFAFlavour.WTPDF_1_0_ACCESSIBILITY),
                 URI.create(VERA_URL), "veraCorp-"),
         ISARTOR("Isartor", EnumSet.of(PDFAFlavour.PDFA_1_B), URI.create(ISARTOR_URL), "isartCorp-"),
         BFO("BFO", EnumSet.of(PDFAFlavour.PDFA_2_B), URI.create(BFO_URL), "bfoCorp-"),
@@ -206,7 +206,7 @@ public abstract class AbstractTestCorpus<L> implements TestCorpus {
         System.out.println("Downloading: " + downloadLoc + ", to temp:" + tempFile);
         int totalBytes = 0;
         try (OutputStream output = new FileOutputStream(tempFile);
-                InputStream corpusInput = handleRedirects(downloadLoc);) {
+                InputStream corpusInput = handleRedirects(downloadLoc)) {
             byte[] buffer = new byte[8 * 1024];
             int bytesRead;
             while ((bytesRead = corpusInput.read(buffer)) != -1) {

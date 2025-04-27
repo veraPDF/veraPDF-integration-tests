@@ -259,7 +259,7 @@ public class CorpusItemIdImpl implements CorpusItemId {
             } else {
                 if (part.contains(" ")) {
                     part = part.substring(part.lastIndexOf(" ") + 1);
-                } else if (part.equalsIgnoreCase("isartor")) {
+                } else if ("isartor".equalsIgnoreCase(part)) {
                     continue;
                 }
                 builder.append(separator);

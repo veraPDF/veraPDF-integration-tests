@@ -50,7 +50,7 @@ public class ResultSetDetailsImpl implements ResultSetDetails {
     @XmlElement(name = "dependency")
     private final Set<ReleaseDetails> dependencies;
     private ResultSetDetailsImpl() {
-        this(Collections.<ReleaseDetails> emptySet());
+        this(Collections.emptySet());
     }
 
     private ResultSetDetailsImpl(Set<ReleaseDetails> dependencies) {

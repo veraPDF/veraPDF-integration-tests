@@ -28,12 +28,12 @@
     <parent>
         <artifactId>verapdf-integration-tests-jakarta</artifactId>
         <groupId>org.verapdf</groupId>
-        <version>1.26.0</version>
+        <version>1.28.0</version>
     </parent>
 
     <artifactId>veraPDF-integration-jakarta</artifactId>
 
-    <name>veraPDF Integration Tests</name>
+    <name>veraPDF Integration Tests for Jakarta EE</name>
 
     <build>
         <resources>

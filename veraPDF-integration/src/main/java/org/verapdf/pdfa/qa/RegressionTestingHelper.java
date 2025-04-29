@@ -52,7 +52,7 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 public class RegressionTestingHelper {
-    private static final String testFilesZipUrl = "https://github.com/veraPDF/veraPDF-regression-tests/archive/refs/heads/rel/1.26.zip";
+    private static final String testFilesZipUrl = "https://github.com/veraPDF/veraPDF-regression-tests/archive/refs/heads/rel/1.28.zip";
 
     private final ZipFile zipSource;
     private final Map<String, ZipEntry> pdfMap;
@@ -126,7 +126,7 @@ public class RegressionTestingHelper {
     }
 
     public static void printResult(Map<String, List<FailedPolicyCheck>> failedFiles) {
-        if (failedFiles.size() > 0) {
+        if (!failedFiles.isEmpty()) {
             System.out.println("Some files is not compliant with policy: ");
             for (Map.Entry<String, List<FailedPolicyCheck>> entry : failedFiles.entrySet()) {
                 System.out.println(entry.getKey());

@@ -24,6 +24,7 @@
 package org.verapdf.pdfa.qa;
 
 import org.verapdf.pdfa.flavours.PDFAFlavour;
+import org.verapdf.pdfa.flavours.PDFFlavours;
 import org.verapdf.pdfa.validation.profiles.ProfileDirectory;
 import org.verapdf.pdfa.validation.profiles.Profiles;
 import org.verapdf.pdfa.validation.profiles.ValidationProfile;
@@ -33,6 +34,8 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
 import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -99,6 +102,15 @@ public class GitHubBackedProfileDirectory implements ProfileDirectory {
 		return this.profiles.getValidationProfileByFlavour(flavour);
 	}
 
+	@Override
+	public List<ValidationProfile> getValidationProfilesByFlavours(List<PDFAFlavour> flavours) {
+		List<ValidationProfile> profiles = new LinkedList<>();
+		for (PDFAFlavour flavour : flavours) {
+			profiles.add(getValidationProfileByFlavour(flavour));
+		}
+		return profiles;
+	}
+
 	/**
 	 * { @inheritDoc }
 	 */
@@ -111,15 +123,12 @@ public class GitHubBackedProfileDirectory implements ProfileDirectory {
 		return new GitHubBackedProfileDirectory(branchName);
 	}
 	private static Set<ValidationProfile> fromGitHubBranch(final String branchName) {
-		String PDFApathPrefix = GITHUB_ROOT + branchName + PDFA_PROFILE_PATH_PART + PDFA_PROFILE_PREFIX;
-		String PDFUApathPrefix = GITHUB_ROOT + branchName + PDFUA_PROFILE_PATH_PART + PDFUA_PROFILE_PREFIX;
 		Set<ValidationProfile> profileSet = new HashSet<>();
 		for (PDFAFlavour flavour : PDFAFlavour.values()) {
 			if (flavour == PDFAFlavour.NO_FLAVOUR || flavour.getPart().getFamily() == PDFAFlavour.SpecificationFamily.WCAG) {
 				continue;
 			}
-			String profileURLString = (flavour.getPart().getFamily() != PDFAFlavour.SpecificationFamily.PDF_UA ? PDFApathPrefix : PDFUApathPrefix)
-					+ flavour.getPart().getPartNumber() + flavour.getLevel().getCode().toUpperCase() + XML_SUFFIX;
+			String profileURLString = getProfilePath(flavour, branchName);
 			try {
 				URL profileURL = new URL(profileURLString);
 				ValidationProfile profile = Profiles.profileFromXml(profileURL.openStream());
@@ -136,5 +145,31 @@ public class GitHubBackedProfileDirectory implements ProfileDirectory {
 			}
 		}
 		return profileSet;
+	}
+
+	private static String getProfilePath(PDFAFlavour flavour, String branchName) {
+		StringBuilder profilePath = new StringBuilder();
+		profilePath.append(GITHUB_ROOT);
+		profilePath.append(branchName);
+		if ((PDFFlavours.isWTPDFFlavour(flavour) || PDFFlavours.isPDFUARelatedFlavour(flavour))) {
+			profilePath.append(PDFUA_PROFILE_PATH_PART);
+		} else {
+			profilePath.append(PDFA_PROFILE_PATH_PART);
+		}
+		profilePath.append(flavour.getPart().getFamily().getFamily().replace("/", "")); //$NON-NLS-1$
+		profilePath.append("-"); //$NON-NLS-1$
+		profilePath.append(flavour.getPart().getPartNumber());
+		if (flavour.getPart().getSubpartNumber() != null) {
+			profilePath.append("-"); //$NON-NLS-1$
+			profilePath.append(flavour.getPart().getSubpartNumber());
+		}
+		if (PDFFlavours.isWTPDFFlavour(flavour)) {
+			profilePath.append("-"); //$NON-NLS-1$
+			profilePath.append(flavour.getLevel().getCode());
+		} else {
+			profilePath.append(flavour.getLevel().getCode().toUpperCase()); //$NON-NLS-1$
+		}
+		profilePath.append(XML_SUFFIX);
+		return profilePath.toString();
 	}
 }

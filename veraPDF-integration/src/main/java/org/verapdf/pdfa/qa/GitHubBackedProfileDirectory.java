@@ -33,6 +33,8 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
 import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -97,6 +99,15 @@ public class GitHubBackedProfileDirectory implements ProfileDirectory {
 	@Override
 	public ValidationProfile getValidationProfileByFlavour(final PDFAFlavour flavour) {
 		return this.profiles.getValidationProfileByFlavour(flavour);
+	}
+
+	@Override
+	public List<ValidationProfile> getValidationProfilesByFlavours(List<PDFAFlavour> flavours) {
+		List<ValidationProfile> profiles = new LinkedList<>();
+		for (PDFAFlavour flavour : flavours) {
+			profiles.add(getValidationProfileByFlavour(flavour));
+		}
+		return profiles;
 	}
 
 	/**

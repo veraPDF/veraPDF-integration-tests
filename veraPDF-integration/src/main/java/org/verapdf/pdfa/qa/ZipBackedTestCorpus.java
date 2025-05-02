@@ -41,7 +41,7 @@ import java.util.zip.ZipFile;
  * @author <a href="mailto:carl@openpreservation.org">Carl Wilson</a>
  */
 public class ZipBackedTestCorpus extends AbstractTestCorpus<ZipEntry> {
-	private final static String PDF_SUFFIX = ".pdf";
+	private static final String PDF_SUFFIX = ".pdf";
 	private final ZipFile zipSource;
 
 	private ZipBackedTestCorpus(final CorpusDetails details, final Corpus type, final File zipSource,
@@ -117,6 +117,9 @@ public class ZipBackedTestCorpus extends AbstractTestCorpus<ZipEntry> {
 	}
 
 	public static boolean checkFlavour(final String item, final PDFAFlavour flavour) {
+		if (flavour == PDFAFlavour.NO_FLAVOUR) {
+			return item.contains("Autodetect");
+		}
 		if (flavour == PDFAFlavour.PDFUA_1) {
 			return item.contains("PDF_UA-1");
 		}

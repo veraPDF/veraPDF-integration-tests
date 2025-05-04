@@ -107,7 +107,11 @@ public class RegressionTestingHelper {
             }
             try {
                 String schName = pdfName.substring(0, pdfName.length() - 3) + "sch";
-                copyInputStreamToFile(this.getSchStream(schName), tempSchFile);
+                ZipEntry schZipEntry = this.schMap.get(schName);
+                if (schZipEntry == null) {
+                    throw new IOException("sch file is not found");
+                }
+                copyInputStreamToFile(this.getStreamFromReference(schZipEntry), tempSchFile);
                 applyPolicy(tempSchFile, tempMrrFile, tempResultFile);
                 int failedPolicyJobsCount = countFailedPolicyJobs(tempResultFile);
                 if (failedPolicyJobsCount > 0) {

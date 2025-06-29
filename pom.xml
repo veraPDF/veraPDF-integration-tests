@@ -74,7 +74,7 @@
     <jacoco.version>0.8.1</jacoco.version>
     <verapdf.greenfield.version>[1.29.0,1.30.0-RC)</verapdf.greenfield.version>
     <verapdf.library.version>[1.29.0,1.30.0-RC)</verapdf.library.version>
-    <org.bouncycastle.version>1.70</org.bouncycastle.version>
+    <org.bouncycastle.version>1.78</org.bouncycastle.version>
   </properties>
 
   <dependencies>
@@ -100,7 +100,7 @@
 
     <dependency>
       <groupId>org.bouncycastle</groupId>
-      <artifactId>bcprov-jdk15on</artifactId>
+      <artifactId>bcprov-jdk18on</artifactId>
       <version>${org.bouncycastle.version}</version>
     </dependency>
 

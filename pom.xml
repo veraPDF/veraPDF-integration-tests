@@ -75,7 +75,7 @@
     <verapdf.greenfield.version>[1.28.0,1.29.0)</verapdf.greenfield.version>
     <verapdf.pdfbox.version>[1.28.0,1.29.0)</verapdf.pdfbox.version>
     <verapdf.library.version>[1.28.0,1.29.0)</verapdf.library.version>
-    <org.bouncycastle.version>1.70</org.bouncycastle.version>
+    <org.bouncycastle.version>1.78</org.bouncycastle.version>
   </properties>
 
   <dependencies>

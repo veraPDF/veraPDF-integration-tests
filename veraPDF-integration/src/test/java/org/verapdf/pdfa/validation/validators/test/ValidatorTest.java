@@ -76,8 +76,8 @@ public class ValidatorTest {
     @Test
     public final void testGetProfile() {
         for (ValidationProfile profile : PROFILES.getValidationProfiles()) {
-            PDFAValidator validator = Foundries.defaultInstance().createValidator(profile, false);
-            assertTrue(profile.equals(validator.getProfile()));
+            PDFAValidator validator = Foundries.defaultInstance().createValidator(profile, 100, false, true, false);
+            assertEquals(validator.getProfile(), profile);
         }
     }
 
@@ -102,7 +102,7 @@ public class ValidatorTest {
             for (ValidationProfile profile : PROFILES.getValidationProfiles()) {
                 // Create a validator for profile
                 PDFAValidator validator = Foundries.defaultInstance().createValidator(profile,
-                        false);
+                        100, false, true, false);
                 Set<ValidationResult> results = new HashSet<>();
                 // Validate a fresh model instance and add the result to the set
                 for (int index = 0; index < 2; index++) {
@@ -199,9 +199,9 @@ public class ValidatorTest {
             for (String itemName : sample) {
                 // Create fresh validators for each sample item
                 PDFAValidator validator = Foundries.defaultInstance().createValidator(profile,
-                        true);
+                        100, true, true, false);
                 PDFAValidator checkValidator = Foundries.defaultInstance().createValidator(
-                        profile, true);
+                        profile, 100, true, true, false);
                 // Create a new model parser instance
                 try (PDFAParser parser = GFModelParser.createModelWithFlavour(
                         veraCorpus.getItemStream(itemName), profile.getPDFAFlavour())) {

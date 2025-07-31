@@ -82,7 +82,7 @@ public class RegressionTestingHelper {
         MetadataFixerConfig fixConf = FixerFactory.configFromValues("test");
         ValidatorConfig validatorConfig = new ValidatorConfigBuilder().flavour(flavour)
                 .defaultFlavour(PDFAFlavour.NO_FLAVOUR).recordPasses(true).maxFails(0)
-                .isLogsEnabled(true).showErrorMessages(false).build();
+                .isLogsEnabled(true).showErrorMessages(true).build();
         ProcessorConfig processorConfig = ProcessorFactory.fromValues(validatorConfig, null,
                 null, fixConf, EnumSet.of(TaskType.VALIDATE),
                 customProfile == null ? Profiles.defaultProfile() : customProfile, null);

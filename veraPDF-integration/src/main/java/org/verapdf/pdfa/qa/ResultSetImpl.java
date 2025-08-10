@@ -207,7 +207,7 @@ public class ResultSetImpl implements ResultSet {
 			System.out.println(itemName);
 			CorpusItemId id = null;
 			Components.Timer jobTimer = Components.Timer.start();
-			try (PDFAParser loader = Foundries.defaultInstance().createParser(corpus.getItemStream(itemName), PDFAFlavour.NO_ARLINGTON_FLAVOUR);
+			try (PDFAParser loader = Foundries.defaultInstance().createParser(corpus.getItemStream(itemName), PDFAFlavour.NO_ARLINGTON_FLAVOUR, PDFAFlavour.ARLINGTON1_4);
 				 PDFAValidator validator = Foundries.defaultInstance().createValidator(loader.getFlavour(), 100, false, true, false)) {
 				try {
 					id = CorpusItemIdImpl.fromFileName(validator.getProfile().getPDFAFlavour().getPart(), itemName, "");

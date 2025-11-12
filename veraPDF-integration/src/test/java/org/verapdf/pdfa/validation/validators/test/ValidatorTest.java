@@ -34,19 +34,17 @@ import org.verapdf.gf.model.GFModelParser;
 import org.verapdf.pdfa.Foundries;
 import org.verapdf.pdfa.PDFAParser;
 import org.verapdf.pdfa.PDFAValidator;
+import org.verapdf.pdfa.flavours.PDFFlavours;
 import org.verapdf.pdfa.validation.validators.ValidatorBuilder;
 import org.verapdf.pdfa.flavours.PDFAFlavour;
 import org.verapdf.pdfa.qa.AbstractTestCorpus.Corpus;
 import org.verapdf.pdfa.qa.CorpusManager;
 import org.verapdf.pdfa.qa.CorpusSampler;
-import org.verapdf.pdfa.qa.GitHubBackedProfileDirectory;
 import org.verapdf.pdfa.qa.TestCorpus;
 import org.verapdf.pdfa.results.TestAssertion;
 import org.verapdf.pdfa.results.TestAssertion.Status;
 import org.verapdf.pdfa.results.ValidationResult;
 import org.verapdf.pdfa.results.ValidationResults;
-import org.verapdf.pdfa.validation.profiles.ProfileDirectory;
-import org.verapdf.pdfa.validation.profiles.ValidationProfile;
 
 import javax.xml.bind.JAXBException;
 import java.io.IOException;
@@ -62,8 +60,6 @@ import static org.junit.Assert.*;
  */
 @SuppressWarnings("static-method")
 public class ValidatorTest {
-    private static final ProfileDirectory PROFILES = GitHubBackedProfileDirectory.fromBranch("integration");
-
     @BeforeClass
     public static final void SetUp() throws IOException {
         VeraGreenfieldFoundryProvider.initialise();
@@ -75,9 +71,12 @@ public class ValidatorTest {
      */
     @Test
     public final void testGetProfile() {
-        for (ValidationProfile profile : PROFILES.getValidationProfiles()) {
-            PDFAValidator validator = Foundries.defaultInstance().createValidator(profile, 100, false, true, false);
-            assertEquals(validator.getProfile(), profile);
+        for (PDFAFlavour flavour : PDFAFlavour.values()) {
+            if (!PDFFlavours.isFlavourFamily(flavour, PDFAFlavour.SpecificationFamily.ARLINGTON)) {
+                continue;
+            }
+            PDFAValidator validator = Foundries.defaultInstance().createValidator(flavour, 100, false, true, false);
+            assertEquals(validator.getProfile().getPDFAFlavour(), flavour);
         }
     }
 
@@ -99,15 +98,18 @@ public class ValidatorTest {
         // / Cycle through sample
         for (String itemName : sample) {
             // Try all profiles
-            for (ValidationProfile profile : PROFILES.getValidationProfiles()) {
+            for (PDFAFlavour flavour : PDFAFlavour.values()) {
+                if (!PDFFlavours.isFlavourFamily(flavour, PDFAFlavour.SpecificationFamily.ARLINGTON)) {
+                    continue;
+                }
                 // Create a validator for profile
-                PDFAValidator validator = Foundries.defaultInstance().createValidator(profile,
+                PDFAValidator validator = Foundries.defaultInstance().createValidator(flavour,
                         100, false, true, false);
                 Set<ValidationResult> results = new HashSet<>();
                 // Validate a fresh model instance and add the result to the set
                 for (int index = 0; index < 2; index++) {
                     try (PDFAParser parser = GFModelParser.createModelWithFlavour(
-                            veraCorpus.getItemStream(itemName), profile.getPDFAFlavour())) {
+                            veraCorpus.getItemStream(itemName), flavour)) {
                         ValidationResult result = validator.validate(parser);
                         results.add(result);
                     } catch (ValidationException e) {
@@ -116,7 +118,7 @@ public class ValidatorTest {
                     }
                 }
                 assertEquals(resultsMessage(veraCorpus.getDetails().getName(),
-                        itemName, profile.getPDFAFlavour().toString(),
+                        itemName, flavour.toString(),
                         results), 1, results.size());
             }
         }
@@ -131,15 +133,18 @@ public class ValidatorTest {
         // / Cycle through sample
         for (String itemName : sample) {
             // Try all profiles
-            for (ValidationProfile profile : PROFILES.getValidationProfiles()) {
+            for (PDFAFlavour flavour : PDFAFlavour.values()) {
+                if (!PDFFlavours.isFlavourFamily(flavour, PDFAFlavour.SpecificationFamily.ARLINGTON)) {
+                    continue;
+                }
                 // Create a validator for the profile and get a result with no
                 // failures
-                PDFAValidator validator = Foundries.defaultInstance().createValidator(profile,
+                PDFAValidator validator = Foundries.defaultInstance().createValidator(flavour,
                         100, false, true, false);
                 ValidationResult result = ValidationResults.defaultResult();
                 // Validate a fresh model instance and add the result to the set
                 try (PDFAParser parser = GFModelParser.createModelWithFlavour(
-                        veraCorpus.getItemStream(itemName), profile.getPDFAFlavour())) {
+                        veraCorpus.getItemStream(itemName), flavour)) {
                     result = validator.validate(parser);
                 } catch (ValidationException e) {
                     checkValidationException(itemName, e);
@@ -148,10 +153,10 @@ public class ValidatorTest {
                 int failedMax = result.getTestAssertions().size() + 1;
                 // Set up a loop to restrict failures
                 for (int index = failedMax; index > 0; index--) {
-                    PDFAValidator fastFailValidator = new ValidatorBuilder().profile(profile).maxFails(index).build();
+                    PDFAValidator fastFailValidator = new ValidatorBuilder().flavour(flavour).maxFails(index).build();
                     ValidationResult failFastResult = ValidationResults.defaultResult();
                     try (GFModelParser parser = GFModelParser.createModelWithFlavour(
-                            veraCorpus.getItemStream(itemName), profile.getPDFAFlavour())) {
+                            veraCorpus.getItemStream(itemName), flavour)) {
                         failFastResult = fastFailValidator.validate(parser);
                     } catch (ValidationException e) {
                         checkValidationException(itemName, e);
@@ -160,17 +165,17 @@ public class ValidatorTest {
                     if (index == failedMax) {
                         assertEquals(resultsComparisonMessage(veraCorpus
                                         .getDetails().getName(), itemName,
-                                profile.getPDFAFlavour().toString(),
+                                flavour.toString(),
                                 result, failFastResult), result, failFastResult);
                     } else if ((index == (failedMax -1)) && (getMaxFailureOrdinal(result) == result.getTotalAssertions())) {
                         assertEquals(resultsComparisonMessage(veraCorpus
                                         .getDetails().getName(), itemName,
-                                profile.getPDFAFlavour().toString(),
+                                flavour.toString(),
                                 result, failFastResult), result, failFastResult);
                     } else if (index < failedMax) {
                         assertNotEquals(resultsComparisonMessage(veraCorpus
                                         .getDetails().getName(), itemName,
-                                profile.getPDFAFlavour().toString(),
+                                flavour.toString(),
                                 result, failFastResult), result, failFastResult);
 
                     }
@@ -195,16 +200,19 @@ public class ValidatorTest {
         Set<String> sample = CorpusSampler.randomSample(veraCorpus, 10);
 
         // Cycle through all available profile on GitHub
-        for (ValidationProfile profile : PROFILES.getValidationProfiles()) {
+        for (PDFAFlavour flavour : PDFAFlavour.values()) {
             for (String itemName : sample) {
+                if (!PDFFlavours.isFlavourFamily(flavour, PDFAFlavour.SpecificationFamily.ARLINGTON)) {
+                    continue;
+                }
                 // Create fresh validators for each sample item
-                PDFAValidator validator = Foundries.defaultInstance().createValidator(profile,
+                PDFAValidator validator = Foundries.defaultInstance().createValidator(flavour,
                         100, true, true, false);
                 PDFAValidator checkValidator = Foundries.defaultInstance().createValidator(
-                        profile, 100, true, true, false);
+                        flavour, 100, true, true, false);
                 // Create a new model parser instance
                 try (PDFAParser parser = GFModelParser.createModelWithFlavour(
-                        veraCorpus.getItemStream(itemName), profile.getPDFAFlavour())) {
+                        veraCorpus.getItemStream(itemName), flavour)) {
                     // Validate model with fresh validator
                     ValidationResult firstResult = validator.validate(parser);
                     // Validate same model with second fresh validator instance
@@ -215,17 +223,14 @@ public class ValidatorTest {
 
                     // The results of the two separate validators should be the
                     // same (this works)
-                    assertEquals(resultsComparisonMessage(veraCorpus.getDetails()
-                                    .getName(), itemName, profile
-                                    .getPDFAFlavour().toString(), firstResult,
+                    assertEquals(resultsComparisonMessage(veraCorpus.getDetails().getName(), itemName, flavour.toString(), firstResult,
                             secondResult), checkResult, secondResult);
                     // The results of the same validator should be the same
                     // (this doesn't)
                     // The act of validation changes something in the
                     // model......
                     assertEquals(resultsComparisonMessage(veraCorpus.getDetails()
-                                    .getName(), itemName, profile
-                                    .getPDFAFlavour().toString(), firstResult,
+                                    .getName(), itemName, flavour.toString(), firstResult,
                             secondResult), firstResult, secondResult);
                 }
             }

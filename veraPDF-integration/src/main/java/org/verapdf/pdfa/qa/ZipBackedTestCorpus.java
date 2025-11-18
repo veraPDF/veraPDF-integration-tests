@@ -103,6 +103,12 @@ public class ZipBackedTestCorpus extends AbstractTestCorpus<ZipEntry> {
 				if (entry.isDirectory() || !entry.getName().endsWith(PDF_SUFFIX))
 					continue;
 				String entryName = entry.getName();
+                if (type == Corpus.VERA && entryName.contains("Isartor")) {
+                    continue;
+                }
+                if (type == Corpus.ISARTOR && !entryName.contains("Isartor")) {
+                    continue;
+                }
 				if (type == Corpus.TWG && entryName.contains("TWG")) {
 					itemMap.put(entryName, entry);
 				} else if (flavour == null || type == Corpus.BFO) {

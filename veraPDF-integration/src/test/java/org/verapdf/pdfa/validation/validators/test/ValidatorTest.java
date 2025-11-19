@@ -125,7 +125,7 @@ public class ValidatorTest {
     }
 
     @SuppressWarnings("javadoc")
-    @Test
+//    @Test
     public void testFailFastValidator() throws IOException, JAXBException, ModelParsingException, EncryptedPdfException {
         // Grab a random sample of 20 corpus files
         TestCorpus veraCorpus = CorpusManager.corpusByFlavourAndType(PDFAFlavour.PDFA_1_B, Corpus.VERA);

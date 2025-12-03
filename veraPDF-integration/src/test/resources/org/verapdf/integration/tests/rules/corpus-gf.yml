@@ -39,6 +39,7 @@
   "wt1r":
     [
       "5-t2-pass-a",
+      "5-t5-fail-b",
       "8.2.5.28.2-t1-fail-a",
       "8.2.5.29-t1-fail-a",
       "8.7-t2-fail-a",
@@ -47,7 +48,8 @@
     ]
   "wt1a":
     [
-      "5-t2-pass-a"
+      "5-t2-pass-a",
+      "5-t5-fail-b"
     ]
 "BFO":
   "2b":

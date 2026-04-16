@@ -35,7 +35,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class WCAGRegressionTestUtils {
-    private static final String WCAG_FOLDER = "https://github.com/veraPDF/veraPDF-validation-profiles/raw/rc/1.30/PDF_UA/";
+    private static final String WCAG_FOLDER = "https://github.com/veraPDF/veraPDF-validation-profiles/raw/rel/1.30/PDF_UA/";
     private static final String WCAG_PROFILE_URL = WCAG_FOLDER + "WCAG-2-2-Complete.xml";
     private static final String WCAG_2_0_PROFILE_URL = WCAG_FOLDER + "WCAG-2-2-Complete-PDF20.xml";
     private static final EnumMap<PDFAFlavour, Set<String>> filesByFlavour = new EnumMap<>(PDFAFlavour.class);
